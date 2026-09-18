@@ -1,0 +1,1252 @@
+artist_id,artist_name,nb_album,nb_fan,radio,link
+2,The Clash,15,1661010,True,https://www.deezer.com/artist/2
+3,Snoop Dogg,202,7962166,True,https://www.deezer.com/artist/3
+9,Outkast,28,917514,True,https://www.deezer.com/artist/9
+11,The Rolling Stones,125,7097592,True,https://www.deezer.com/artist/11
+13,Eminem,68,19111164,True,https://www.deezer.com/artist/13
+14,Gorillaz,84,3017251,True,https://www.deezer.com/artist/14
+17,Usher,66,7218259,True,https://www.deezer.com/artist/17
+19,Right Said Fred,67,9131,True,https://www.deezer.com/artist/19
+27,Daft Punk,38,5207600,True,https://www.deezer.com/artist/27
+39,Survivor,11,261255,True,https://www.deezer.com/artist/39
+52,Green Day,85,5236059,True,https://www.deezer.com/artist/52
+65,Mariah Carey,120,3449504,True,https://www.deezer.com/artist/65
+66,50 Cent,59,7864905,True,https://www.deezer.com/artist/66
+67,KISS,72,2899350,True,https://www.deezer.com/artist/67
+70,Juanes,104,1624653,True,https://www.deezer.com/artist/70
+81,The Chemical Brothers,94,1456933,True,https://www.deezer.com/artist/81
+91,Missy Elliott,26,844030,True,https://www.deezer.com/artist/91
+98,Evanescence,28,3782463,True,https://www.deezer.com/artist/98
+99,Coolio,25,277920,True,https://www.deezer.com/artist/99
+102,Chris Brown,119,9074335,True,https://www.deezer.com/artist/102
+103,Pharrell Williams,46,3231963,True,https://www.deezer.com/artist/103
+105,Nelly,55,1606839,True,https://www.deezer.com/artist/105
+112,Marc Anthony,43,2605329,True,https://www.deezer.com/artist/112
+113,Rage Against the Machine,10,1977518,True,https://www.deezer.com/artist/113
+115,AC/DC,27,9935817,True,https://www.deezer.com/artist/115
+116,Christina Aguilera,29,3911142,True,https://www.deezer.com/artist/116
+117,Slipknot,40,4141835,True,https://www.deezer.com/artist/117
+119,Metallica,70,8154651,True,https://www.deezer.com/artist/119
+129,R.E.M.,54,2663367,True,https://www.deezer.com/artist/129
+145,Beyoncé,66,12834996,True,https://www.deezer.com/artist/145
+152,Mary J. Blige,83,1524219,True,https://www.deezer.com/artist/152
+160,Shakira,68,11715061,True,https://www.deezer.com/artist/160
+164,Lou Bega,22,33553,True,https://www.deezer.com/artist/164
+165,UB40,36,1177378,True,https://www.deezer.com/artist/165
+166,Stevie Wonder,52,2441357,True,https://www.deezer.com/artist/166
+169,Fleetwood Mac,56,1668230,True,https://www.deezer.com/artist/169
+170,Bryan Adams,77,1751198,True,https://www.deezer.com/artist/170
+174,Whitney Houston,53,3925326,True,https://www.deezer.com/artist/174
+175,Eurythmics,50,824522,True,https://www.deezer.com/artist/175
+181,Talking Heads,32,446066,True,https://www.deezer.com/artist/181
+182,Red Hot Chili Peppers,52,7696473,True,https://www.deezer.com/artist/182
+183,TLC,30,615255,True,https://www.deezer.com/artist/183
+186,Phil Collins,36,2840200,True,https://www.deezer.com/artist/186
+189,Lenny Kravitz,40,1877910,True,https://www.deezer.com/artist/189
+191,Ginuwine,28,273398,True,https://www.deezer.com/artist/191
+192,Eric Clapton,76,2807857,True,https://www.deezer.com/artist/192
+199,Bonnie Raitt,33,45095,True,https://www.deezer.com/artist/199
+207,Electric Light Orchestra,22,473570,True,https://www.deezer.com/artist/207
+210,Eagles,30,1390076,True,https://www.deezer.com/artist/210
+215,Toto,25,980107,True,https://www.deezer.com/artist/215
+229,Sly & The Family Stone,32,120620,True,https://www.deezer.com/artist/229
+248,"Earth, Wind & Fire",34,1266103,True,https://www.deezer.com/artist/248
+258,Montell Jordan,23,63137,True,https://www.deezer.com/artist/258
+259,Michael Jackson,38,13129182,True,https://www.deezer.com/artist/259
+262,Janet Jackson,55,1289949,True,https://www.deezer.com/artist/262
+290,Madonna,145,4907195,True,https://www.deezer.com/artist/290
+305,Kool & The Gang,48,931521,True,https://www.deezer.com/artist/305
+313,John Legend,90,3555020,True,https://www.deezer.com/artist/313
+317,Meat Loaf,27,154625,True,https://www.deezer.com/artist/317
+333,Tim McGraw,45,379170,True,https://www.deezer.com/artist/333
+338,Nickelback,33,3181025,True,https://www.deezer.com/artist/338
+347,Kenny Chesney,49,328973,True,https://www.deezer.com/artist/347
+369,Air,39,341405,True,https://www.deezer.com/artist/369
+385,Kings of Leon,29,2393720,True,https://www.deezer.com/artist/385
+399,Radiohead,45,4091973,True,https://www.deezer.com/artist/399
+409,blink-182,41,2333123,True,https://www.deezer.com/artist/409
+418,Weezer,70,730187,True,https://www.deezer.com/artist/418
+425,Blondie,59,822303,True,https://www.deezer.com/artist/425
+434,Tiësto,376,4093489,True,https://www.deezer.com/artist/434
+458,System of a Down,10,5802234,True,https://www.deezer.com/artist/458
+464,Rammstein,51,2724504,True,https://www.deezer.com/artist/464
+500,Zapp & Roger,4,32276,True,https://www.deezer.com/artist/500
+511,Candy Dulfer,25,40409,True,https://www.deezer.com/artist/511
+520,*NSYNC,15,309327,True,https://www.deezer.com/artist/520
+521,Luther Vandross,32,575777,True,https://www.deezer.com/artist/521
+523,Kenny G,39,406198,True,https://www.deezer.com/artist/523
+527,Extreme,18,98743,True,https://www.deezer.com/artist/527
+533,Judas Priest,40,1249630,True,https://www.deezer.com/artist/533
+542,David Guetta,382,20109932,True,https://www.deezer.com/artist/542
+561,Delerium,27,20919,True,https://www.deezer.com/artist/561
+564,Rihanna,90,18053051,True,https://www.deezer.com/artist/564
+566,Foo Fighters,44,4589186,True,https://www.deezer.com/artist/566
+596,Duran Duran,103,1285632,True,https://www.deezer.com/artist/596
+614,Bing Crosby,69,155491,True,https://www.deezer.com/artist/614
+617,Frank Sinatra,89,2483951,True,https://www.deezer.com/artist/617
+620,Etta James,53,1174089,True,https://www.deezer.com/artist/620
+629,Fugees,6,451390,True,https://www.deezer.com/artist/629
+636,The White Stripes,33,1319733,True,https://www.deezer.com/artist/636
+637,Bon Jovi,69,5274131,True,https://www.deezer.com/artist/637
+652,Pixies,47,1104932,True,https://www.deezer.com/artist/652
+663,Guns N' Roses,23,8596822,True,https://www.deezer.com/artist/663
+666,Gary Moore,43,326676,True,https://www.deezer.com/artist/666
+689,TOOL,7,539036,True,https://www.deezer.com/artist/689
+692,Blue Öyster Cult,51,143072,True,https://www.deezer.com/artist/692
+700,Aventura,71,2077958,True,https://www.deezer.com/artist/700
+719,Bob Marley & The Wailers,83,12295520,True,https://www.deezer.com/artist/719
+725,Don Omar,69,4035268,True,https://www.deezer.com/artist/725
+732,The Isley Brothers,46,455720,True,https://www.deezer.com/artist/732
+763,Dr. Dre,22,4484745,True,https://www.deezer.com/artist/763
+816,Lynyrd Skynyrd,53,1046259,True,https://www.deezer.com/artist/816
+819,John Mayall & The Bluesbreakers,42,107295,True,https://www.deezer.com/artist/819
+823,Ozzy Osbourne,32,2603100,True,https://www.deezer.com/artist/823
+848,Led Zeppelin,30,5539616,True,https://www.deezer.com/artist/848
+849,Jimi Hendrix,44,4264118,True,https://www.deezer.com/artist/849
+860,Pink Floyd,64,6816725,True,https://www.deezer.com/artist/860
+892,Coldplay,124,18388831,True,https://www.deezer.com/artist/892
+896,Jack Johnson,42,1169886,True,https://www.deezer.com/artist/896
+897,The Killers,43,2237482,True,https://www.deezer.com/artist/897
+927,Oasis,64,4697742,True,https://www.deezer.com/artist/927
+947,Bright Eyes,40,48358,True,https://www.deezer.com/artist/947
+959,Plain White T's,34,140742,True,https://www.deezer.com/artist/959
+997,David Bowie,166,2457735,True,https://www.deezer.com/artist/997
+1005,Aerosmith,36,5331510,True,https://www.deezer.com/artist/1005
+1009,Lou Reed,38,510517,True,https://www.deezer.com/artist/1009
+1016,Nightcrawlers,20,27388,True,https://www.deezer.com/artist/1016
+1039,Cat Power,30,169844,True,https://www.deezer.com/artist/1039
+1049,Kate Bush,20,398180,True,https://www.deezer.com/artist/1049
+1064,Hot Chocolate,11,19800,True,https://www.deezer.com/artist/1064
+1118,Bill Withers,16,452001,True,https://www.deezer.com/artist/1118
+1125,Elvis Presley,74,3266829,True,https://www.deezer.com/artist/1125
+1126,Dean Martin,68,371013,True,https://www.deezer.com/artist/1126
+1134,Peggy Lee,68,241049,True,https://www.deezer.com/artist/1134
+1147,Justin Timberlake,43,6709767,True,https://www.deezer.com/artist/1147
+1151,Tangerine Dream,121,58176,True,https://www.deezer.com/artist/1151
+1154,Marvin Gaye,81,1940417,True,https://www.deezer.com/artist/1154
+1156,Steely Dan,20,137588,True,https://www.deezer.com/artist/1156
+1159,John Lee Hooker,66,1378364,True,https://www.deezer.com/artist/1159
+1168,Van Halen,43,1808022,True,https://www.deezer.com/artist/1168
+1182,Arctic Monkeys,35,4959092,True,https://www.deezer.com/artist/1182
+1192,Tears for Fears,35,1187708,True,https://www.deezer.com/artist/1192
+1205,Mudvayne,15,211341,True,https://www.deezer.com/artist/1205
+1252,Velvet Revolver,7,150500,True,https://www.deezer.com/artist/1252
+1293,Astrud Gilberto,27,147266,True,https://www.deezer.com/artist/1293
+1297,The Smiths,15,1503112,True,https://www.deezer.com/artist/1297
+1309,JAY Z,65,3576190,True,https://www.deezer.com/artist/1309
+1327,KoЯn,41,2622631,True,https://www.deezer.com/artist/1327
+1339,Lead Belly,46,14038,True,https://www.deezer.com/artist/1339
+1340,The Shins,28,93397,True,https://www.deezer.com/artist/1340
+1342,Ray Charles,28,2931519,True,https://www.deezer.com/artist/1342
+1379,Neil Young,176,829249,True,https://www.deezer.com/artist/1379
+1398,Wilson Pickett,28,66056,True,https://www.deezer.com/artist/1398
+1436,J.J. Cale,18,269341,True,https://www.deezer.com/artist/1436
+1439,Sheryl Crow,63,217922,True,https://www.deezer.com/artist/1439
+1444,Seal,65,588804,True,https://www.deezer.com/artist/1444
+1454,Tina Turner,68,1655097,True,https://www.deezer.com/artist/1454
+1461,Sin Bandera,23,1039834,True,https://www.deezer.com/artist/1461
+1536,Ennio Morricone,202,686163,True,https://www.deezer.com/artist/1536
+1602,Aimee Mann,30,22501,True,https://www.deezer.com/artist/1602
+1622,James Brown,120,1444655,True,https://www.deezer.com/artist/1622
+1653,Iron & Wine,40,108869,True,https://www.deezer.com/artist/1653
+1668,Soft Cell,74,363333,True,https://www.deezer.com/artist/1668
+1695,Tegan and Sara,56,85096,True,https://www.deezer.com/artist/1695
+1723,Jefferson Airplane,26,219761,True,https://www.deezer.com/artist/1723
+1743,The B-52's,26,100832,True,https://www.deezer.com/artist/1743
+1760,Toni Braxton,37,934703,True,https://www.deezer.com/artist/1760
+1785,Grateful Dead,242,135801,True,https://www.deezer.com/artist/1785
+1878,Prince,93,1365068,True,https://www.deezer.com/artist/1878
+1893,Rita Lee,43,976385,True,https://www.deezer.com/artist/1893
+1903,Europe,25,857575,True,https://www.deezer.com/artist/1903
+1918,Bebel Gilberto,24,43074,True,https://www.deezer.com/artist/1918
+1968,Vinicius de Moraes,6,277898,True,https://www.deezer.com/artist/1968
+1981,The Police,19,3321919,True,https://www.deezer.com/artist/1981
+1999,Sufjan Stevens,57,269866,True,https://www.deezer.com/artist/1999
+2025,Cyndi Lauper,36,1048493,True,https://www.deezer.com/artist/2025
+2027,Curtis Mayfield,47,204861,True,https://www.deezer.com/artist/2027
+2044,Tosca,57,29822,True,https://www.deezer.com/artist/2044
+2056,Erykah Badu,29,425369,True,https://www.deezer.com/artist/2056
+2075,Semisonic,20,38133,True,https://www.deezer.com/artist/2075
+2077,Gilberto Gil,155,939534,True,https://www.deezer.com/artist/2077
+2105,Canned Heat,33,231090,True,https://www.deezer.com/artist/2105
+2108,Bonobo,57,364862,True,https://www.deezer.com/artist/2108
+2110,Tom Petty and the Heartbreakers,45,233097,True,https://www.deezer.com/artist/2110
+2111,Billy Idol,41,605426,True,https://www.deezer.com/artist/2111
+2118,Danzig,6,89760,True,https://www.deezer.com/artist/2118
+2159,Pat Benatar,18,104818,True,https://www.deezer.com/artist/2159
+2245,Thomas Newman,71,232880,True,https://www.deezer.com/artist/2245
+2252,The Gladiators,16,290665,True,https://www.deezer.com/artist/2252
+2281,Bob Seger & The Silver Bullet Band,12,26347,True,https://www.deezer.com/artist/2281
+2320,Israel Vibration,28,274771,True,https://www.deezer.com/artist/2320
+2325,Burning Spear,16,445003,True,https://www.deezer.com/artist/2325
+2326,Peter Tosh,23,710451,True,https://www.deezer.com/artist/2326
+2327,Barrington Levy,47,340576,True,https://www.deezer.com/artist/2327
+2360,Rose Royce,16,32711,True,https://www.deezer.com/artist/2360
+2361,Soul II Soul,28,43466,True,https://www.deezer.com/artist/2361
+2364,Heavy D & The Boyz,10,9718,True,https://www.deezer.com/artist/2364
+2369,Al Green,39,444647,True,https://www.deezer.com/artist/2369
+2374,Lucy Pearl,0,13712,True,https://www.deezer.com/artist/2374
+2380,SWV,12,161494,True,https://www.deezer.com/artist/2380
+2397,Sister Sledge,20,152174,True,https://www.deezer.com/artist/2397
+2398,Maze,17,41934,True,https://www.deezer.com/artist/2398
+2425,Jimmy Cliff,28,1037311,True,https://www.deezer.com/artist/2425
+2451,Bobby Womack,33,114431,True,https://www.deezer.com/artist/2451
+2468,Creedence Clearwater Revival,20,1594608,True,https://www.deezer.com/artist/2468
+2473,Third Eye Blind,44,73389,True,https://www.deezer.com/artist/2473
+2483,The Black Keys,52,1096798,True,https://www.deezer.com/artist/2483
+2489,New Radicals,3,30519,True,https://www.deezer.com/artist/2489
+2523,Bone Thugs-N-Harmony,34,332605,True,https://www.deezer.com/artist/2523
+2542,House of Pain,8,160695,True,https://www.deezer.com/artist/2542
+2557,Def Leppard,58,891627,True,https://www.deezer.com/artist/2557
+2562,Dr. Hook,13,15033,True,https://www.deezer.com/artist/2562
+2579,DJ Jazzy Jeff & The Fresh Prince,10,36783,True,https://www.deezer.com/artist/2579
+2620,Ray J,85,17317,True,https://www.deezer.com/artist/2620
+2649,Jermaine Dupri,24,39688,True,https://www.deezer.com/artist/2649
+2666,Galt MacDermot,78,7769,True,https://www.deezer.com/artist/2666
+2681,Leonard Bernstein,365,241908,True,https://www.deezer.com/artist/2681
+2706,Gary Numan,108,32027,True,https://www.deezer.com/artist/2706
+2711,Yes,85,312804,True,https://www.deezer.com/artist/2711
+2764,The Heptones,58,25436,True,https://www.deezer.com/artist/2764
+2789,Ricky Martin,68,2216065,True,https://www.deezer.com/artist/2789
+2792,Enrique Iglesias,93,5956711,True,https://www.deezer.com/artist/2792
+2833,Chuck Berry,29,731472,True,https://www.deezer.com/artist/2833
+2887,The Proclaimers,26,26841,True,https://www.deezer.com/artist/2887
+2945,Otis Redding,39,1038639,True,https://www.deezer.com/artist/2945
+2969,Pantera,15,1618145,True,https://www.deezer.com/artist/2969
+3004,Twisted Sister,3,374683,True,https://www.deezer.com/artist/3004
+3019,Skid Row,23,445146,True,https://www.deezer.com/artist/3019
+3106,a-ha,43,1173199,True,https://www.deezer.com/artist/3106
+3109,Vanilla Ice,20,54169,True,https://www.deezer.com/artist/3109
+3120,Robert Johnson,6,348036,True,https://www.deezer.com/artist/3120
+3132,Everclear,29,18816,True,https://www.deezer.com/artist/3132
+3156,Cher,88,562197,True,https://www.deezer.com/artist/3156
+3183,Culture Club,33,208279,True,https://www.deezer.com/artist/3183
+3214,Caifanes,11,857481,True,https://www.deezer.com/artist/3214
+3239,Bobby Darin,48,95165,True,https://www.deezer.com/artist/3239
+3240,Sixpence None the Richer,26,107327,True,https://www.deezer.com/artist/3240
+3351,Steve Miller Band,33,100462,True,https://www.deezer.com/artist/3351
+3381,Journey,28,661945,True,https://www.deezer.com/artist/3381
+3427,Winger,17,26705,True,https://www.deezer.com/artist/3427
+3438,Blind Melon,14,96220,True,https://www.deezer.com/artist/3438
+3469,Sia,161,8712706,True,https://www.deezer.com/artist/3469
+3487,Megadeth,47,1797765,True,https://www.deezer.com/artist/3487
+3499,Freestylers,81,29200,True,https://www.deezer.com/artist/3499
+3509,The Band,36,72609,True,https://www.deezer.com/artist/3509
+3517,Citizen King,2,690,True,https://www.deezer.com/artist/3517
+3604,The Abyssinians,14,26310,True,https://www.deezer.com/artist/3604
+3606,Yellowman,30,40588,True,https://www.deezer.com/artist/3606
+3614,B.B. King,55,1704347,True,https://www.deezer.com/artist/3614
+3839,Daddy Yankee,113,7161031,True,https://www.deezer.com/artist/3839
+3847,Axwell,78,625142,True,https://www.deezer.com/artist/3847
+3853,Milky,12,1642,True,https://www.deezer.com/artist/3853
+3855,Kenny Loggins,23,111993,True,https://www.deezer.com/artist/3855
+3998,Matthew West,90,65909,True,https://www.deezer.com/artist/3998
+4085,Antônio Carlos Jobim,43,570383,True,https://www.deezer.com/artist/4085
+4091,Susan Tedeschi,12,24428,True,https://www.deezer.com/artist/4091
+4123,"Grover Washington, Jr.",33,81179,True,https://www.deezer.com/artist/4123
+4192,Albert King,38,252997,True,https://www.deezer.com/artist/4192
+4312,Las Ketchup,8,28998,True,https://www.deezer.com/artist/4312
+4331,Ludovico Einaudi,145,1447152,True,https://www.deezer.com/artist/4331
+4345,Soda Stereo,24,1773517,True,https://www.deezer.com/artist/4345
+4370,Anita Baker,9,206874,True,https://www.deezer.com/artist/4370
+4386,Squeeze,33,15293,True,https://www.deezer.com/artist/4386
+4388,Carrie Underwood,40,516547,True,https://www.deezer.com/artist/4388
+4418,Taj Mahal,64,93534,True,https://www.deezer.com/artist/4418
+4435,Stone Temple Pilots,16,606069,True,https://www.deezer.com/artist/4435
+4492,Ronny Jordan,11,9786,True,https://www.deezer.com/artist/4492
+4511,Desmond Dekker,23,63025,True,https://www.deezer.com/artist/4511
+4576,Kaskade,251,172099,True,https://www.deezer.com/artist/4576
+4660,The Knack,5,11315,True,https://www.deezer.com/artist/4660
+4699,Diana Ross,69,1008678,True,https://www.deezer.com/artist/4699
+4720,Milton Nascimento,65,555640,True,https://www.deezer.com/artist/4720
+4726,Philip Glass,100,226231,True,https://www.deezer.com/artist/4726
+4757,Bob James,63,30123,True,https://www.deezer.com/artist/4757
+4762,Bruce Springsteen,95,1807504,True,https://www.deezer.com/artist/4762
+4913,Phyllis Dillon,9,8826,True,https://www.deezer.com/artist/4913
+4914,The Paul Butterfield Blues Band,12,21178,True,https://www.deezer.com/artist/4914
+4929,Manu Dibango,41,68975,True,https://www.deezer.com/artist/4929
+5004,D'Angelo,7,158870,True,https://www.deezer.com/artist/5004
+5057,Miranda Lambert,53,305926,True,https://www.deezer.com/artist/5057
+5091,Rick James,24,129348,True,https://www.deezer.com/artist/5091
+5130,Ray Barretto,40,57383,True,https://www.deezer.com/artist/5130
+5168,João Gilberto,13,335258,True,https://www.deezer.com/artist/5168
+5219,Eartha Kitt,17,16848,True,https://www.deezer.com/artist/5219
+5290,White Lion,18,47077,True,https://www.deezer.com/artist/5290
+5348,Johnny Osbourne,84,14625,True,https://www.deezer.com/artist/5348
+5356,Stanley Jordan,20,16769,True,https://www.deezer.com/artist/5356
+5359,Wolfmother,20,143462,True,https://www.deezer.com/artist/5359
+5414,Muddy Waters,23,1462533,True,https://www.deezer.com/artist/5414
+5426,Little Walter,8,162942,True,https://www.deezer.com/artist/5426
+5428,Charlie Musselwhite,38,43496,True,https://www.deezer.com/artist/5428
+5484,Buckwheat Zydeco,16,1043,True,https://www.deezer.com/artist/5484
+5551,Incognito,53,101576,True,https://www.deezer.com/artist/5551
+5644,Selena,32,605556,True,https://www.deezer.com/artist/5644
+5679,Randy Newman,57,111386,True,https://www.deezer.com/artist/5679
+5732,Quiet Riot,32,156847,True,https://www.deezer.com/artist/5732
+5833,Stacey Q,13,2628,True,https://www.deezer.com/artist/5833
+5854,Itzhak Perlman,188,198473,True,https://www.deezer.com/artist/5854
+5858,Eric Burdon,47,17238,True,https://www.deezer.com/artist/5858
+5871,Toots & The Maytals,19,468044,True,https://www.deezer.com/artist/5871
+5894,Young MC,28,4358,True,https://www.deezer.com/artist/5894
+6053,Lonnie Liston Smith,18,5595,True,https://www.deezer.com/artist/6053
+6070,Damn Yankees,2,24806,True,https://www.deezer.com/artist/6070
+6121,Alexandre Pires,69,1208667,True,https://www.deezer.com/artist/6121
+6180,Perry Como,45,34655,True,https://www.deezer.com/artist/6180
+6205,"Crosby, Stills & Nash",11,85037,True,https://www.deezer.com/artist/6205
+6243,The Pointer Sisters,26,378507,True,https://www.deezer.com/artist/6243
+6292,R.L. Burnside,17,34491,True,https://www.deezer.com/artist/6292
+6321,Chris Botti,21,37065,True,https://www.deezer.com/artist/6321
+6404,Justice,43,808653,True,https://www.deezer.com/artist/6404
+6471,The Allman Brothers Band,42,132990,True,https://www.deezer.com/artist/6471
+6487,"Bobby ""Blue"" Bland",16,11985,True,https://www.deezer.com/artist/6487
+6493,Fatback Band,47,2117,True,https://www.deezer.com/artist/6493
+6542,Steel Pulse,32,231269,True,https://www.deezer.com/artist/6542
+6707,Luis Fonsi,112,3148914,True,https://www.deezer.com/artist/6707
+6729,Tego Calderón,26,831093,True,https://www.deezer.com/artist/6729
+7023,Idina Menzel,53,164062,True,https://www.deezer.com/artist/7023
+7054,Sister Nancy,13,20901,True,https://www.deezer.com/artist/7054
+7056,Dennis Brown,12,263294,True,https://www.deezer.com/artist/7056
+7065,Gregory Isaacs,52,790065,True,https://www.deezer.com/artist/7065
+7076,The Ethiopians,0,13832,True,https://www.deezer.com/artist/7076
+7082,John Holt,335,65208,True,https://www.deezer.com/artist/7082
+7086,Alton Ellis,39,46829,True,https://www.deezer.com/artist/7086
+7205,Raffi,42,7396,True,https://www.deezer.com/artist/7205
+7235,The Marshall Tucker Band,38,13260,True,https://www.deezer.com/artist/7235
+7359,Heart,30,124579,True,https://www.deezer.com/artist/7359
+7426,Lalah Hathaway,39,25643,True,https://www.deezer.com/artist/7426
+7432,Lee Ritenour,37,43817,True,https://www.deezer.com/artist/7432
+7499,Dave Koz,61,76558,True,https://www.deezer.com/artist/7499
+7548,Bell Biv DeVoe,11,38318,True,https://www.deezer.com/artist/7548
+7552,Randy Crawford,23,57749,True,https://www.deezer.com/artist/7552
+7554,Najee,55,6618,True,https://www.deezer.com/artist/7554
+7555,Earl Klugh,36,34650,True,https://www.deezer.com/artist/7555
+7559,Joe Sample,25,32784,True,https://www.deezer.com/artist/7559
+7565,Chuck Loeb,24,7804,True,https://www.deezer.com/artist/7565
+7592,The Staple Singers,29,14342,True,https://www.deezer.com/artist/7592
+7613,Roberto Carlos,99,2055831,True,https://www.deezer.com/artist/7613
+7740,The Bellamy Brothers,8,11843,True,https://www.deezer.com/artist/7740
+7743,The Outfield,14,90004,True,https://www.deezer.com/artist/7743
+7796,Little Big Town,45,136042,True,https://www.deezer.com/artist/7796
+7830,Jason Aldean,42,401018,True,https://www.deezer.com/artist/7830
+8026,Nightmares on Wax,83,54248,True,https://www.deezer.com/artist/8026
+8306,MC Hammer,20,70086,True,https://www.deezer.com/artist/8306
+8424,Skip James,4,35112,True,https://www.deezer.com/artist/8424
+8584,Brass Construction,31,8183,True,https://www.deezer.com/artist/8584
+8588,Bobby Byrd,8,3043,True,https://www.deezer.com/artist/8588
+8631,Harold Faltermeyer,4,15943,True,https://www.deezer.com/artist/8631
+8636,Delbert McClinton,40,1761,True,https://www.deezer.com/artist/8636
+8661,Tito Puente,178,96399,True,https://www.deezer.com/artist/8661
+8680,Buddy Guy,62,484004,True,https://www.deezer.com/artist/8680
+8741,Dolly Parton,146,454975,True,https://www.deezer.com/artist/8741
+8793,Pepe Aguilar,81,596885,True,https://www.deezer.com/artist/8793
+8807,Gwen McCrae,30,8898,True,https://www.deezer.com/artist/8807
+8846,Tevin Campbell,5,77609,True,https://www.deezer.com/artist/8846
+8885,Biz Markie,7,11990,True,https://www.deezer.com/artist/8885
+8923,Q-Tip,11,52912,True,https://www.deezer.com/artist/8923
+8989,Big Mama Thornton,3,68053,True,https://www.deezer.com/artist/8989
+8992,Koko Taylor,18,58838,True,https://www.deezer.com/artist/8992
+9032,Marco Antonio Solís,51,1710000,True,https://www.deezer.com/artist/9032
+9052,Amy Winehouse,22,3870412,True,https://www.deezer.com/artist/9052
+9106,Love and Rockets,25,10728,True,https://www.deezer.com/artist/9106
+9109,Tyrese,21,158903,True,https://www.deezer.com/artist/9109
+9120,Quad City DJ's,9,1607,True,https://www.deezer.com/artist/9120
+9126,The Congos,15,48475,True,https://www.deezer.com/artist/9126
+9131,Delroy Wilson,3,7322,True,https://www.deezer.com/artist/9131
+9132,The Mighty Diamonds,12,28210,True,https://www.deezer.com/artist/9132
+9143,Orchestra Baobab,23,23194,True,https://www.deezer.com/artist/9143
+9219,Disney,91,418026,True,https://www.deezer.com/artist/9219
+9261,Bobby Caldwell,46,19442,True,https://www.deezer.com/artist/9261
+9383,Brian Culbertson,41,31808,True,https://www.deezer.com/artist/9383
+9393,Freddie Jackson,20,68360,True,https://www.deezer.com/artist/9393
+9440,Fela Kuti,88,204437,True,https://www.deezer.com/artist/9440
+9450,Hugh Mundell,6,7062,True,https://www.deezer.com/artist/9450
+9501,Andrew Gold,40,7264,True,https://www.deezer.com/artist/9501
+9523,Mississippi Fred McDowell,41,16829,True,https://www.deezer.com/artist/9523
+9672,Joe Bataan,31,2905,True,https://www.deezer.com/artist/9672
+9728,Marcos Valle,59,22095,True,https://www.deezer.com/artist/9728
+9777,Green Velvet,68,42892,True,https://www.deezer.com/artist/9777
+9999,Gladys Knight & The Pips,41,108928,True,https://www.deezer.com/artist/9999
+10088,John Beltran,48,979,True,https://www.deezer.com/artist/10088
+10129,War,55,19456,True,https://www.deezer.com/artist/10129
+10139,Digital Underground,22,12915,True,https://www.deezer.com/artist/10139
+10312,Sugar Minott,103,52032,True,https://www.deezer.com/artist/10312
+10543,Rory Gallagher,38,123250,True,https://www.deezer.com/artist/10543
+10574,Ini Kamoze,6,102999,True,https://www.deezer.com/artist/10574
+11799,Chris Lake,108,303317,True,https://www.deezer.com/artist/11799
+11873,Diamond Head,26,16578,True,https://www.deezer.com/artist/11873
+12178,Calvin Harris,188,12322530,True,https://www.deezer.com/artist/12178
+12246,Taylor Swift,118,12724280,True,https://www.deezer.com/artist/12246
+12436,Miley Cyrus,55,7238375,True,https://www.deezer.com/artist/12436
+12544,Oscar D'León,97,213023,True,https://www.deezer.com/artist/12544
+13025,Stephen Marley,29,526392,True,https://www.deezer.com/artist/13025
+13030,Norman Brown,21,22734,True,https://www.deezer.com/artist/13030
+13179,K7,63,1923,True,https://www.deezer.com/artist/13179
+13204,Mark Ronson,78,754143,True,https://www.deezer.com/artist/13204
+13332,André Previn,244,48669,True,https://www.deezer.com/artist/13332
+13570,Metronomy,74,504081,True,https://www.deezer.com/artist/13570
+13623,In This Moment,38,183222,True,https://www.deezer.com/artist/13623
+13695,George Duke,46,57440,True,https://www.deezer.com/artist/13695
+13704,Tim Maia,25,1111504,True,https://www.deezer.com/artist/13704
+14521,Jack Black,14,11858,True,https://www.deezer.com/artist/14521
+14567,Spyro Gyra,37,25737,True,https://www.deezer.com/artist/14567
+14624,Willie Rosario,34,17939,True,https://www.deezer.com/artist/14624
+14687,Djavan,56,1839154,True,https://www.deezer.com/artist/14687
+14744,Boney James,50,55693,True,https://www.deezer.com/artist/14744
+14984,Al Jarreau,45,313730,True,https://www.deezer.com/artist/14984
+15056,Bakar,34,30097,True,https://www.deezer.com/artist/15056
+15466,Larry Carlton,53,35178,True,https://www.deezer.com/artist/15466
+15513,Keith Mansfield,71,1142,True,https://www.deezer.com/artist/15513
+15712,Wang Chung,11,9016,True,https://www.deezer.com/artist/15712
+15808,Steve Reich,54,44062,True,https://www.deezer.com/artist/15808
+15827,Elis Regina,70,918352,True,https://www.deezer.com/artist/15827
+15888,Jonas Brothers,53,1688461,True,https://www.deezer.com/artist/15888
+16066,Night Ranger,38,13396,True,https://www.deezer.com/artist/16066
+16235,Monchy & Alexandra,20,35788,True,https://www.deezer.com/artist/16235
+16644,Intocable,68,641868,True,https://www.deezer.com/artist/16644
+17046,Zion,33,561957,True,https://www.deezer.com/artist/17046
+54728,Roosevelt Sykes,45,790,True,https://www.deezer.com/artist/54728
+54988,Alemayehu Eshete,7,2339,True,https://www.deezer.com/artist/54988
+55398,Bembeya Jazz National,21,3544,True,https://www.deezer.com/artist/55398
+56797,Vladimir Horowitz,273,102037,True,https://www.deezer.com/artist/56797
+57085,Kokomo Arnold,16,616,True,https://www.deezer.com/artist/57085
+57139,The Slickers,3,842,True,https://www.deezer.com/artist/57139
+57533,Sleepy John Estes,1,3856,True,https://www.deezer.com/artist/57533
+58307,Pinetop Perkins,36,3263,True,https://www.deezer.com/artist/58307
+58312,T-bone Walker,34,253835,True,https://www.deezer.com/artist/58312
+58313,Sunnyland Slim,23,1287,True,https://www.deezer.com/artist/58313
+58960,Yo-Yo Ma,186,453554,True,https://www.deezer.com/artist/58960
+59511,Rennie Foster,128,287,True,https://www.deezer.com/artist/59511
+59600,Roedelius,53,1636,True,https://www.deezer.com/artist/59600
+62359,Jimmy Reed,17,117247,True,https://www.deezer.com/artist/62359
+62380,Sharon Jones & The Dap-Kings,19,58248,True,https://www.deezer.com/artist/62380
+62439,Jimmy Riley,30,1278,True,https://www.deezer.com/artist/62439
+62490,NILS,151,2665,True,https://www.deezer.com/artist/62490
+62996,Ryuichi Sakamoto,102,80940,True,https://www.deezer.com/artist/62996
+64252,Georgia Satellites,9,2902,True,https://www.deezer.com/artist/64252
+64279,Kronos Quartet,112,26751,True,https://www.deezer.com/artist/64279
+64404,Firefall,33,2162,True,https://www.deezer.com/artist/64404
+64410,"Peter, Paul And Mary",0,15652,True,https://www.deezer.com/artist/64410
+64425,Allen Toussaint,12,10743,True,https://www.deezer.com/artist/64425
+64750,Tony Joe White,64,45943,True,https://www.deezer.com/artist/64750
+64887,Pierre-Laurent Aimard,55,3510,True,https://www.deezer.com/artist/64887
+65574,Steve Lacy,24,278019,True,https://www.deezer.com/artist/65574
+65655,Daniel Barenboim,287,252654,True,https://www.deezer.com/artist/65655
+65992,Blues Image,13,806,True,https://www.deezer.com/artist/65992
+66096,Information Society,1,92673,True,https://www.deezer.com/artist/66096
+66465,Otis Rush,12,88063,True,https://www.deezer.com/artist/66465
+66506,Joyce,20,3684,True,https://www.deezer.com/artist/66506
+66611,Ruthie Foster,28,8252,True,https://www.deezer.com/artist/66611
+66947,Karyn White,9,29220,True,https://www.deezer.com/artist/66947
+69167,Furry Lewis,25,1874,True,https://www.deezer.com/artist/69167
+69519,Bobby Bare,72,7777,True,https://www.deezer.com/artist/69519
+69542,Murray Perahia,95,110987,True,https://www.deezer.com/artist/69542
+69635,The Brecker Brothers,13,5661,True,https://www.deezer.com/artist/69635
+69910,Leon Fleisher,73,1361,True,https://www.deezer.com/artist/69910
+69925,P!nk,60,4659881,True,https://www.deezer.com/artist/69925
+69959,Keb' Mo',45,100287,True,https://www.deezer.com/artist/69959
+70491,Chicken Shack,14,2244,True,https://www.deezer.com/artist/70491
+70600,Peter White,19,23663,True,https://www.deezer.com/artist/70600
+70711,Matt Maher,63,25877,True,https://www.deezer.com/artist/70711
+70942,Willow,29,703678,True,https://www.deezer.com/artist/70942
+71495,E. Power Biggs,22,350,True,https://www.deezer.com/artist/71495
+71978,Michael Rische,16,50,True,https://www.deezer.com/artist/71978
+72628,Lawson Rollins,27,1211,True,https://www.deezer.com/artist/72628
+73158,Rogê,145,4417,True,https://www.deezer.com/artist/73158
+73651,Esa-Pekka Salonen,115,22484,True,https://www.deezer.com/artist/73651
+74186,Jimmy Rogers,10,55258,True,https://www.deezer.com/artist/74186
+74309,Lil Wayne,121,5837446,True,https://www.deezer.com/artist/74309
+74346,Will Downing,63,14131,True,https://www.deezer.com/artist/74346
+74398,OneRepublic,99,4345705,True,https://www.deezer.com/artist/74398
+74444,Fleet Foxes,18,165424,True,https://www.deezer.com/artist/74444
+75491,Lady Gaga,82,9278254,True,https://www.deezer.com/artist/75491
+75649,Mindi Abair,20,3890,True,https://www.deezer.com/artist/75649
+75798,Adele,15,15471908,True,https://www.deezer.com/artist/75798
+76342,The Braxton Brothers,10,265,True,https://www.deezer.com/artist/76342
+76749,Wailing Souls,28,9680,True,https://www.deezer.com/artist/76749
+76970,Rob Base & DJ EZ Rock,5,5806,True,https://www.deezer.com/artist/76970
+77727,Marion Meadows,20,5356,True,https://www.deezer.com/artist/77727
+78233,Freiburger Barockorchester,136,8687,True,https://www.deezer.com/artist/78233
+78325,Walter Beasley,117,3467,True,https://www.deezer.com/artist/78325
+78466,Alvin And The Chipmunks,14,77568,True,https://www.deezer.com/artist/78466
+78495,Stephen Bishop,31,4225,True,https://www.deezer.com/artist/78495
+78506,Blind Lemon Jefferson,12,4207,True,https://www.deezer.com/artist/78506
+78668,Bon Iver,16,548722,True,https://www.deezer.com/artist/78668
+78908,J.B. Lenoir,3,21024,True,https://www.deezer.com/artist/78908
+79048,Giuliano Carmignola,32,6260,True,https://www.deezer.com/artist/79048
+79236,Run-DMC,28,291587,True,https://www.deezer.com/artist/79236
+80624,Toquinho,56,246696,True,https://www.deezer.com/artist/80624
+80776,Eddie Kendricks,21,6145,True,https://www.deezer.com/artist/80776
+81146,"Clarence ""Gatemouth"" Brown",31,3901,True,https://www.deezer.com/artist/81146
+81789,Blind Boy Fuller,27,2319,True,https://www.deezer.com/artist/81789
+82127,Fabio Biondi,93,19782,True,https://www.deezer.com/artist/82127
+83415,Dj Mini,14,1673,True,https://www.deezer.com/artist/83415
+84336,Balla Et Ses Balladins,5,1165,True,https://www.deezer.com/artist/84336
+84999,Johnny Colon,7,789,True,https://www.deezer.com/artist/84999
+85226,Pinetop Smith,3,54,True,https://www.deezer.com/artist/85226
+87384,Captain Beefheart,18,18330,True,https://www.deezer.com/artist/87384
+92573,Blind Blake,27,2504,True,https://www.deezer.com/artist/92573
+94137,Bobby Blue Bland,1,1042,True,https://www.deezer.com/artist/94137
+95069,Josey Wales,25,1295,True,https://www.deezer.com/artist/95069
+95415,Academy Of Ancient Music,156,3881,True,https://www.deezer.com/artist/95415
+96785,Stylus,84,135,True,https://www.deezer.com/artist/96785
+97261,Capital Letters,13,1477,True,https://www.deezer.com/artist/97261
+97385,Ma Rainey,38,3250,True,https://www.deezer.com/artist/97385
+98501,The Itals,8,2015,True,https://www.deezer.com/artist/98501
+98985,Yiruma,56,182421,True,https://www.deezer.com/artist/98985
+103213,"The Mozart Orchestra, Davis Jerome & Richard Woodhams",0,19,True,https://www.deezer.com/artist/103213
+103629,Half Pint,50,3343,True,https://www.deezer.com/artist/103629
+104683,Barbatuques,62,25843,True,https://www.deezer.com/artist/104683
+105022,Memphis Minnie & Kansas Joe,4,77,True,https://www.deezer.com/artist/105022
+106632,Blessd,134,265092,True,https://www.deezer.com/artist/106632
+107096,Dustin O'Halloran,55,51357,True,https://www.deezer.com/artist/107096
+107942,Bob Baldwin,71,2574,True,https://www.deezer.com/artist/107942
+110654,John Klemmer,23,531,True,https://www.deezer.com/artist/110654
+113148,Àtic,53,210,True,https://www.deezer.com/artist/113148
+113240,Z.Z. Hill,22,3371,True,https://www.deezer.com/artist/113240
+114153,Vânia Bastos,22,529,True,https://www.deezer.com/artist/114153
+116523,Los Angeles Azules,87,1523709,True,https://www.deezer.com/artist/116523
+116891,Latimore,38,3355,True,https://www.deezer.com/artist/116891
+122996,Mighty Diamonds,34,8137,True,https://www.deezer.com/artist/122996
+123569,Pat Kelly,112,2065,True,https://www.deezer.com/artist/123569
+123595,Joe Higgs,12,8579,True,https://www.deezer.com/artist/123595
+123617,Ernie K-Doe,23,386,True,https://www.deezer.com/artist/123617
+125372,DaVido,137,901812,True,https://www.deezer.com/artist/125372
+127253,Cripple Clarence Lofton,4,63,True,https://www.deezer.com/artist/127253
+127935,2Unes,15,23,True,https://www.deezer.com/artist/127935
+131143,Celia,9,13866,True,https://www.deezer.com/artist/131143
+131886,Motionless In White,39,281103,True,https://www.deezer.com/artist/131886
+134161,Paul Freeman,48,270,True,https://www.deezer.com/artist/134161
+134790,Tame Impala,39,1137613,True,https://www.deezer.com/artist/134790
+142381,Deadmau5,168,1119943,True,https://www.deezer.com/artist/142381
+149013,Derek & The Dominos,7,75910,True,https://www.deezer.com/artist/149013
+152120,Nara Leão,36,105640,True,https://www.deezer.com/artist/152120
+152152,Jeff Lorber,28,7932,True,https://www.deezer.com/artist/152152
+152788,La Roux,26,152131,True,https://www.deezer.com/artist/152788
+157376,Wayman Tisdale,13,4598,True,https://www.deezer.com/artist/157376
+158391,Dick Van Dyke,3,1819,True,https://www.deezer.com/artist/158391
+158474,Weldon Irvine,12,1504,True,https://www.deezer.com/artist/158474
+158697,Christine McVie,11,4771,True,https://www.deezer.com/artist/158697
+159126,Architects,22,222599,True,https://www.deezer.com/artist/159126
+160727,Pierre Hantaï,42,7554,True,https://www.deezer.com/artist/160727
+162668,D.O.D,150,11338,True,https://www.deezer.com/artist/162668
+165930,Future,133,3985952,True,https://www.deezer.com/artist/165930
+166139,Ken Parker,44,474,True,https://www.deezer.com/artist/166139
+166633,Herb Alpert,44,12565,True,https://www.deezer.com/artist/166633
+166763,Echo and the Bunnymen,42,211476,True,https://www.deezer.com/artist/166763
+167095,2Pac,23,4126722,True,https://www.deezer.com/artist/167095
+167268,The Baba Brooks Band,2,163,True,https://www.deezer.com/artist/167268
+168632,Berliner Philharmoniker,278,627609,True,https://www.deezer.com/artist/168632
+173191,Karizma,156,4269,True,https://www.deezer.com/artist/173191
+178412,Jan Jelinek,30,3621,True,https://www.deezer.com/artist/178412
+182978,Fred Wesley & The J.B.'s,0,1331,True,https://www.deezer.com/artist/182978
+183201,Owl City,26,762298,True,https://www.deezer.com/artist/183201
+183674,Maxi Priest,74,64958,True,https://www.deezer.com/artist/183674
+184249,Denise LaSalle,29,9155,True,https://www.deezer.com/artist/184249
+186223,Martha Reeves & The Sweet Things,0,24,True,https://www.deezer.com/artist/186223
+191863,Gayla Peevey,3,271,True,https://www.deezer.com/artist/191863
+192548,Los Tucanes De Tijuana,140,674097,True,https://www.deezer.com/artist/192548
+193331,The Smashing Pumpkins,33,1767411,True,https://www.deezer.com/artist/193331
+194594,The Gaturs,2,117,True,https://www.deezer.com/artist/194594
+194746,Beastie Boys,37,687600,True,https://www.deezer.com/artist/194746
+205399,Leandro Lehart,38,32929,True,https://www.deezer.com/artist/205399
+210406,Russ Freeman & The Rippingtons,2,224,True,https://www.deezer.com/artist/210406
+211053,Jonathan Biss,30,389,True,https://www.deezer.com/artist/211053
+211131,Philippe Jaroussky,62,37791,True,https://www.deezer.com/artist/211131
+211430,Antonio Pappano,113,3369,True,https://www.deezer.com/artist/211430
+215702,Robert Glasper,31,43641,True,https://www.deezer.com/artist/215702
+241376,Orchestra Of The Age Of Enlightenment,79,1566,True,https://www.deezer.com/artist/241376
+241426,Novos Baianos,14,149402,True,https://www.deezer.com/artist/241426
+242132,Luke Bryan,64,622893,True,https://www.deezer.com/artist/242132
+242649,Berliner Barock Solisten,42,657,True,https://www.deezer.com/artist/242649
+242754,Bobby Pulido,78,31313,True,https://www.deezer.com/artist/242754
+243761,Fonseca,51,513621,True,https://www.deezer.com/artist/243761
+244207,Hesperion Xx,9,972,True,https://www.deezer.com/artist/244207
+244594,Jodi Benson,5,977,True,https://www.deezer.com/artist/244594
+244962,Kyla,15,10259,True,https://www.deezer.com/artist/244962
+245438,Fally Ipupa,91,454747,True,https://www.deezer.com/artist/245438
+246791,Drake,79,24084384,True,https://www.deezer.com/artist/246791
+248102,Edward Sharpe & The Magnetic Zeros,11,94697,True,https://www.deezer.com/artist/248102
+248813,Ernest Bour,52,67,True,https://www.deezer.com/artist/248813
+251751,"Jeanne Lamon, Tafelmusik Orchestra",2,54,True,https://www.deezer.com/artist/251751
+253382,Bobby Lyle,8,394,True,https://www.deezer.com/artist/253382
+253773,Marcia Aitken,3,586,True,https://www.deezer.com/artist/253773
+255154,Gould Piano Trio,38,83,True,https://www.deezer.com/artist/255154
+256599,Geraldine Hunt,2,1844,True,https://www.deezer.com/artist/256599
+267901,Bpm,46,3955,True,https://www.deezer.com/artist/267901
+269912,Ronnie Dyson,11,209,True,https://www.deezer.com/artist/269912
+271089,Peppermint Harris,14,252,True,https://www.deezer.com/artist/271089
+275773,Rhythm & Sound,14,3556,True,https://www.deezer.com/artist/275773
+277491,Ólafur Arnalds,90,183819,True,https://www.deezer.com/artist/277491
+288166,Justin Bieber,58,11154007,True,https://www.deezer.com/artist/288166
+292185,Selena Gomez,70,5543054,True,https://www.deezer.com/artist/292185
+292455,Justin Moore,35,77413,True,https://www.deezer.com/artist/292455
+293585,Avicii,67,8362160,True,https://www.deezer.com/artist/293585
+298705,Wiener Philharmoniker,331,316555,True,https://www.deezer.com/artist/298705
+303073,Sir Victor Uwaifo,31,517,True,https://www.deezer.com/artist/303073
+310260,Stromae,17,3482761,True,https://www.deezer.com/artist/310260
+317690,Peacocks Guitar Band International,7,63,True,https://www.deezer.com/artist/317690
+318860,Badger,59,1144,True,https://www.deezer.com/artist/318860
+328088,Role Model,20,24896,True,https://www.deezer.com/artist/328088
+329865,Jonathan Groff,4,4576,True,https://www.deezer.com/artist/329865
+336330,Marijata,1,578,True,https://www.deezer.com/artist/336330
+336332,Ebo Taylor,21,10932,True,https://www.deezer.com/artist/336332
+343288,Samuel E. Wright,0,623,True,https://www.deezer.com/artist/343288
+343290,Chris Stapleton,25,327867,True,https://www.deezer.com/artist/343290
+345052,Tinashe,73,519082,True,https://www.deezer.com/artist/345052
+352219,Soulja Boy,90,591227,True,https://www.deezer.com/artist/352219
+360305,Harvey Averne,3,31,True,https://www.deezer.com/artist/360305
+365824,Nesta,9,2000,True,https://www.deezer.com/artist/365824
+369151,Ofege,7,690,True,https://www.deezer.com/artist/369151
+369236,Dojo Cuts,46,7693,True,https://www.deezer.com/artist/369236
+372147,Star Number One de Dakar,1,794,True,https://www.deezer.com/artist/372147
+372631,Washed Out,23,41846,True,https://www.deezer.com/artist/372631
+375433,Bridge,85,1064,True,https://www.deezer.com/artist/375433
+379486,Michel Teló,56,1703466,True,https://www.deezer.com/artist/379486
+380832,fun.,10,923655,True,https://www.deezer.com/artist/380832
+380955,Prince Royce,57,2629053,True,https://www.deezer.com/artist/380955
+382905,Nadia Ali,50,95167,True,https://www.deezer.com/artist/382905
+384717,Bola Johnson,3,169,True,https://www.deezer.com/artist/384717
+385626,Jerry Hansen & The Ramblers Dance Band Of Ghana,4,142,True,https://www.deezer.com/artist/385626
+390174,Fatoumata Diawara,48,115076,True,https://www.deezer.com/artist/390174
+390575,Orgone,46,3875,True,https://www.deezer.com/artist/390575
+391017,Small Black,29,5842,True,https://www.deezer.com/artist/391017
+393271,Jimmy Thackery,17,7005,True,https://www.deezer.com/artist/393271
+394661,Cedric Burnside,10,3085,True,https://www.deezer.com/artist/394661
+394685,Tom Braxton,22,245,True,https://www.deezer.com/artist/394685
+394735,Tinsley Ellis,24,28675,True,https://www.deezer.com/artist/394735
+395215,Sol Gabetta,51,24443,True,https://www.deezer.com/artist/395215
+396180,Matt Haimovitz,53,1128,True,https://www.deezer.com/artist/396180
+398298,Agnes Obel,30,311442,True,https://www.deezer.com/artist/398298
+398521,Lil Baby,108,1445880,True,https://www.deezer.com/artist/398521
+399990,Kacey Musgraves,27,77527,True,https://www.deezer.com/artist/399990
+405567,Hardy,43,33529,True,https://www.deezer.com/artist/405567
+407188,Swedish House Mafia,46,2168805,True,https://www.deezer.com/artist/407188
+408352,Trio Wanderer,34,2570,True,https://www.deezer.com/artist/408352
+408375,Anubis,132,1700,True,https://www.deezer.com/artist/408375
+409258,Renaud Capuçon,87,26366,True,https://www.deezer.com/artist/409258
+409796,Disclosure,81,985994,True,https://www.deezer.com/artist/409796
+410770,Culture Shock,79,7872,True,https://www.deezer.com/artist/410770
+413421,Nicola Benedetti,37,15799,True,https://www.deezer.com/artist/413421
+417228,Emerson String Quartet,58,20672,True,https://www.deezer.com/artist/417228
+419598,The Laurie Berkner Band,106,1699,True,https://www.deezer.com/artist/419598
+425278,Camille Thomas,35,3135,True,https://www.deezer.com/artist/425278
+427388,Dasha,52,25456,True,https://www.deezer.com/artist/427388
+427584,Erly Thornton,10,60,True,https://www.deezer.com/artist/427584
+429675,Bruno Mars,37,12785252,True,https://www.deezer.com/artist/429675
+430946,Parry Gripp,210,5824,True,https://www.deezer.com/artist/430946
+431341,Sonny Fodera,183,32072,True,https://www.deezer.com/artist/431341
+432578,Orchestra of St. Luke's,40,126,True,https://www.deezer.com/artist/432578
+436163,Jungle,49,262844,True,https://www.deezer.com/artist/436163
+468748,the Beaches,43,14110,True,https://www.deezer.com/artist/468748
+469470,Bahamas,17,14867,True,https://www.deezer.com/artist/469470
+470538,MY LITTLE PONY,139,11194,True,https://www.deezer.com/artist/470538
+482758,DJ Snake,106,5797294,True,https://www.deezer.com/artist/482758
+486336,Anders Holst,10,46,True,https://www.deezer.com/artist/486336
+509291,Denis Kozhukhin,25,325,True,https://www.deezer.com/artist/509291
+511732,John Morgan,17,401,True,https://www.deezer.com/artist/511732
+520626,Will Donato,22,99,True,https://www.deezer.com/artist/520626
+525046,Kendrick Lamar,34,6171117,True,https://www.deezer.com/artist/525046
+525307,Walk The Moon,23,319790,True,https://www.deezer.com/artist/525307
+525619,SAMPHA,17,85683,True,https://www.deezer.com/artist/525619
+525643,Skrillex,87,3849615,True,https://www.deezer.com/artist/525643
+538085,Kammerorchester Berlin,50,15,True,https://www.deezer.com/artist/538085
+540808,Nate Smith,22,4573,True,https://www.deezer.com/artist/540808
+541420,Mike James Kirkland,11,319,True,https://www.deezer.com/artist/541420
+541784,Alex Warren,38,164783,True,https://www.deezer.com/artist/541784
+551145,Rocco Ventrella,36,412,True,https://www.deezer.com/artist/551145
+567146,Lake Street Dive,34,13772,True,https://www.deezer.com/artist/567146
+587319,Jeremy Denk,19,394,True,https://www.deezer.com/artist/587319
+613934,Jelly Roll,57,228156,True,https://www.deezer.com/artist/613934
+616908,La Sonora Dinamita,59,505435,True,https://www.deezer.com/artist/616908
+616943,Russ,229,252619,True,https://www.deezer.com/artist/616943
+632926,MAC MILLER,56,1283731,True,https://www.deezer.com/artist/632926
+633118,The English Concert,135,8008,True,https://www.deezer.com/artist/633118
+647650,Twenty One Pilots,42,5003251,True,https://www.deezer.com/artist/647650
+648136,IGOR LEVIT,23,5981,True,https://www.deezer.com/artist/648136
+648668,Jon Pardi,30,65804,True,https://www.deezer.com/artist/648668
+660609,Jewels,74,801,True,https://www.deezer.com/artist/660609
+712188,Terence Young,17,31,True,https://www.deezer.com/artist/712188
+712754,Poppy,49,86617,True,https://www.deezer.com/artist/712754
+795404,Kristian Bezuidenhout,50,680,True,https://www.deezer.com/artist/795404
+795457,The Saint Paul Chamber Orchestra,19,308,True,https://www.deezer.com/artist/795457
+805948,Raye,89,482421,True,https://www.deezer.com/artist/805948
+810148,The Latinaires,5,78,True,https://www.deezer.com/artist/810148
+827425,Kane Brown,65,254402,True,https://www.deezer.com/artist/827425
+863674,Caspar Babypants,36,3573,True,https://www.deezer.com/artist/863674
+869752,Karen O,19,17136,True,https://www.deezer.com/artist/869752
+877302,ROCKY HORROR,6,1300,True,https://www.deezer.com/artist/877302
+883421,Cody Johnson,50,62815,True,https://www.deezer.com/artist/883421
+891894,Sonny Boy Williamson II,11,8928,True,https://www.deezer.com/artist/891894
+893222,Macklemore & Ryan Lewis,6,1234849,True,https://www.deezer.com/artist/893222
+894664,Cardinal Rex Jim Lawson,10,223,True,https://www.deezer.com/artist/894664
+903536,CKay,51,244905,True,https://www.deezer.com/artist/903536
+961592,Icona Pop,81,620520,True,https://www.deezer.com/artist/961592
+998013,Alexandra Stan,108,355114,True,https://www.deezer.com/artist/998013
+1000137,Heidelberger Sinfoniker,34,28,True,https://www.deezer.com/artist/1000137
+1001897,Philharmonica Slavonica,74,8,True,https://www.deezer.com/artist/1001897
+1020109,Black Eyed Peas,60,6104866,True,https://www.deezer.com/artist/1020109
+1027239,Charles Bradley,12,103157,True,https://www.deezer.com/artist/1027239
+1042268,Angèle,36,1727972,True,https://www.deezer.com/artist/1042268
+1050140,The Brief Encounter,2,56,True,https://www.deezer.com/artist/1050140
+1052587,Avi Avital,26,5895,True,https://www.deezer.com/artist/1052587
+1055527,Michael Chance,51,959,True,https://www.deezer.com/artist/1055527
+1058631,Phoebe Bridgers,34,206813,True,https://www.deezer.com/artist/1058631
+1059460,Jon Batiste,55,38485,True,https://www.deezer.com/artist/1059460
+1072674,Turnstile,21,51132,True,https://www.deezer.com/artist/1072674
+1074021,Jay Wheeler,140,433263,True,https://www.deezer.com/artist/1074021
+1078812,Baby Rasta Y Gringo,66,551572,True,https://www.deezer.com/artist/1078812
+1083190,Cali Jones,2,0,True,https://www.deezer.com/artist/1083190
+1083455,Swamp Dogg,82,1791,True,https://www.deezer.com/artist/1083455
+1097186,Samuel Purdey,1,104,True,https://www.deezer.com/artist/1097186
+1101356,Paul Russell,22,4162,True,https://www.deezer.com/artist/1101356
+1121054,Martini Kings,4,72,True,https://www.deezer.com/artist/1121054
+1140313,Jordan Davis,63,56805,True,https://www.deezer.com/artist/1140313
+1161371,Gyedu-Blay Ambolley,18,1695,True,https://www.deezer.com/artist/1161371
+1166311,Feid,144,904978,True,https://www.deezer.com/artist/1166311
+1167812,Everett B Walters,16,24,True,https://www.deezer.com/artist/1167812
+1176900,Sabrina Carpenter,59,1813962,True,https://www.deezer.com/artist/1176900
+1179872,Blond:ish,82,13447,True,https://www.deezer.com/artist/1179872
+1182172,Jose Mauro,3,250,True,https://www.deezer.com/artist/1182172
+1182275,Friends From Rio,6,61,True,https://www.deezer.com/artist/1182275
+1186389,Denney,107,3989,True,https://www.deezer.com/artist/1186389
+1198612,ZEDD,82,1983266,True,https://www.deezer.com/artist/1198612
+1203284,Constantinople,32,2731,True,https://www.deezer.com/artist/1203284
+1211831,Les Amazones de Guinée,2,426,True,https://www.deezer.com/artist/1211831
+1218821,Lauren Alaina,35,14457,True,https://www.deezer.com/artist/1218821
+1220981,Tyla,30,190809,True,https://www.deezer.com/artist/1220981
+1245984,Brechete & The Big Beats,0,1,True,https://www.deezer.com/artist/1245984
+1246171,Patrick Lamb,27,393,True,https://www.deezer.com/artist/1246171
+1252867,Blue Hawaii,43,6490,True,https://www.deezer.com/artist/1252867
+1253104,Ellie Hope,6,26,True,https://www.deezer.com/artist/1253104
+1254388,Ta-Ku,36,27180,True,https://www.deezer.com/artist/1254388
+1257191,Juçara Marçal e Kiko Dinucci,1,6346,True,https://www.deezer.com/artist/1257191
+1258135,Mart'nália,40,69798,True,https://www.deezer.com/artist/1258135
+1264201,Geraldo Pino,2,248,True,https://www.deezer.com/artist/1264201
+1272674,Romeo Santos,29,3901919,True,https://www.deezer.com/artist/1272674
+1280500,Jamie WilliamS.,11,26,True,https://www.deezer.com/artist/1280500
+1305191,Simón Bolívar Symphony Orchestra of Venezuela,26,1219,True,https://www.deezer.com/artist/1305191
+1324555,Vikingur Olafsson,56,26750,True,https://www.deezer.com/artist/1324555
+1330256,Tedeschi Trucks Band,37,27726,True,https://www.deezer.com/artist/1330256
+1344834,Randy Quaid,1,12,True,https://www.deezer.com/artist/1344834
+1346116,Falling In Reverse,23,531155,True,https://www.deezer.com/artist/1346116
+1348013,Com Truise,14,22241,True,https://www.deezer.com/artist/1348013
+1351740,Brooklyn Express,4,92,True,https://www.deezer.com/artist/1351740
+1359318,Rakhim,46,15147,True,https://www.deezer.com/artist/1359318
+1380470,Maribou State,43,22171,True,https://www.deezer.com/artist/1380470
+1389877,Ashley McBryde,40,10353,True,https://www.deezer.com/artist/1389877
+1391975,Joel Vandroogenbroeck,29,151,True,https://www.deezer.com/artist/1391975
+1412607,Rohan Reid,12,89,True,https://www.deezer.com/artist/1412607
+1424602,Maluma,135,8074081,True,https://www.deezer.com/artist/1424602
+1424821,Lana Del Rey,70,5805821,True,https://www.deezer.com/artist/1424821
+1427030,Claudia Hayden,7,29,True,https://www.deezer.com/artist/1427030
+1427927,Tony Saunders,11,66,True,https://www.deezer.com/artist/1427927
+1428258,Cleo Sol,14,39016,True,https://www.deezer.com/artist/1428258
+1429841,Alok,288,4533555,True,https://www.deezer.com/artist/1429841
+1443471,Jessie Ware,76,141423,True,https://www.deezer.com/artist/1443471
+1462230,Charli xcx,114,1887584,True,https://www.deezer.com/artist/1462230
+1469025,St Germain,26,70671,True,https://www.deezer.com/artist/1469025
+1484746,Davi Sacer,61,697398,True,https://www.deezer.com/artist/1484746
+1504061,The Citizens of Halloween,210,757,True,https://www.deezer.com/artist/1504061
+1539961,Trent Reznor and Atticus Ross,31,28965,True,https://www.deezer.com/artist/1539961
+1541592,Gusttavo Lima,123,9131198,True,https://www.deezer.com/artist/1541592
+1541939,Prague Philharmonia,41,279,True,https://www.deezer.com/artist/1541939
+1547598,Benny Blanco,31,253767,True,https://www.deezer.com/artist/1547598
+1562638,Chronixx,44,157309,True,https://www.deezer.com/artist/1562638
+1562681,Ariana Grande,70,13425596,True,https://www.deezer.com/artist/1562681
+1574609,Stephan Moccio,65,3567,True,https://www.deezer.com/artist/1574609
+1594391,Kim Scott,23,203,True,https://www.deezer.com/artist/1594391
+1622064,Korona,6,111,True,https://www.deezer.com/artist/1622064
+1624980,Alabama Shakes,11,150360,True,https://www.deezer.com/artist/1624980
+1636873,Takako Nishizaki,121,661,True,https://www.deezer.com/artist/1636873
+1650227,Threestyle,87,93,True,https://www.deezer.com/artist/1650227
+1665246,Andreas Aleman,22,228,True,https://www.deezer.com/artist/1665246
+1685662,Marky Mark And The Funky Bunch,7,2002,True,https://www.deezer.com/artist/1685662
+1709730,Elle King,34,147192,True,https://www.deezer.com/artist/1709730
+1996541,Dylan Scott,57,23831,True,https://www.deezer.com/artist/1996541
+2013771,Kristjan Järvi,72,707,True,https://www.deezer.com/artist/2013771
+2299511,Soundscapes!,82,36,True,https://www.deezer.com/artist/2299511
+2349291,Donny Benét,23,2955,True,https://www.deezer.com/artist/2349291
+2454271,Iggy Azalea,39,3402698,True,https://www.deezer.com/artist/2454271
+2710131,HNNY,22,6992,True,https://www.deezer.com/artist/2710131
+3005591,Bennewitz Quartet,10,56,True,https://www.deezer.com/artist/3005591
+3120261,Matheus & Kauan,123,4558979,True,https://www.deezer.com/artist/3120261
+3134371,London Symphony Chorus,116,1973,True,https://www.deezer.com/artist/3134371
+3338531,Storioni Trio,9,23,True,https://www.deezer.com/artist/3338531
+3372121,Isabelle Faust,86,7843,True,https://www.deezer.com/artist/3372121
+3744641,Olamide,103,352587,True,https://www.deezer.com/artist/3744641
+3881631,Jorge & Mateus,76,11515290,True,https://www.deezer.com/artist/3881631
+3933641,Wizkid,76,997974,True,https://www.deezer.com/artist/3933641
+3975191,Alexis Ffrench,55,22124,True,https://www.deezer.com/artist/3975191
+4016340,Blake Aaron,33,326,True,https://www.deezer.com/artist/4016340
+4017020,Anna Kendrick,3,173511,True,https://www.deezer.com/artist/4017020
+4026000,Stevie Woods,8,36,True,https://www.deezer.com/artist/4026000
+4034904,Vel Lewis,13,3,True,https://www.deezer.com/artist/4034904
+4050205,The Weeknd,90,14686749,True,https://www.deezer.com/artist/4050205
+4089762,Carly Pearce,43,39900,True,https://www.deezer.com/artist/4089762
+4090223,Kids Original Motion Picture Soundtrack,1,103,True,https://www.deezer.com/artist/4090223
+4103977,Tove Lo,83,1661234,True,https://www.deezer.com/artist/4103977
+4104927,The Chainsmokers,107,5845529,True,https://www.deezer.com/artist/4104927
+4138340,Lil Ed & The Blues Imperials,13,326,True,https://www.deezer.com/artist/4138340
+4151514,Academy Of St Martin In The Fields,388,8208,True,https://www.deezer.com/artist/4151514
+4159531,Lella Cuberli,2,76,True,https://www.deezer.com/artist/4159531
+4168855,Lucerne Festival Orchestra,18,374,True,https://www.deezer.com/artist/4168855
+4194807,Leslie Odom Jr.,22,17607,True,https://www.deezer.com/artist/4194807
+4331004,Zara Larsson,81,1649920,True,https://www.deezer.com/artist/4331004
+4344458,Italian Classical Consort,27,33,True,https://www.deezer.com/artist/4344458
+4356661,Horszowski Trio,3,8,True,https://www.deezer.com/artist/4356661
+4387647,Edward Brewer,6,101,True,https://www.deezer.com/artist/4387647
+4397349,Ferrugem,168,3403353,True,https://www.deezer.com/artist/4397349
+4401157,Ron King,32,10,True,https://www.deezer.com/artist/4401157
+4417561,D. Brown,9,21,True,https://www.deezer.com/artist/4417561
+4428548,Nicolas Godin,18,5012,True,https://www.deezer.com/artist/4428548
+4448485,Lorde,22,2088096,True,https://www.deezer.com/artist/4448485
+4453490,Roberto Vally,15,69,True,https://www.deezer.com/artist/4453490
+4475716,Robson Jorge,10,527,True,https://www.deezer.com/artist/4475716
+4479584,Kapo,174,42189,True,https://www.deezer.com/artist/4479584
+4492087,Bebe Rexha,129,1834123,True,https://www.deezer.com/artist/4492087
+4495513,Travis Scott,64,3139536,True,https://www.deezer.com/artist/4495513
+4525924,Castella,53,41,True,https://www.deezer.com/artist/4525924
+4552655,Monster High,39,65472,True,https://www.deezer.com/artist/4552655
+4572288,Hubert Eaves IV,8,5,True,https://www.deezer.com/artist/4572288
+4575675,Sam Hunt,27,260935,True,https://www.deezer.com/artist/4575675
+4645712,Harry Mudie,3,117,True,https://www.deezer.com/artist/4645712
+4648381,Kelela,33,24105,True,https://www.deezer.com/artist/4648381
+4650604,Jazzmen,7,3,True,https://www.deezer.com/artist/4650604
+4651129,Curtis Harding,10,56471,True,https://www.deezer.com/artist/4651129
+4656807,Danna,115,6161,True,https://www.deezer.com/artist/4656807
+4660899,Rvssian,66,49151,True,https://www.deezer.com/artist/4660899
+4694728,Yemi Alade,107,391473,True,https://www.deezer.com/artist/4694728
+4698748,Becky G,111,1868094,True,https://www.deezer.com/artist/4698748
+4705791,Martin Owen,11,18,True,https://www.deezer.com/artist/4705791
+4740968,Illenium,152,129443,True,https://www.deezer.com/artist/4740968
+4833740,Josh Baker,49,2453,True,https://www.deezer.com/artist/4833740
+4838046,Cuzzomania,28,0,True,https://www.deezer.com/artist/4838046
+4855333,Lin Rountree,20,322,True,https://www.deezer.com/artist/4855333
+4860557,Wun two,232,3944,True,https://www.deezer.com/artist/4860557
+4860761,J Balvin,175,10339972,True,https://www.deezer.com/artist/4860761
+4873930,Ocha,102,271,True,https://www.deezer.com/artist/4873930
+4876653,Henrique & Juliano,87,10952645,True,https://www.deezer.com/artist/4876653
+4893551,Riley Green,47,34155,True,https://www.deezer.com/artist/4893551
+4913784,Ayo Jay,22,13902,True,https://www.deezer.com/artist/4913784
+4913844,KnightsBridge,397,398,True,https://www.deezer.com/artist/4913844
+4937383,Ozuna,160,4732571,True,https://www.deezer.com/artist/4937383
+4947930,Irish Chamber Orchestra,16,50,True,https://www.deezer.com/artist/4947930
+5097223,KAASI,8,3816,True,https://www.deezer.com/artist/5097223
+5112746,Dan + Shay,56,125959,True,https://www.deezer.com/artist/5112746
+5130634,Madison Beer,47,748499,True,https://www.deezer.com/artist/5130634
+5156135,Dayo Bello,47,348,True,https://www.deezer.com/artist/5156135
+5174343,Dash of Honey,23,43,True,https://www.deezer.com/artist/5174343
+5188834,Vincent Ingala,13,2167,True,https://www.deezer.com/artist/5188834
+5226738,Lily Meola,28,2727,True,https://www.deezer.com/artist/5226738
+5230862,Burton Inc,2,12,True,https://www.deezer.com/artist/5230862
+5245183,Daniel Caesar,27,415774,True,https://www.deezer.com/artist/5245183
+5261989,Sergi,52,3742,True,https://www.deezer.com/artist/5261989
+5266314,Greg Minnick,4,3,True,https://www.deezer.com/artist/5266314
+5273863,Officina Musicale,2,80,True,https://www.deezer.com/artist/5273863
+5291577,Junior Mendes,26,223,True,https://www.deezer.com/artist/5291577
+5297021,KAROL G,75,3411076,True,https://www.deezer.com/artist/5297021
+5306259,Kristen Bell,3,35229,True,https://www.deezer.com/artist/5306259
+5313805,Harry Styles,7,2195294,True,https://www.deezer.com/artist/5313805
+5316873,Andrew Rannells,3,680,True,https://www.deezer.com/artist/5316873
+5316874,Josh Gad,1,6380,True,https://www.deezer.com/artist/5316874
+5328540,Khruangbin,34,97886,True,https://www.deezer.com/artist/5328540
+5374412,Durand Bernarr,33,3591,True,https://www.deezer.com/artist/5374412
+5435357,Carlita,34,1915,True,https://www.deezer.com/artist/5435357
+5515551,Isaiah Rashad,24,68284,True,https://www.deezer.com/artist/5515551
+5518524,Furacão 2000,277,52766,True,https://www.deezer.com/artist/5518524
+5531258,SZA,41,1330171,True,https://www.deezer.com/artist/5531258
+5549375,Novo Amor,24,68948,True,https://www.deezer.com/artist/5549375
+5552795,Lenin Ramírez,106,358484,True,https://www.deezer.com/artist/5552795
+5563901,Paul Henderson,8,1,True,https://www.deezer.com/artist/5563901
+5571502,RÜFÜS DU SOL,62,142090,True,https://www.deezer.com/artist/5571502
+5575105,Tory Lanez,313,765528,True,https://www.deezer.com/artist/5575105
+5578942,Doja Cat,55,2502243,True,https://www.deezer.com/artist/5578942
+5594574,Los Temperamentos,11,689,True,https://www.deezer.com/artist/5594574
+5603027,Kehlani,86,712566,True,https://www.deezer.com/artist/5603027
+5617341,Maggie Rogers,21,57370,True,https://www.deezer.com/artist/5617341
+5632470,Orquesta Sinfónica de Navarra,8,47,True,https://www.deezer.com/artist/5632470
+5700709,Destin Conrad,40,5354,True,https://www.deezer.com/artist/5700709
+5703501,Brad Alexander,22,18,True,https://www.deezer.com/artist/5703501
+5730584,Michael Cates,21,799,True,https://www.deezer.com/artist/5730584
+5735369,Luis Figueroa,47,745,True,https://www.deezer.com/artist/5735369
+5769830,Selwyn Birchwood,9,2331,True,https://www.deezer.com/artist/5769830
+5801503,Tyler Childers,19,41579,True,https://www.deezer.com/artist/5801503
+5866223,Lost Frequencies,138,953654,True,https://www.deezer.com/artist/5866223
+5895828,Zé Neto & Cristiano,67,6531936,True,https://www.deezer.com/artist/5895828
+5918943,Mc Livinho,247,1787357,True,https://www.deezer.com/artist/5918943
+5932745,Funktastic Players,11,8,True,https://www.deezer.com/artist/5932745
+5947414,Byrne & Barnes,2,118,True,https://www.deezer.com/artist/5947414
+5952216,Nick Dukas,8,1,True,https://www.deezer.com/artist/5952216
+5962324,Hildur Guðnadóttir,32,12637,True,https://www.deezer.com/artist/5962324
+5992092,Kungs,58,748394,True,https://www.deezer.com/artist/5992092
+6043160,Kali Uchis,51,529245,True,https://www.deezer.com/artist/6043160
+6133462,Toddler Fun Learning,135,1967,True,https://www.deezer.com/artist/6133462
+6191868,Adia Victoria,18,1951,True,https://www.deezer.com/artist/6191868
+6223838,PAWSA,62,20715,True,https://www.deezer.com/artist/6223838
+6303698,Lainey Wilson,34,56007,True,https://www.deezer.com/artist/6303698
+6341660,Meitei,24,1130,True,https://www.deezer.com/artist/6341660
+6379768,Ryan Montano,22,43,True,https://www.deezer.com/artist/6379768
+6406296,Risco Connection,1,153,True,https://www.deezer.com/artist/6406296
+6462309,Chrystal,42,2114,True,https://www.deezer.com/artist/6462309
+6489117,Pierre Génisson,16,613,True,https://www.deezer.com/artist/6489117
+6512815,S.O.U.L.,22,121,True,https://www.deezer.com/artist/6512815
+6613926,Oscar Ortiz,34,5956,True,https://www.deezer.com/artist/6613926
+6630050,Mitski,13,521851,True,https://www.deezer.com/artist/6630050
+6699381,Jack Ü,5,406356,True,https://www.deezer.com/artist/6699381
+6705223,Quevedo,84,301696,True,https://www.deezer.com/artist/6705223
+6712461,Jim Richter,15,15,True,https://www.deezer.com/artist/6712461
+6741503,BUNT.,84,14068,True,https://www.deezer.com/artist/6741503
+6851443,Latin Mafia,19,34262,True,https://www.deezer.com/artist/6851443
+6853437,Shaboozey,38,67991,True,https://www.deezer.com/artist/6853437
+6979963,Cynthia Erivo,43,35881,True,https://www.deezer.com/artist/6979963
+6982223,BTS,91,3859451,True,https://www.deezer.com/artist/6982223
+7004075,Bryson Tiller,57,995815,True,https://www.deezer.com/artist/7004075
+7010575,Dardust,45,3216,True,https://www.deezer.com/artist/7010575
+7047219,Rawayana,75,80254,True,https://www.deezer.com/artist/7047219
+7068753,Diego & Victor Hugo,134,1215873,True,https://www.deezer.com/artist/7068753
+7071365,Shallou,49,11912,True,https://www.deezer.com/artist/7071365
+7153996,Cloonee,56,11126,True,https://www.deezer.com/artist/7153996
+7186550,Die Kammermusiker Zürich,4,90,True,https://www.deezer.com/artist/7186550
+7188840,Morgan Wallen,47,301245,True,https://www.deezer.com/artist/7188840
+7201052,The Deslondes,16,854,True,https://www.deezer.com/artist/7201052
+7208392,Lenny Tavarez,129,1040626,True,https://www.deezer.com/artist/7208392
+7224626,The War and Treaty,40,2045,True,https://www.deezer.com/artist/7224626
+7251032,Corbyn Besson,12,2429,True,https://www.deezer.com/artist/7251032
+7309256,Prospa,47,4835,True,https://www.deezer.com/artist/7309256
+7327640,Morat,73,1095852,True,https://www.deezer.com/artist/7327640
+7397124,Brent Faiyaz,50,342956,True,https://www.deezer.com/artist/7397124
+7414992,Pet Music Collection,1,5,True,https://www.deezer.com/artist/7414992
+7418694,Renee Elise Goldsberry,4,4567,True,https://www.deezer.com/artist/7418694
+7420680,Leon Bridges,36,94021,True,https://www.deezer.com/artist/7420680
+7439658,Pheelz,40,32094,True,https://www.deezer.com/artist/7439658
+7488552,Jidenna,26,26760,True,https://www.deezer.com/artist/7488552
+7494214,Palms Trax,19,6477,True,https://www.deezer.com/artist/7494214
+7497634,Sam Gellaitry,33,6666,True,https://www.deezer.com/artist/7497634
+7543848,Post Malone,39,4201564,True,https://www.deezer.com/artist/7543848
+7548984,Oxlade,77,112884,True,https://www.deezer.com/artist/7548984
+7626764,Parcels,35,136270,True,https://www.deezer.com/artist/7626764
+7803478,HUGEL,168,77178,True,https://www.deezer.com/artist/7803478
+7805012,BABYMETAL,37,180169,True,https://www.deezer.com/artist/7805012
+7890702,Marshmello,184,3109175,True,https://www.deezer.com/artist/7890702
+7900458,Juilliard Baroque,1,7,True,https://www.deezer.com/artist/7900458
+7954262,Flatland Cavalry,26,2359,True,https://www.deezer.com/artist/7954262
+7978764,Nature Soundscape,81,67,True,https://www.deezer.com/artist/7978764
+7998984,Wheels on the Bus,39,2367,True,https://www.deezer.com/artist/7998984
+8156852,Bad Wolves,33,85170,True,https://www.deezer.com/artist/8156852
+8185084,Regard,45,91549,True,https://www.deezer.com/artist/8185084
+8205210,James Hype,89,32905,True,https://www.deezer.com/artist/8205210
+8297772,George Birge,24,543,True,https://www.deezer.com/artist/8297772
+8310810,Nefera DeNile,0,118,True,https://www.deezer.com/artist/8310810
+8506054,Ghost,34,612307,True,https://www.deezer.com/artist/8506054
+8613614,Eladio Carrion,129,616357,True,https://www.deezer.com/artist/8613614
+8657430,J Hus,31,622251,True,https://www.deezer.com/artist/8657430
+8702226,Hailey Whitters,28,1151,True,https://www.deezer.com/artist/8702226
+8703826,Kevin Powers,25,497,True,https://www.deezer.com/artist/8703826
+8791550,Adekunle Gold,70,203749,True,https://www.deezer.com/artist/8791550
+8854030,The Smooth Jazz Alley,4,92,True,https://www.deezer.com/artist/8854030
+8896874,WizTheMc,7,10686,True,https://www.deezer.com/artist/8896874
+8948922,ANOTR,66,12505,True,https://www.deezer.com/artist/8948922
+8973774,Ravyn Lenae,29,24555,True,https://www.deezer.com/artist/8973774
+9064930,Cardi B,96,2597708,True,https://www.deezer.com/artist/9064930
+9079614,Young Gun Silver Fox,19,5165,True,https://www.deezer.com/artist/9079614
+9093938,Jack Harlow,50,342611,True,https://www.deezer.com/artist/9093938
+9216400,Brandon Marceal,10,11,True,https://www.deezer.com/artist/9216400
+9262400,Jessie Reyez,60,117224,True,https://www.deezer.com/artist/9262400
+9266850,Lola Young,41,96605,True,https://www.deezer.com/artist/9266850
+9308376,Josh Fawaz,35,2301,True,https://www.deezer.com/artist/9308376
+9419216,Shelly Sony,47,2554,True,https://www.deezer.com/artist/9419216
+9549148,Peggy Gou,30,202515,True,https://www.deezer.com/artist/9549148
+9551216,Latto,62,136583,True,https://www.deezer.com/artist/9551216
+9596260,DJ Guuga,240,615161,True,https://www.deezer.com/artist/9596260
+9626504,Luke Combs,43,363300,True,https://www.deezer.com/artist/9626504
+9635624,Billie Eilish,32,9252953,True,https://www.deezer.com/artist/9635624
+9700940,Bad Omens,23,165965,True,https://www.deezer.com/artist/9700940
+9757762,Amelie Lens,34,103289,True,https://www.deezer.com/artist/9757762
+9763952,Christian Nodal,70,2512518,True,https://www.deezer.com/artist/9763952
+9829340,Big Thief,15,72216,True,https://www.deezer.com/artist/9829340
+9945222,Jorja Smith,76,844325,True,https://www.deezer.com/artist/9945222
+9961172,Lucas Debargue,26,3156,True,https://www.deezer.com/artist/9961172
+9981596,Martin James Bartlett,14,178,True,https://www.deezer.com/artist/9981596
+10029998,Trio Vega,2,2,True,https://www.deezer.com/artist/10029998
+10100048,The Band CAMINO,41,4840,True,https://www.deezer.com/artist/10100048
+10126424,Amber Mark,47,15333,True,https://www.deezer.com/artist/10126424
+10168310,Jackson Dean,30,1727,True,https://www.deezer.com/artist/10168310
+10233610,Princess Cadance,0,126,True,https://www.deezer.com/artist/10233610
+10250918,Abacus Cinch,0,46,True,https://www.deezer.com/artist/10250918
+10252414,Evan Taylor,101,3,True,https://www.deezer.com/artist/10252414
+10292736,Naji,28,622,True,https://www.deezer.com/artist/10292736
+10318770,Lucky Daye,54,56479,True,https://www.deezer.com/artist/10318770
+10438656,Jacob Webb,17,46,True,https://www.deezer.com/artist/10438656
+10468691,Toby Fox,18,124898,True,https://www.deezer.com/artist/10468691
+10483695,Dreicon,76,20210,True,https://www.deezer.com/artist/10483695
+10580067,Rels B,101,944815,True,https://www.deezer.com/artist/10580067
+10583405,Bad Bunny,89,7999000,True,https://www.deezer.com/artist/10583405
+10602509,Nex Lev'l Band,4,8,True,https://www.deezer.com/artist/10602509
+10622701,Haley Joelle,37,1515,True,https://www.deezer.com/artist/10622701
+10623481,Crain & Taylor,2,20,True,https://www.deezer.com/artist/10623481
+10668247,Whethan,65,10198,True,https://www.deezer.com/artist/10668247
+10668885,Shenseea,105,133843,True,https://www.deezer.com/artist/10668885
+10728557,October London,38,4659,True,https://www.deezer.com/artist/10728557
+10759958,Kenny Nightingale,12,14,True,https://www.deezer.com/artist/10759958
+10796312,Koe Wetzel,34,9950,True,https://www.deezer.com/artist/10796312
+10799102,Oliver Tree,70,226812,True,https://www.deezer.com/artist/10799102
+11025166,Sleep Token,26,141946,True,https://www.deezer.com/artist/11025166
+11116250,Ella Mai,10,823745,True,https://www.deezer.com/artist/11116250
+11121158,Keshi,26,31810,True,https://www.deezer.com/artist/11121158
+11152580,Olivia Rodrigo,29,1823671,True,https://www.deezer.com/artist/11152580
+11190156,Clarent,48,8597,True,https://www.deezer.com/artist/11190156
+11209960,DJ Goja,128,4930,True,https://www.deezer.com/artist/11209960
+11242224,Lauana Prado,166,1852953,True,https://www.deezer.com/artist/11242224
+11289472,Rauw Alejandro,165,2136309,True,https://www.deezer.com/artist/11289472
+11299366,Corey Kent,41,1755,True,https://www.deezer.com/artist/11299366
+11361878,Rex Orange County,28,268307,True,https://www.deezer.com/artist/11361878
+11363014,DaBaby,75,1143568,True,https://www.deezer.com/artist/11363014
+11389676,Auli'i Cravalho,12,23191,True,https://www.deezer.com/artist/11389676
+11443084,Danny Ocean,61,812952,True,https://www.deezer.com/artist/11443084
+11477462,Kerala Dust,20,9014,True,https://www.deezer.com/artist/11477462
+11559031,Manuel Turizo,102,1565996,True,https://www.deezer.com/artist/11559031
+11573699,Clairo,23,482155,True,https://www.deezer.com/artist/11573699
+11581849,Karate Boogaloo,17,727,True,https://www.deezer.com/artist/11581849
+11582927,The Mozart Effect Orchestra,1,61,True,https://www.deezer.com/artist/11582927
+11815065,Ryan Castro,147,309908,True,https://www.deezer.com/artist/11815065
+11819131,Noah Kahan,39,197830,True,https://www.deezer.com/artist/11819131
+11928391,Aitana,58,348132,True,https://www.deezer.com/artist/11928391
+11960469,North Downs,4,404,True,https://www.deezer.com/artist/11960469
+11965753,Lisandro Cuxi,35,35727,True,https://www.deezer.com/artist/11965753
+12029862,Myke Towers,182,1705476,True,https://www.deezer.com/artist/12029862
+12030364,Randy B,16,1,True,https://www.deezer.com/artist/12030364
+12062642,Elijah Lee,45,1054,True,https://www.deezer.com/artist/12062642
+12096038,Central Cee,60,665158,True,https://www.deezer.com/artist/12096038
+12096672,Sam Fender,54,84712,True,https://www.deezer.com/artist/12096672
+12170972,John Summit,97,20361,True,https://www.deezer.com/artist/12170972
+12206372,Super Simple Songs,238,22899,True,https://www.deezer.com/artist/12206372
+12318006,Federico Estévez,3,26,True,https://www.deezer.com/artist/12318006
+12369444,Laufey,39,247175,True,https://www.deezer.com/artist/12369444
+12373730,Fujitsu,22,732,True,https://www.deezer.com/artist/12373730
+12465588,Giacomo Scinardo,6,55,True,https://www.deezer.com/artist/12465588
+12487862,Bizarrap,110,1124556,True,https://www.deezer.com/artist/12487862
+12501520,Mood J,3,135,True,https://www.deezer.com/artist/12501520
+12503574,Matteo Myderwyk,32,2598,True,https://www.deezer.com/artist/12503574
+12564362,Bob Marley,0,25207,True,https://www.deezer.com/artist/12564362
+12607183,The Marías,23,147953,True,https://www.deezer.com/artist/12607183
+12632339,Jordan Adetunji,38,6146,True,https://www.deezer.com/artist/12632339
+12641355,Myles Smith,34,75457,True,https://www.deezer.com/artist/12641355
+12721175,Panda,72,203339,True,https://www.deezer.com/artist/12721175
+12816021,Megan Thee Stallion,96,934019,True,https://www.deezer.com/artist/12816021
+12869727,Acraze,25,13296,True,https://www.deezer.com/artist/12869727
+12919403,Pinkfong,322,65404,True,https://www.deezer.com/artist/12919403
+12945219,Chappell Roan,19,311086,True,https://www.deezer.com/artist/12945219
+13046613,E Ruscha V,5,259,True,https://www.deezer.com/artist/13046613
+13286961,Arlo Parks,45,55581,True,https://www.deezer.com/artist/13286961
+13321745,Spiritbox,24,75939,True,https://www.deezer.com/artist/13321745
+13371963,Jaz Karis,41,3974,True,https://www.deezer.com/artist/13371963
+13631667,Don Toliver,68,507293,True,https://www.deezer.com/artist/13631667
+13641829,Saweetie,88,398003,True,https://www.deezer.com/artist/13641829
+13783079,Patsy Meyer,3,0,True,https://www.deezer.com/artist/13783079
+13817211,Tate McRae,71,608473,True,https://www.deezer.com/artist/13817211
+13864157,Dominic Fike,28,79904,True,https://www.deezer.com/artist/13864157
+13905711,Tems,23,267829,True,https://www.deezer.com/artist/13905711
+13910479,Haven.,13,882,True,https://www.deezer.com/artist/13910479
+13950249,Kassi Ashton,28,730,True,https://www.deezer.com/artist/13950249
+14309985,Placebo,4,689,True,https://www.deezer.com/artist/14309985
+14482665,Summer Walker,50,711955,True,https://www.deezer.com/artist/14482665
+14492701,Lil Tecca,41,717961,True,https://www.deezer.com/artist/14492701
+14534981,Omar Courtz,72,55469,True,https://www.deezer.com/artist/14534981
+14538869,Pacific Coliseum,17,314,True,https://www.deezer.com/artist/14538869
+14597475,Aaron Frazer,13,6435,True,https://www.deezer.com/artist/14597475
+14601135,KwN,18,15145,True,https://www.deezer.com/artist/14601135
+14623073,BYLJA,5,12,True,https://www.deezer.com/artist/14623073
+14640923,Slim Gambill,26,9,True,https://www.deezer.com/artist/14640923
+14779157,Kizz Daniel,54,243083,True,https://www.deezer.com/artist/14779157
+14867123,Ella Langley,27,29118,True,https://www.deezer.com/artist/14867123
+14913605,cruush,88,1086,True,https://www.deezer.com/artist/14913605
+15008095,Abe Lamarca,11,5,True,https://www.deezer.com/artist/15008095
+15190997,Fireboy Dml,52,354848,True,https://www.deezer.com/artist/15190997
+15304117,Natanael Cano,100,1148394,True,https://www.deezer.com/artist/15304117
+26450151,Alogte Oho & His Sounds of Joy,6,547,True,https://www.deezer.com/artist/26450151
+48995601,GIVĒON,22,336962,True,https://www.deezer.com/artist/48995601
+49013001,Mayke & Rodrigo,43,4947,True,https://www.deezer.com/artist/49013001
+49259582,DJ Oreia,127,133201,True,https://www.deezer.com/artist/49259582
+50523252,Morgan Seatree,37,1697,True,https://www.deezer.com/artist/50523252
+50633822,PEDRO SAMPAIO,67,1751901,True,https://www.deezer.com/artist/50633822
+51204222,The Kid Laroi,52,452161,True,https://www.deezer.com/artist/51204222
+51305922,Asake,46,133613,True,https://www.deezer.com/artist/51305922
+51610232,Mild Minds,37,1700,True,https://www.deezer.com/artist/51610232
+51965252,Doechii,43,152522,True,https://www.deezer.com/artist/51965252
+52471452,Nia Smith,11,1393,True,https://www.deezer.com/artist/52471452
+52862372,Ben Hemsley,30,1295,True,https://www.deezer.com/artist/52862372
+53266572,D.S. Wilson,21,174,True,https://www.deezer.com/artist/53266572
+53465462,Everybody Loves an Outlaw,5,9971,True,https://www.deezer.com/artist/53465462
+54061032,Dr. Yaro,15,117238,True,https://www.deezer.com/artist/54061032
+54236722,anaiis,35,1676,True,https://www.deezer.com/artist/54236722
+54330242,Grupo Menos É Mais,111,2257103,True,https://www.deezer.com/artist/54330242
+56094992,Omah lay,50,352873,True,https://www.deezer.com/artist/56094992
+56444382,Tommy Richman,46,19065,True,https://www.deezer.com/artist/56444382
+57340572,Aria Vega,31,2920,True,https://www.deezer.com/artist/57340572
+59691632,GloRilla,52,111064,True,https://www.deezer.com/artist/59691632
+61145262,Guilherme & Benuto,142,939776,True,https://www.deezer.com/artist/61145262
+62161882,Lars Taylor,24,7,True,https://www.deezer.com/artist/62161882
+63317272,Mark Ambor,21,39056,True,https://www.deezer.com/artist/63317272
+64841772,Jack Orley,28,99,True,https://www.deezer.com/artist/64841772
+64874492,Gracie Abrams,21,403977,True,https://www.deezer.com/artist/64874492
+64927672,Teddy Swims,77,420374,True,https://www.deezer.com/artist/64927672
+65148802,Disco Lines,60,6774,True,https://www.deezer.com/artist/65148802
+65549992,Yung Miami,16,2283,True,https://www.deezer.com/artist/65549992
+65564792,Alexandra Hamilton-Ayres,34,98,True,https://www.deezer.com/artist/65564792
+66693262,Seyi Vibez,82,22810,True,https://www.deezer.com/artist/66693262
+67206352,Papa Bear & His Cubs,1,436,True,https://www.deezer.com/artist/67206352
+67218672,Nate Smith,38,20733,True,https://www.deezer.com/artist/67218672
+67244002,BENEE,33,67379,True,https://www.deezer.com/artist/67244002
+67410412,Past Palms,13,7,True,https://www.deezer.com/artist/67410412
+68358002,Beele,95,439324,True,https://www.deezer.com/artist/68358002
+69617682,Adam Ten,48,1556,True,https://www.deezer.com/artist/69617682
+70227002,Djo,22,108162,True,https://www.deezer.com/artist/70227002
+70320102,Michael Orr And The Book Of Life,1,18,True,https://www.deezer.com/artist/70320102
+70757872,Libianca,16,24556,True,https://www.deezer.com/artist/70757872
+70986422,Mariah the Scientist,24,27334,True,https://www.deezer.com/artist/70986422
+71247072,Danny Go!,83,967,True,https://www.deezer.com/artist/71247072
+73725592,Kameron Marlowe,41,2984,True,https://www.deezer.com/artist/73725592
+74250642,Ron Burris,7,0,True,https://www.deezer.com/artist/74250642
+75659582,Olivia Dean,43,155408,True,https://www.deezer.com/artist/75659582
+75832332,BigXthaPlug,63,49900,True,https://www.deezer.com/artist/75832332
+77726412,Greg Adams and East Bay Soul,3,12,True,https://www.deezer.com/artist/77726412
+78063622,Tucker Wetmore,15,4428,True,https://www.deezer.com/artist/78063622
+79647972,Carter Faith,38,746,True,https://www.deezer.com/artist/79647972
+82675702,Mc Gimenes,497,1640,True,https://www.deezer.com/artist/82675702
+82716032,Treaty Oak Revival,18,4386,True,https://www.deezer.com/artist/82716032
+82803312,Tom Kinsella,8,4,True,https://www.deezer.com/artist/82803312
+83527112,Holly Humberstone,36,13872,True,https://www.deezer.com/artist/83527112
+83879762,Monaleo,48,7288,True,https://www.deezer.com/artist/83879762
+84575252,Lucas Ball,4,9,True,https://www.deezer.com/artist/84575252
+84941702,Rob,85,146,True,https://www.deezer.com/artist/84941702
+85065212,Leon Thomas,45,19695,True,https://www.deezer.com/artist/85065212
+87024672,Sonny Boy Williamson,3,1881,True,https://www.deezer.com/artist/87024672
+88121392,strongboi,13,2483,True,https://www.deezer.com/artist/88121392
+88480772,Marc Antoine,17,824,True,https://www.deezer.com/artist/88480772
+88900572,Vitinho Imperador,95,191203,True,https://www.deezer.com/artist/88900572
+89586582,Go Banana Go!,11,46,True,https://www.deezer.com/artist/89586582
+90496732,F3miii,24,1024,True,https://www.deezer.com/artist/90496732
+90822272,Bandé-Gamboa,4,204,True,https://www.deezer.com/artist/90822272
+95074402,Addison Rae,9,96466,True,https://www.deezer.com/artist/95074402
+95557122,Oldilla,85,98313,True,https://www.deezer.com/artist/95557122
+96725112,Common Saints,16,3747,True,https://www.deezer.com/artist/96725112
+96799272,Kaik & Alessandro,25,166,True,https://www.deezer.com/artist/96799272
+97855452,Oppidan,34,1868,True,https://www.deezer.com/artist/97855452
+101540662,Alostmen,2,163,True,https://www.deezer.com/artist/101540662
+102060542,Michael Marcagi,26,3072,True,https://www.deezer.com/artist/102060542
+103543712,STR4TA,19,1495,True,https://www.deezer.com/artist/103543712
+106871182,María Dueñas,29,744,True,https://www.deezer.com/artist/106871182
+107301842,Ian Asher,32,6622,True,https://www.deezer.com/artist/107301842
+112988802,Bibi Babydoll,193,11065,True,https://www.deezer.com/artist/112988802
+113241652,Bossman Dlow,48,18515,True,https://www.deezer.com/artist/113241652
+113547672,aespa,60,462454,True,https://www.deezer.com/artist/113547672
+114844082,Washington,14,68,True,https://www.deezer.com/artist/114844082
+115331762,Cameron Whitcomb,25,10022,True,https://www.deezer.com/artist/115331762
+117467152,Warren Zeiders,55,32450,True,https://www.deezer.com/artist/117467152
+117615952,Umbrella,1,27,True,https://www.deezer.com/artist/117615952
+118232102,MC Meno K,347,175098,True,https://www.deezer.com/artist/118232102
+121545492,Bailey Zimmerman,32,54290,True,https://www.deezer.com/artist/121545492
+122602052,PinkPantheress,36,238841,True,https://www.deezer.com/artist/122602052
+122856502,Megan Moroney,32,11130,True,https://www.deezer.com/artist/122856502
+123002982,Bluey,25,8707,True,https://www.deezer.com/artist/123002982
+125694832,Avery Cochrane,21,214,True,https://www.deezer.com/artist/125694832
+126335112,ROSÉ,7,560570,True,https://www.deezer.com/artist/126335112
+127463032,Ely Oaks,79,10536,True,https://www.deezer.com/artist/127463032
+128295062,Franco & le T.P OK Jazz,44,5920,True,https://www.deezer.com/artist/128295062
+129070482,Dean Turnley,4,125,True,https://www.deezer.com/artist/129070482
+129324502,Zach Top,24,6626,True,https://www.deezer.com/artist/129324502
+129758092,Noteworthy Band,2,0,True,https://www.deezer.com/artist/129758092
+129902452,Wyatt Flores,35,2884,True,https://www.deezer.com/artist/129902452
+133096332,Ama Louise,17,416,True,https://www.deezer.com/artist/133096332
+134334152,Wet Leg,14,61796,True,https://www.deezer.com/artist/134334152
+134709552,Sunday School Songs,22,11,True,https://www.deezer.com/artist/134709552
+136012742,VALORANT,44,16073,True,https://www.deezer.com/artist/136012742
+136485012,Carolina Gaitán - La Gaita,23,3030,True,https://www.deezer.com/artist/136485012
+139171932,Young Miko,53,136408,True,https://www.deezer.com/artist/139171932
+142015752,Gavin Adcock,58,3305,True,https://www.deezer.com/artist/142015752
+142821082,Yunchan Lim,21,1046,True,https://www.deezer.com/artist/142821082
+143900042,Carl Cox,16,195,True,https://www.deezer.com/artist/143900042
+145068682,LISA,16,597173,True,https://www.deezer.com/artist/145068682
+145336382,Danilo e Davi,44,95281,True,https://www.deezer.com/artist/145336382
+145468192,sombr,27,165990,True,https://www.deezer.com/artist/145468192
+146445062,Audrey Hobert,3,8607,True,https://www.deezer.com/artist/146445062
+146543992,Benson Boone,28,499078,True,https://www.deezer.com/artist/146543992
+146648222,Fred Robertson,3,0,True,https://www.deezer.com/artist/146648222
+148075452,jomm,17,467,True,https://www.deezer.com/artist/148075452
+148826552,Jill Butler,1,1,True,https://www.deezer.com/artist/148826552
+151187962,Jessica Darrow,4,1424,True,https://www.deezer.com/artist/151187962
+151240812,Mae Stephens,20,4914,True,https://www.deezer.com/artist/151240812
+153152092,Xavi,52,144418,True,https://www.deezer.com/artist/153152092
+158746002,Jonathan Leslie,3,1,True,https://www.deezer.com/artist/158746002
+161066302,Maisak,55,2500,True,https://www.deezer.com/artist/161066302
+161166112,4*TOWN (From Disney and Pixar’s Turning Red),2,8462,True,https://www.deezer.com/artist/161166112
+161314272,BNXN,45,45774,True,https://www.deezer.com/artist/161314272
+162866587,Cigarettes @ Sunset,16,387,True,https://www.deezer.com/artist/162866587
+167570077,W Sound,9,22867,True,https://www.deezer.com/artist/167570077
+169277537,DudePlaya,153,1013,True,https://www.deezer.com/artist/169277537
+171528407,Reneé Rapp,11,99860,True,https://www.deezer.com/artist/171528407
+174215197,Hanna Salzenstein,13,175,True,https://www.deezer.com/artist/174215197
+177930417,Mau P,20,7891,True,https://www.deezer.com/artist/177930417
+181157207,STELLA LEFTY,18,2745,True,https://www.deezer.com/artist/181157207
+181572967,Aeden Azora,3,13,True,https://www.deezer.com/artist/181572967
+189162577,ULBERT UNDERGROUND,1,1,True,https://www.deezer.com/artist/189162577
+189892567,Pleasurewood,8,103,True,https://www.deezer.com/artist/189892567
+192807517,Jack Sax Davies,5,2,True,https://www.deezer.com/artist/192807517
+193142737,Malcolm Todd,25,28963,True,https://www.deezer.com/artist/193142737
+193146897,FloyyMenor,37,40706,True,https://www.deezer.com/artist/193146897
+193471597,Jorge Rivera-Herrans,10,30153,True,https://www.deezer.com/artist/193471597
+198986137,CIL,17,3265,True,https://www.deezer.com/artist/198986137
+200995177,Zach John King,28,226,True,https://www.deezer.com/artist/200995177
+201300177,oskar med k,22,5554,True,https://www.deezer.com/artist/201300177
+203852657,Laila!,13,2738,True,https://www.deezer.com/artist/203852657
+204924487,Jazzy,76,6953,True,https://www.deezer.com/artist/204924487
+208800767,Tony G Turner,5,0,True,https://www.deezer.com/artist/208800767
+209730607,Max McNown,41,9448,True,https://www.deezer.com/artist/209730607
+212949977,Neton Vega,42,84046,True,https://www.deezer.com/artist/212949977
+222758875,Fahrenheit 702,3,6,True,https://www.deezer.com/artist/222758875
+222898665,TRIANGLE DES BERMUDES,13,85228,True,https://www.deezer.com/artist/222898665
+225789095,Tom Zygmont,11,1,True,https://www.deezer.com/artist/225789095
+226000935,Laza,28,28,True,https://www.deezer.com/artist/226000935
+231314415,803Fresh,18,492,True,https://www.deezer.com/artist/231314415
+241615471,The Bausa,43,5372,True,https://www.deezer.com/artist/241615471
+244056432,Julie Andrews,31,854,True,https://www.deezer.com/artist/244056432
+244659282,TWXNY,150,2841,True,https://www.deezer.com/artist/244659282
+248496042,Huey Lewis & The News,15,7199,True,https://www.deezer.com/artist/248496042
+248913582,Zhu,12,196,True,https://www.deezer.com/artist/248913582
+249999492,CA7RIEL & Paco Amoroso,33,14619,True,https://www.deezer.com/artist/249999492
+250680782,Good Neighbours,19,5027,True,https://www.deezer.com/artist/250680782
+252433822,Hazbin Hotel,6,14969,True,https://www.deezer.com/artist/252433822
+252459382,DJ P4K,165,56,True,https://www.deezer.com/artist/252459382
+259429362,Butter Knife Shawty,85,210,True,https://www.deezer.com/artist/259429362
+261498901,Hudson Westbrook,25,1712,True,https://www.deezer.com/artist/261498901
+261979111,Henry Mancini & His Orchestra,0,0,True,https://www.deezer.com/artist/261979111
+262914231,Shen Lab,9,211,True,https://www.deezer.com/artist/262914231
+264261321,CountryBeat,70,79080,True,https://www.deezer.com/artist/264261321
+265272032,SIENNA SPIRO,17,54383,True,https://www.deezer.com/artist/265272032
+269774012,Randy Sloan,7,6,True,https://www.deezer.com/artist/269774012
+271210292,KATSEYE,24,251719,True,https://www.deezer.com/artist/271210292
+271613792,EsDeeKid,19,33296,True,https://www.deezer.com/artist/271613792
+274771091,Slipping Through Worlds,1,3,True,https://www.deezer.com/artist/274771091
+276577691,Blake Whiten,16,1001,True,https://www.deezer.com/artist/276577691
+283174711,Ember Moat,1,1,True,https://www.deezer.com/artist/283174711
+287151801,Jade,3,212,True,https://www.deezer.com/artist/287151801
+289603201,Tay Iwar,50,278,True,https://www.deezer.com/artist/289603201
+295065921,hwungii,65,3720,True,https://www.deezer.com/artist/295065921
+302289351,Maphra,3,9854,True,https://www.deezer.com/artist/302289351
+312610241,Mack Geiger,6,118,True,https://www.deezer.com/artist/312610241
+321785301,Smooth Jazz Alley,7,7,True,https://www.deezer.com/artist/321785301
+330311461,HUNTR/X,9,232849,True,https://www.deezer.com/artist/330311461
+330450321,Luna Somnia,2,6,True,https://www.deezer.com/artist/330450321
+338703121,Bella Kay,10,10451,True,https://www.deezer.com/artist/338703121
+339760681,FOLA,22,2710,True,https://www.deezer.com/artist/339760681
+347448101,lirvie,16,415,True,https://www.deezer.com/artist/347448101
+370177892,Temper City,2,5572,True,https://www.deezer.com/artist/370177892
+371924331,ingarose,84,4112,True,https://www.deezer.com/artist/371924331
+372563561,Cristina Prats Costa,3,13,True,https://www.deezer.com/artist/372563561
+375708101,ERNEST,30,451,True,https://www.deezer.com/artist/375708101
+381818171,Josh Ross,36,424,True,https://www.deezer.com/artist/381818171
+383270211,Trace,31,114,True,https://www.deezer.com/artist/383270211
+386192451,Digworthy,2,0,True,https://www.deezer.com/artist/386192451
+391656841,Silencing Seculars,6,0,True,https://www.deezer.com/artist/391656841
+392039431,Eva Rose,23,42,True,https://www.deezer.com/artist/392039431
+409913162,KET?O,8,0,True,https://www.deezer.com/artist/409913162

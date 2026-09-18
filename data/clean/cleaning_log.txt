@@ -19,6 +19,12 @@ Cleaning log - CSCI 5612 Project Part 1
 - removed 29 duplicated week/position entries
 - FINAL weekly table: 355,471 rows x 11 columns, zero missing values
 - built a song-level table: 32,750 distinct songs that have charted since 1958
+- loaded 1,806 Deezer tracks
+- kept 1,806 unique tracks after dropping blanks and duplicates
+- 1,148 tracks had bpm = 0 (no tempo analysis available); flagged with bpm_known and filled with the median of 128 BPM
+- FINAL Deezer tracks: 1,798 rows x 15 columns, zero missing values
+- FINAL Deezer artists: 1,251 rows, zero missing values
+- cleaned free-text tags: 3,818 raw rows -> 3,769 usable artist/tag pairs covering 346 artists
 - matched 3,336 of 25,717 songs (13.0%) to a Billboard Hot 100 entry by normalised title and artist
 - songs with no match are coded charted = 0 and peak_position = 101 ('never entered the Hot 100'), which is a real outcome rather than a gap
 - FINAL linked table: 25,717 rows x 36 columns

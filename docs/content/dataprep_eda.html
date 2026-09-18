@@ -164,14 +164,14 @@ as it was received and as it ended up, with the reasoning for every change in be
 
 <figure>
   <img src="images/raw_spotify.png" alt="Table of raw Spotify data showing mixed date formats and duration in milliseconds.">
-  <figcaption><b>Figure 3. Raw.</b> The file is one row per song <em>per playlist</em>, so a
+  <figcaption><b>Raw.</b> The file is one row per song <em>per playlist</em>, so a
   track on five playlists appears five times. Release dates arrive as full dates, as
   year-and-month, and as a bare year, and song length is given in milliseconds.</figcaption>
 </figure>
 
 <figure>
   <img src="images/clean_spotify.png" alt="Table of cleaned Spotify data with one row per song, numeric release year and banded variables.">
-  <figcaption><b>Figure 4. Clean.</b> One row per song, a single numeric release year parsed
+  <figcaption><b>Clean.</b> One row per song, a single numeric release year parsed
   from all three date formats, length converted to minutes, and new banded variables added
   for the methods that need categories rather than continuous values.</figcaption>
 </figure>
@@ -198,14 +198,14 @@ danceability, which never exceeds one.</p>
 
 <figure>
   <img src="images/raw_billboard.png" alt="Table of raw Billboard weekly chart data with blank last_week values.">
-  <figcaption><b>Figure 5. Raw.</b> One row per song per chart week, going back to August
+  <figcaption><b>Raw.</b> One row per song per chart week, going back to August
   1958. The <code>last_week</code> column is blank for 32,460 rows, which looks at first like
   missing data.</figcaption>
 </figure>
 
 <figure>
   <img src="images/clean_billboard.png" alt="Table of cleaned Billboard data with one row per song showing peak position and weeks on chart.">
-  <figcaption><b>Figure 6. Clean.</b> The weekly entries are collapsed into one record per
+  <figcaption><b>Clean.</b> The weekly entries are collapsed into one record per
   song carrying its best position, its total weeks on the chart, and when it debuted. This
   is the form in which chart performance becomes an outcome to predict.</figcaption>
 </figure>
@@ -226,7 +226,7 @@ survived.</p>
 
 <figure>
   <img src="images/clean_linked.png" alt="Table showing songs with both audio features and chart outcome columns.">
-  <figcaption><b>Figure 7. The linked table.</b> Each row now carries both what a song
+  <figcaption><b>The linked table.</b> Each row now carries both what a song
   sounds like and how it performed, which is what makes the central question answerable at
   all. Of the 25,717 songs with audio measurements, 3,336 were matched to a Hot 100 entry
   by normalised title and artist.</figcaption>
@@ -243,13 +243,61 @@ this matching will miss some genuine chart entries whose titles differ between t
 sources, which means the non-charting group contains a small number of songs that did in
 fact chart.</p>
 
+<h3>Deezer API records</h3>
+
+<figure>
+  <img src="images/raw_deezer.png" alt="Table of raw Deezer API data with tempo reported as zero for some tracks.">
+  <figcaption><b>Raw.</b> 1,806 tracks exactly as the API returned them. Length is in
+  seconds, and tempo is reported as 0 for any track Deezer has not analysed.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/clean_deezer.png" alt="Table of cleaned Deezer data with tempo flagged and filled.">
+  <figcaption><b>Clean.</b> 1,798 tracks with length in minutes and a numeric release year.
+  Unanalysed tempos are flagged and filled rather than left as a zero that would quietly
+  distort every average.</figcaption>
+</figure>
+
+<p>The zeros were the trap here. 1,148 of the 1,806 tracks &mdash; nearly two thirds &mdash;
+came back with a tempo of zero, which does not mean the song has no tempo but that Deezer has
+not run its analysis on that recording. Leaving them alone would have dragged the average
+tempo of the collection down towards 45 beats per minute, a figure that describes nothing
+real. Each was instead marked with a <code>bpm_known</code> indicator and filled with the
+median of the tracks that do have a measurement, 128 beats per minute, so that later work can
+either use the filled values or restrict itself to the 658 genuine ones. Eight tracks outside
+the half-minute to fifteen-minute window were removed. The artist file needed far less: 1,251
+unique artists, with follower counts banded into five audience sizes.</p>
+
+<h3>MusicBrainz listener tags</h3>
+
+<figure>
+  <img src="images/raw_tags.png" alt="Table of raw MusicBrainz tags with inconsistent casing and blank entries.">
+  <figcaption><b>Raw.</b> 3,818 artist and tag pairs. Because listeners type these themselves,
+  casing and punctuation vary freely and some artists come back with no tags at all.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/clean_tags.png" alt="Table of cleaned MusicBrainz tags, lowercased and de-duplicated.">
+  <figcaption><b>Clean.</b> 3,769 usable pairs covering 346 artists and 1,038 distinct tags.
+  Everything is lowercased, stripped of stray punctuation, de-duplicated, and blank entries
+  removed.</figcaption>
+</figure>
+
+<p>This is the only genuinely unstructured source in the project, and it was left as intact
+as possible on purpose. Tags were lowercased and stripped of punctuation so that
+<em>Hip-Hop</em>, <em>hip hop</em> and <em>hip-hop</em> stop being three different things, and
+duplicate pairs were collapsed, but no attempt was made to correct, merge or standardise the
+vocabulary itself. The messiness is the data. Artists missing a country, a type or a founding
+year kept those fields filled with an explicit <em>Unknown</em> rather than being dropped,
+since an artist with no recorded nationality still has perfectly usable tags.</p>
+
 <h2>Exploring the data</h2>
 
 <h3>The shape of success</h3>
 
 <figure>
   <img src="images/fig01_popularity_distribution.png" alt="Histogram of song popularity scores showing a spike at zero and a broad hump around 50.">
-  <figcaption><b>Figure 8. Most songs are not popular, and a few are very popular.</b> The
+  <figcaption><b>Most songs are not popular, and a few are very popular.</b> The
   spike at the far left is made up of songs with essentially no plays at all, while the rest
   of the catalogue spreads into a broad hump around the middle of the scale. Any model
   predicting popularity has to cope with a target that is neither normal nor symmetric.</figcaption>
@@ -257,7 +305,7 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig02_feature_distributions.png" alt="Six histograms showing the distribution of danceability, energy, valence, acousticness, speechiness and instrumentalness.">
-  <figcaption><b>Figure 9. Each measured quality has its own characteristic shape.</b>
+  <figcaption><b>Each measured quality has its own characteristic shape.</b>
   Danceability and energy are roughly bell-shaped and sit high, valence is almost flat across
   its whole range, and acousticness, speechiness and instrumentalness are extremely
   right-skewed with most songs near zero. The last three will need transformation or banding
@@ -266,7 +314,7 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig03_correlation_heatmap.png" alt="Correlation heatmap of audio features and popularity, showing strong energy-loudness correlation and near-zero popularity correlations.">
-  <figcaption><b>Figure 10. Loudness and energy move together; popularity moves with almost
+  <figcaption><b>Loudness and energy move together; popularity moves with almost
   nothing.</b> Energy and loudness correlate at 0.69 and energy and acousticness at &minus;0.55,
   which is exactly what the physics of recording predicts. The striking result is the top row:
   the strongest correlation between any single audio measure and popularity is just
@@ -278,7 +326,7 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig04_loudness_over_time.png" alt="Line chart of median loudness by release year rising from about -10 dB to about -6 dB.">
-  <figcaption><b>Figure 11. Recordings grew louder for fifty years, and have only just
+  <figcaption><b>Recordings grew louder for fifty years, and have only just
   stopped.</b> Median loudness climbs from roughly &minus;9.6 dB for 1960s releases to
   &minus;5.9 dB in the 2010s, the trend the recording industry calls the loudness war. The
   small reversal in the 2020s is worth noting, and lines up with streaming services
@@ -288,7 +336,7 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig05_duration_over_time.png" alt="Line chart of median song duration peaking around 1990 and declining since.">
-  <figcaption><b>Figure 12. Songs grew longer through the album era, then began shrinking
+  <figcaption><b>Songs grew longer through the album era, then began shrinking
   again.</b> Median length rises from about 3:13 in the 1960s to a peak of 4:35
   in 1990, then falls back to 3:08 for 2020s releases. The rise and the fall both track
   the format of the day, from the single to the album and back to a feed where the opening
@@ -297,7 +345,7 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig12_valence_over_time.png" alt="Line chart of median valence declining from about 0.66 to about 0.45.">
-  <figcaption><b>Figure 13. Popular music has been getting less cheerful.</b> Median musical
+  <figcaption><b>Popular music has been getting less cheerful.</b> Median musical
   positivity holds steady around 0.62 to 0.66 from the 1960s through the 2000s, then drops
   sharply to roughly 0.46 in the 2010s and stays there. The change is not gradual, which
   makes it a better question than it first appears &mdash; something happened rather than
@@ -306,7 +354,7 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig11_key_mode_by_decade.png" alt="Stacked bar chart of major versus minor key share by decade.">
-  <figcaption><b>Figure 14. Popular music has drifted away from major keys.</b> Songs written
+  <figcaption><b>Popular music has drifted away from major keys.</b> Songs written
   in a major key fall from 78 percent of 1960s releases to 53 percent of 2020s releases,
   declining in every single decade without exception. Unlike the mood measure above, this
   one moves steadily rather than in a jump.</figcaption>
@@ -316,7 +364,7 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig06_genre_space.png" alt="Six scatter plots of danceability against energy, each highlighting one genre against all songs in grey.">
-  <figcaption><b>Figure 15. Genres occupy overlapping, not separate, regions of the song
+  <figcaption><b>Genres occupy overlapping, not separate, regions of the song
   space.</b> Each panel highlights one genre against every other song in grey; EDM clearly
   clusters into the high-energy corner and rock spreads widely, but no genre occupies
   territory the others leave empty. This directly anticipates the clustering work: if genres
@@ -326,7 +374,7 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig07_popularity_by_genre.png" alt="Box plot of popularity distribution within each of six genres.">
-  <figcaption><b>Figure 16. Every genre contains both ignored songs and popular ones.</b>
+  <figcaption><b>Every genre contains both ignored songs and popular ones.</b>
   Median popularity ranges only from 34 for EDM to 48 for pop, but the spread within each
   genre dwarfs the gap between them. Knowing a song's genre tells you remarkably little
   about whether it will be heard.</figcaption>
@@ -334,7 +382,7 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig14_popularity_bands_by_genre.png" alt="Horizontal stacked bar chart showing the share of each genre falling into four popularity bands.">
-  <figcaption><b>Figure 17. The mix of ignored and popular songs differs sharply by genre.</b>
+  <figcaption><b>The mix of ignored and popular songs differs sharply by genre.</b>
   Pop sends 47 percent of its songs into the top two popularity bands while EDM manages 20
   percent, and EDM has by far the largest share of songs nobody plays. The same banding will
   serve as a target class in the supervised work later.</figcaption>
@@ -344,7 +392,7 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig08_charted_vs_not.png" alt="Diverging bar chart comparing average audio features of charted versus non-charted songs.">
-  <figcaption><b>Figure 18. Charting songs have vocals and a brighter mood; otherwise they
+  <figcaption><b>Charting songs have vocals and a brighter mood; otherwise they
   barely differ.</b> Songs that reached the Hot 100 are markedly less instrumental
   (&minus;0.088) and noticeably more cheerful (+0.067), but essentially identical on
   danceability, which differs by 0.001. The smallness of these gaps is the finding &mdash;
@@ -354,7 +402,7 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig09_chart_turnover.png" alt="Line chart of distinct songs on the Hot 100 per year, falling until 2001 then rising sharply.">
-  <figcaption><b>Figure 19. Chart variety shrank for forty years, then streaming reversed
+  <figcaption><b>Chart variety shrank for forty years, then streaming reversed
   it.</b> The number of distinct songs appearing anywhere on the Hot 100 falls from around
   800 a year in the mid-1960s to a low of 384 in 2001, then climbs back above 790 by 2020.
   The turning point sits close to 2012, when streaming counts were folded into the chart
@@ -363,7 +411,7 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig10_weeks_on_chart_by_decade.png" alt="Two panels: median weeks on chart peaking in the 2000s, and the share of one-week entries rising to 39 percent.">
-  <figcaption><b>Figure 20. Chart runs peaked in the 2000s and then collapsed.</b> The median
+  <figcaption><b>Chart runs peaked in the 2000s and then collapsed.</b> The median
   song debuting in the 2000s spent 17 weeks on the chart; the median 2020s debut spends two.
   The lower panel explains why: 39 percent of recent chart entries appear for exactly one
   week and vanish, up from under one percent in the 1980s, as album releases now flood the
@@ -372,21 +420,63 @@ fact chart.</p>
 
 <figure>
   <img src="images/fig13_peak_vs_longevity.png" alt="Hexagonal binned density plot of peak chart position against total weeks on chart.">
-  <figcaption><b>Figure 21. Reaching a high position and lasting a long time are the same
+  <figcaption><b>Reaching a high position and lasting a long time are the same
   achievement.</b> Songs cluster tightly along a curve running from bottom-right to top-left:
   almost nothing peaks in the top ten without staying a long while, and almost nothing lasts
   long without climbing. For the modelling ahead this means peak position and weeks on chart
   are largely one variable, not two.</figcaption>
 </figure>
 
+<h3>Reach, and what listeners actually say</h3>
+
+<figure>
+  <img src="images/fig17_api_sample_coverage.png" alt="Bar chart of Deezer track counts by release decade, rising steeply toward the 2020s.">
+  <figcaption><b>The API sample spans seven decades, not just the present.</b> Collecting
+  only from current charts would have produced a sample that could say nothing about change
+  over time, so the search endpoint was used to reach back year by year to 1960. The result
+  still leans heavily modern, with 891 tracks from the 2020s against 36 from the 1970s, which
+  is a limitation to carry forward rather than one to hide.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig16_artist_reach_vs_rank.png" alt="Hexbin plot of artist follower count against track popularity rank showing a strong positive relationship.">
+  <figcaption><b>Existing audience predicts performance far better than sound does.</b> An
+  artist's follower count correlates with their tracks' popularity rank at 0.61, while the
+  strongest correlation between any measured audio quality and popularity was just 0.15. This
+  single comparison reframes the whole project: whatever success is made of, far more of it
+  appears to live in who is already listening than in what the recording sounds like.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig18_top_listener_tags.png" alt="Horizontal bar chart of the most common listener-written tags, dominated by genre names.">
+  <figcaption><b>Listeners overwhelmingly describe music by genre, not by feeling.</b> The
+  most common tags are genre names such as <em>pop</em>, <em>rock</em> and <em>hip hop</em>,
+  followed by nationality and language markers like <em>american</em> and <em>english</em> and
+  era markers like <em>2020s</em>. Words about mood are conspicuously rare, which is a partial
+  answer to the tenth question already: people file music by category and origin rather than by
+  how it makes them feel.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig19_tags_per_artist.png" alt="Histogram of the number of distinct tags per artist, heavily skewed toward few tags.">
+  <figcaption><b>Most artists carry only a handful of listener tags.</b> The median artist has
+  seven distinct tags while a few have more than sixty, so the text available per artist is
+  thin and very unevenly distributed. Any method relying on these words will have to work with
+  sparse input, which is a point in favour of the approaches built for exactly that.</figcaption>
+</figure>
+
 <h2>Where this leaves the project</h2>
 
 <p>The exploration has already done something useful, which is to rule out the easy answer.
-If a song's success were legible in any single measured quality, Figure 10 would have shown
-it, and it does not &mdash; nothing correlates with popularity above 0.15. At the same time,
+If a song's success were legible in any single measured quality, the correlation figure
+above would have shown it, and it does not &mdash; nothing correlates with popularity above 0.15. At the same time,
 the data is plainly not structureless: music has changed in clear, consistent directions over
 sixty years, genres differ in their outcomes even while overlapping in their sound, and
 charting songs are measurably less instrumental and more cheerful than songs that never
 chart. What that combination suggests is that whatever signal exists lives in combinations
 of qualities rather than in any one of them, which is precisely the case for the methods
-that follow.</p>
+that follow. The sharpest result so far, though, points somewhere else entirely: an artist's
+existing audience predicts how their songs perform roughly four times as strongly as any
+quality of the recording itself. That is a genuinely uncomfortable answer for a project asking
+what songs are made of, and testing whether it survives contact with the models is now the most
+interesting thing this data can be asked to do.</p>

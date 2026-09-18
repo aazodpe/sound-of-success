@@ -186,6 +186,8 @@ pre code { background: none; border: none; color: inherit; padding: 0; }
 
 /* Figures */
 
+main { counter-reset: fig; }
+
 figure {
   margin: 34px 0;
   padding: 0;
@@ -209,6 +211,13 @@ figcaption {
   line-height: 1.6;
 }
 figcaption b { color: var(--ink); }
+
+figcaption::before {
+  counter-increment: fig;
+  content: "Figure " counter(fig) ". ";
+  font-weight: 700;
+  color: var(--ink);
+}
 
 .fig-grid {
   display: grid;
