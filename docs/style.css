@@ -1,0 +1,314 @@
+/* ==========================================================================
+   The Sound of Success - CSCI 5612 Portfolio Project
+   ========================================================================== */
+
+:root {
+  --ink:        #1b1d21;
+  --ink-soft:   #4a4f57;
+  --ink-faint:  #7b828c;
+  --rule:       #e2e5ea;
+  --bg:         #ffffff;
+  --bg-tint:    #f7f8fa;
+  --accent:     #7b3fa0;
+  --accent-dk:  #5b2b78;
+  --accent-bg:  #f4edf9;
+  --max:        1080px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Masthead ---------- */
+
+.masthead {
+  background: linear-gradient(135deg, #2a1440 0%, #5b2b78 55%, #7b3fa0 100%);
+  color: #fff;
+  padding: 44px 24px 38px;
+  text-align: center;
+}
+
+.masthead h1 {
+  margin: 0 0 8px;
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.masthead p.tagline {
+  margin: 0 0 4px;
+  font-size: 1.02rem;
+  color: #e5d5f2;
+  max-width: 660px;
+  margin-inline: auto;
+}
+
+.masthead p.byline {
+  margin: 14px 0 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #c9a9e4;
+}
+
+/* ---------- Tab navigation ---------- */
+
+nav.tabs {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+
+nav.tabs ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0 16px;
+  max-width: var(--max);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px;
+}
+
+nav.tabs a {
+  display: block;
+  padding: 13px 13px;
+  font-size: 0.87rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: color .15s, border-color .15s, background .15s;
+}
+
+nav.tabs a:hover { color: var(--accent); background: var(--accent-bg); }
+
+nav.tabs a.active {
+  color: var(--accent-dk);
+  border-bottom-color: var(--accent);
+  font-weight: 650;
+}
+
+/* ---------- Layout ---------- */
+
+main {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 44px 24px 80px;
+}
+
+h2 {
+  font-size: 1.62rem;
+  letter-spacing: -0.015em;
+  margin: 48px 0 14px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--rule);
+}
+
+main > h2:first-child { margin-top: 0; }
+
+h3 {
+  font-size: 1.16rem;
+  margin: 32px 0 10px;
+  color: var(--accent-dk);
+}
+
+p { margin: 0 0 18px; }
+
+a { color: var(--accent); }
+a:hover { color: var(--accent-dk); }
+
+code {
+  background: var(--bg-tint);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.5px 6px;
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.86em;
+  word-break: break-all;
+}
+
+pre {
+  background: #1e2128;
+  color: #e6e9ef;
+  border-radius: 8px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+pre code { background: none; border: none; color: inherit; padding: 0; }
+
+/* ---------- Components ---------- */
+
+.lede {
+  font-size: 1.12rem;
+  color: var(--ink-soft);
+  border-left: 4px solid var(--accent);
+  padding: 4px 0 4px 20px;
+  margin-bottom: 34px;
+}
+
+.callout {
+  background: var(--accent-bg);
+  border: 1px solid #e0cdf0;
+  border-left: 4px solid var(--accent);
+  border-radius: 6px;
+  padding: 18px 22px;
+  margin: 26px 0;
+}
+.callout p:last-child { margin-bottom: 0; }
+
+.pending {
+  background: var(--bg-tint);
+  border: 1px dashed var(--rule);
+  border-radius: 8px;
+  padding: 34px 28px;
+  text-align: center;
+  color: var(--ink-faint);
+  margin: 28px 0;
+}
+.pending strong { color: var(--ink-soft); display: block; margin-bottom: 6px; }
+
+/* Figures */
+
+figure {
+  margin: 34px 0;
+  padding: 0;
+}
+
+figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: #fff;
+}
+
+figure img.thumb { cursor: zoom-in; }
+
+figcaption {
+  margin-top: 11px;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+figcaption b { color: var(--ink); }
+
+.fig-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 30px;
+}
+.fig-grid figure { margin: 0; }
+
+/* Ordered question list */
+
+ol.questions { counter-reset: q; list-style: none; padding: 0; margin: 20px 0; }
+
+ol.questions li {
+  counter-increment: q;
+  position: relative;
+  padding: 13px 16px 13px 56px;
+  border-bottom: 1px solid var(--rule);
+}
+ol.questions li:first-child { border-top: 1px solid var(--rule); }
+
+ol.questions li::before {
+  content: counter(q);
+  position: absolute;
+  left: 14px;
+  top: 13px;
+  width: 27px;
+  height: 27px;
+  line-height: 27px;
+  text-align: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* Tables */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 0.92rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+th {
+  background: var(--bg-tint);
+  font-weight: 650;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+tbody tr:hover { background: var(--bg-tint); }
+
+/* Data / code resource cards */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.card {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 17px 19px;
+  background: var(--bg-tint);
+}
+.card h4 { margin: 0 0 7px; font-size: 0.99rem; }
+.card p  { margin: 0 0 10px; font-size: 0.89rem; color: var(--ink-soft); }
+.card a  { font-size: 0.88rem; font-weight: 550; display: block; margin-bottom: 3px; }
+
+/* Footer */
+
+footer {
+  border-top: 1px solid var(--rule);
+  background: var(--bg-tint);
+  padding: 26px 24px;
+  text-align: center;
+  font-size: 0.86rem;
+  color: var(--ink-faint);
+}
+
+/* Small screens */
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .masthead { padding: 34px 18px 28px; }
+  .masthead h1 { font-size: 1.55rem; }
+  nav.tabs ul { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; }
+  main { padding: 32px 18px 60px; }
+  h2 { font-size: 1.38rem; }
+}

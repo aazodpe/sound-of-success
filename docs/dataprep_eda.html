@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DataPrep_EDA &middot; The Sound of Success</title>
+<meta name="description" content="What popular music is actually made of, and whether a song's success can be seen in the music itself.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <h1>The Sound of Success</h1>
+  <p class="tagline">What popular music is actually made of, and whether a song's success can be seen in the music itself.</p>
+  <p class="byline">Atharva Zodpe &middot; CSCI 5612 Machine Learning &middot; University of Colorado Boulder</p>
+</header>
+
+<nav class="tabs">
+  <ul>
+    <li><a href="index.html">Introduction</a></li>
+    <li><a href="dataprep_eda.html" class="active">DataPrep_EDA</a></li>
+    <li><a href="clustering.html">Clustering</a></li>
+    <li><a href="pca.html">PCA</a></li>
+    <li><a href="naivebayes.html">NaiveBayes</a></li>
+    <li><a href="dectrees.html">DecTrees</a></li>
+    <li><a href="svms.html">SVMs</a></li>
+    <li><a href="regression.html">Regression</a></li>
+    <li><a href="nn.html">NN</a></li>
+    <li><a href="conclusions.html">Conclusions</a></li>
+  </ul>
+</nav>
+
+<main>
+<h2>Data Preparation and Exploratory Analysis</h2>
+
+<p class="lede">Answering the question at the centre of this project needs three different
+kinds of evidence about the same songs: what a recording measurably <em>is</em>, how it
+actually <em>performed</em>, and what listeners <em>say</em> about it. No single source
+carries all three, so four were gathered and joined.</p>
+
+<h2>Where the data came from, and why</h2>
+
+<p>A song's fate is not recorded in any one place. The qualities of the recording itself
+live with the streaming platforms that analyse audio; its commercial performance lives with
+the charts; and the way people actually talk about music lives in the words listeners
+volunteer. Each source below was chosen to supply one of those pieces, and the sources were
+deliberately picked so that two of them overlap on the same songs &mdash; without an
+overlap it would be impossible to ask whether what a song sounds like has anything to do
+with how it did.</p>
+
+<table>
+  <thead>
+    <tr><th>Source</th><th>How it was obtained</th><th>What it contributes</th><th>Size</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>Spotify audio features</b><br><span style="color:#7b828c">via the TidyTuesday archive</span></td>
+      <td>Downloaded CSV</td>
+      <td>Twelve measured qualities per song (danceability, energy, loudness, valence, tempo and more), a popularity score, and a genre label. This is the quantitative, labelled core.</td>
+      <td>32,833 rows</td>
+    </tr>
+    <tr>
+      <td><b>Billboard Hot 100</b><br><span style="color:#7b828c">complete weekly history</span></td>
+      <td>Downloaded CSV</td>
+      <td>Every weekly chart entry from August 1958 to September 2026. Supplies the outcome variable: whether a song charted, how high it got, and how long it lasted.</td>
+      <td>355,500 rows</td>
+    </tr>
+    <tr>
+      <td><b>Deezer</b><br><span style="color:#7b828c">public API</span></td>
+      <td>Python, <code>urllib</code></td>
+      <td>An independently sampled set of tracks with tempo, length, explicit flags and popularity rank, plus artist-level audience size. Provides a second, non-Spotify view and the artist reach that the other sources lack.</td>
+      <td>API collection</td>
+    </tr>
+    <tr>
+      <td><b>MusicBrainz</b><br><span style="color:#7b828c">public API</span></td>
+      <td>Python, <code>urllib</code></td>
+      <td>Free-text tags written by listeners themselves. Unstructured, unlabelled, inconsistent, and the only source here describing how music <em>feels</em> rather than how it measures.</td>
+      <td>API collection</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <p><b>Qualitative and quantitative, labelled and unlabelled.</b> The audio features are
+  quantitative and carry genre labels; the chart history is quantitative and supplies a
+  binary outcome label; the listener tags are qualitative free text with no labels at all.
+  Between them the project has material for both supervised and unsupervised work.</p>
+</div>
+
+<h2>The API calls</h2>
+
+<h3>Deezer &mdash; <a href="https://developers.deezer.com/api">developers.deezer.com/api</a></h3>
+
+<p>Deezer publishes an open API that needs no key and no registration. Two endpoints were
+used. The first returns the current chart for a given editorial genre, which produces a
+genre-balanced sample rather than only whatever happens to be globally popular; the second
+returns full details for a single track.</p>
+
+<p><b>Core endpoint:</b> <code>https://api.deezer.com/chart/{genre_id}/tracks</code></p>
+
+<pre><code>GET https://api.deezer.com/chart/132/tracks?limit=100
+
+{
+  "data": [
+    {
+      "id": 2107916855,
+      "title": "Die With A Smile",
+      "rank": 998234,
+      "explicit_lyrics": false,
+      "artist": { "id": 429675, "name": "Lady Gaga" },
+      "album":  { "id": 623906211, "title": "Die With A Smile" }
+    },
+    ...
+  ]
+}</code></pre>
+
+<p>Because the chart endpoint only describes the present, the sample was widened with a
+second call pattern that searches year by year back to 1960, so the collection can support
+questions about change over time:</p>
+
+<pre><code>GET https://api.deezer.com/search?q=date_start="1985-01-01" date_end="1985-12-31"&amp;limit=100&amp;order=RANKING
+GET https://api.deezer.com/track/3135556        # per-track detail: bpm, gain, release date
+GET https://api.deezer.com/artist/27          # per-artist detail: nb_fan, nb_album</code></pre>
+
+<h3>MusicBrainz &mdash; <a href="https://musicbrainz.org/doc/MusicBrainz_API">musicbrainz.org/doc/MusicBrainz_API</a></h3>
+
+<p>MusicBrainz is an open music encyclopedia whose entries are annotated with tags written
+by listeners. It requires no key but enforces a strict rate limit of one request per second
+and asks that callers identify themselves in the user agent, both of which the collection
+script respects.</p>
+
+<p><b>Core endpoint:</b> <code>https://musicbrainz.org/ws/2/artist/</code></p>
+
+<pre><code>GET https://musicbrainz.org/ws/2/artist/?query=artist:"Radiohead"&amp;fmt=json&amp;limit=1
+User-Agent: CU-CSCI5612-SongSuccess/1.0 ( aazodpe@gmail.com )
+
+{
+  "artists": [{
+    "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+    "name": "Radiohead",
+    "country": "GB",
+    "life-span": { "begin": "1991" },
+    "tags": [
+      { "name": "alternative rock", "count": 12 },
+      { "name": "melancholic",      "count": 3  },
+      { "name": "experimental",     "count": 5  }
+    ]
+  }]
+}</code></pre>
+
+<h2>Code and data</h2>
+
+<div class="cards">
+  <div class="card">
+    <h4>Collection</h4>
+    <p>Python 3, standard library only (<code>urllib</code>, <code>csv</code>, <code>json</code>). No API key required.</p>
+    <a href="https://github.com/AtharvaZodpe/sound-of-success/blob/main/code/01_collect_api_data.py">01_collect_api_data.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Cleaning</h4>
+    <p>Python 3 with <code>pandas</code> and <code>numpy</code>. Every rule is asserted, not assumed.</p>
+    <a href="https://github.com/AtharvaZodpe/sound-of-success/blob/main/code/02_clean_data.py">02_clean_data.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Visualization</h4>
+    <p>Python 3 with <code>matplotlib</code> and <code>pandas</code>.</p>
+    <a href="https://github.com/AtharvaZodpe/sound-of-success/blob/main/code/03_eda_visualizations.py">03_eda_visualizations.py &rarr;</a>
+    <a href="https://github.com/AtharvaZodpe/sound-of-success/blob/main/code/04_data_previews.py">04_data_previews.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Raw data</h4>
+    <p>Exactly as downloaded or returned by the API, unmodified.</p>
+    <a href="https://github.com/AtharvaZodpe/sound-of-success/blob/main/data/raw/spotify_songs_raw.csv">spotify_songs_raw.csv &rarr;</a>
+    <a href="https://github.com/AtharvaZodpe/sound-of-success/blob/main/data/raw/billboard_hot100_raw.csv">billboard_hot100_raw.csv &rarr;</a>
+    <a href="https://github.com/AtharvaZodpe/sound-of-success/tree/main/data/raw">all raw files &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Cleaned data</h4>
+    <p>The output of the cleaning script, with zero missing values.</p>
+    <a href="https://github.com/AtharvaZodpe/sound-of-success/blob/main/data/clean/spotify_songs_clean.csv">spotify_songs_clean.csv &rarr;</a>
+    <a href="https://github.com/AtharvaZodpe/sound-of-success/blob/main/data/clean/songs_with_chart_outcome.csv">songs_with_chart_outcome.csv &rarr;</a>
+    <a href="https://github.com/AtharvaZodpe/sound-of-success/tree/main/data/clean">all clean files &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Cleaning log</h4>
+    <p>Every transformation applied, in order, with the number of rows affected.</p>
+    <a href="https://github.com/AtharvaZodpe/sound-of-success/blob/main/data/clean/cleaning_log.txt">cleaning_log.txt &rarr;</a>
+  </div>
+</div>
+
+<h2>What the data looked like before and after</h2>
+
+<p>Nothing here arrived ready to use. The sections below show a small slice of each dataset
+as it was received and as it ended up, with the reasoning for every change in between.</p>
+
+<h3>Spotify audio features</h3>
+
+<figure>
+  <img src="images/raw_spotify.png" alt="Table of raw Spotify data showing mixed date formats and duration in milliseconds.">
+  <figcaption><b>Figure 3. Raw.</b> The file is one row per song <em>per playlist</em>, so a
+  track on five playlists appears five times. Release dates arrive as full dates, as
+  year-and-month, and as a bare year, and song length is given in milliseconds.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/clean_spotify.png" alt="Table of cleaned Spotify data with one row per song, numeric release year and banded variables.">
+  <figcaption><b>Figure 4. Clean.</b> One row per song, a single numeric release year parsed
+  from all three date formats, length converted to minutes, and new banded variables added
+  for the methods that need categories rather than continuous values.</figcaption>
+</figure>
+
+<p>The work in between removed 7,116 of the original 32,833 rows, leaving 25,717 songs with
+no missing values anywhere. Five rows were missing a track name or artist outright and were
+dropped, since neither can be inferred. A further 4,476 rows were exact duplicate track
+identifiers created by the one-row-per-playlist structure, and 2,633 more were the same song
+appearing again as a remaster, a live version or a re-release &mdash; these were collapsed by
+normalising titles and artists down to a comparable key, keeping the most popular version of
+each. One record listed a tempo of zero beats per minute, which is not something a recorded
+song can have, and one ran outside the half-minute to fifteen-minute window that separates
+songs from interludes and DJ mixes. Both were removed rather than repaired, because a value
+that cannot exist carries no information worth recovering.</p>
+
+<p>Three new banded variables were then added by discretisation: a four-level popularity
+band, a four-level tempo band, and a four-level duration band, along with a binary label
+marking songs scoring sixty or above. A second copy of the file was written with every
+continuous audio measure rescaled to run from zero to one, since methods that work by
+measuring distance would otherwise let tempo, which runs into the hundreds, drown out
+danceability, which never exceeds one.</p>
+
+<h3>Billboard Hot 100</h3>
+
+<figure>
+  <img src="images/raw_billboard.png" alt="Table of raw Billboard weekly chart data with blank last_week values.">
+  <figcaption><b>Figure 5. Raw.</b> One row per song per chart week, going back to August
+  1958. The <code>last_week</code> column is blank for 32,460 rows, which looks at first like
+  missing data.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/clean_billboard.png" alt="Table of cleaned Billboard data with one row per song showing peak position and weeks on chart.">
+  <figcaption><b>Figure 6. Clean.</b> The weekly entries are collapsed into one record per
+  song carrying its best position, its total weeks on the chart, and when it debuted. This
+  is the form in which chart performance becomes an outcome to predict.</figcaption>
+</figure>
+
+<p>The blanks turned out to be the most interesting thing in this file. A missing
+<code>last_week</code> value does not mean the value was lost; it means the song was not on
+the chart the previous week, which is to say it had just debuted. Deleting those rows would
+have thrown away every chart debut in sixty-eight years, and filling them with an average
+would have invented a history that never happened. They were instead flagged with an
+explicit debut indicator and coded as position 101, a value that is numerically sensible and
+literally true: outside the Hot 100. Twenty-nine duplicated week-and-position entries were
+removed, titles and performers were stripped of stray whitespace, and a week-over-week
+position change was computed. The weekly table was then aggregated into 32,750 distinct
+songs, each carrying the best position it ever reached and the total number of weeks it
+survived.</p>
+
+<h3>Joining sound to outcome</h3>
+
+<figure>
+  <img src="images/clean_linked.png" alt="Table showing songs with both audio features and chart outcome columns.">
+  <figcaption><b>Figure 7. The linked table.</b> Each row now carries both what a song
+  sounds like and how it performed, which is what makes the central question answerable at
+  all. Of the 25,717 songs with audio measurements, 3,336 were matched to a Hot 100 entry
+  by normalised title and artist.</figcaption>
+</figure>
+
+<p>Matching two catalogues that were never designed to be matched is imperfect, and being
+honest about that matters. Titles and artist names were lowercased, stripped of bracketed
+additions, featured-artist suffixes and punctuation, then compared. The 13.0 percent match
+rate is plausible rather than alarming: most of the songs carrying audio measurements are
+recent album tracks that were never chart candidates in the first place. Songs with no match
+are recorded as not having charted, with a peak position of 101 and zero weeks &mdash; again
+a real outcome rather than a hole in the data. The one caveat worth carrying forward is that
+this matching will miss some genuine chart entries whose titles differ between the two
+sources, which means the non-charting group contains a small number of songs that did in
+fact chart.</p>
+
+<h2>Exploring the data</h2>
+
+<h3>The shape of success</h3>
+
+<figure>
+  <img src="images/fig01_popularity_distribution.png" alt="Histogram of song popularity scores showing a spike at zero and a broad hump around 50.">
+  <figcaption><b>Figure 8. Most songs are not popular, and a few are very popular.</b> The
+  spike at the far left is made up of songs with essentially no plays at all, while the rest
+  of the catalogue spreads into a broad hump around the middle of the scale. Any model
+  predicting popularity has to cope with a target that is neither normal nor symmetric.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig02_feature_distributions.png" alt="Six histograms showing the distribution of danceability, energy, valence, acousticness, speechiness and instrumentalness.">
+  <figcaption><b>Figure 9. Each measured quality has its own characteristic shape.</b>
+  Danceability and energy are roughly bell-shaped and sit high, valence is almost flat across
+  its whole range, and acousticness, speechiness and instrumentalness are extremely
+  right-skewed with most songs near zero. The last three will need transformation or banding
+  before any method that assumes symmetry can use them.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig03_correlation_heatmap.png" alt="Correlation heatmap of audio features and popularity, showing strong energy-loudness correlation and near-zero popularity correlations.">
+  <figcaption><b>Figure 10. Loudness and energy move together; popularity moves with almost
+  nothing.</b> Energy and loudness correlate at 0.69 and energy and acousticness at &minus;0.55,
+  which is exactly what the physics of recording predicts. The striking result is the top row:
+  the strongest correlation between any single audio measure and popularity is just
+  &minus;0.15, which is the clearest early evidence that success is not sitting in any one
+  measurement waiting to be found.</figcaption>
+</figure>
+
+<h3>How music has changed</h3>
+
+<figure>
+  <img src="images/fig04_loudness_over_time.png" alt="Line chart of median loudness by release year rising from about -10 dB to about -6 dB.">
+  <figcaption><b>Figure 11. Recordings grew louder for fifty years, and have only just
+  stopped.</b> Median loudness climbs from roughly &minus;9.6 dB for 1960s releases to
+  &minus;5.9 dB in the 2010s, the trend the recording industry calls the loudness war. The
+  small reversal in the 2020s is worth noting, and lines up with streaming services
+  introducing playback volume normalisation, which removed the advantage of mastering
+  loud.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig05_duration_over_time.png" alt="Line chart of median song duration peaking around 1990 and declining since.">
+  <figcaption><b>Figure 12. Songs grew longer through the album era, then began shrinking
+  again.</b> Median length rises from about 3:13 in the 1960s to a peak of 4:35
+  in 1990, then falls back to 3:08 for 2020s releases. The rise and the fall both track
+  the format of the day, from the single to the album and back to a feed where the opening
+  seconds decide everything.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig12_valence_over_time.png" alt="Line chart of median valence declining from about 0.66 to about 0.45.">
+  <figcaption><b>Figure 13. Popular music has been getting less cheerful.</b> Median musical
+  positivity holds steady around 0.62 to 0.66 from the 1960s through the 2000s, then drops
+  sharply to roughly 0.46 in the 2010s and stays there. The change is not gradual, which
+  makes it a better question than it first appears &mdash; something happened rather than
+  something drifted.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig11_key_mode_by_decade.png" alt="Stacked bar chart of major versus minor key share by decade.">
+  <figcaption><b>Figure 14. Popular music has drifted away from major keys.</b> Songs written
+  in a major key fall from 78 percent of 1960s releases to 53 percent of 2020s releases,
+  declining in every single decade without exception. Unlike the mood measure above, this
+  one moves steadily rather than in a jump.</figcaption>
+</figure>
+
+<h3>Genre, and whether it means anything</h3>
+
+<figure>
+  <img src="images/fig06_genre_space.png" alt="Six scatter plots of danceability against energy, each highlighting one genre against all songs in grey.">
+  <figcaption><b>Figure 15. Genres occupy overlapping, not separate, regions of the song
+  space.</b> Each panel highlights one genre against every other song in grey; EDM clearly
+  clusters into the high-energy corner and rock spreads widely, but no genre occupies
+  territory the others leave empty. This directly anticipates the clustering work: if genres
+  are not separable on two measures, the question is whether they become separable on
+  twelve.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig07_popularity_by_genre.png" alt="Box plot of popularity distribution within each of six genres.">
+  <figcaption><b>Figure 16. Every genre contains both ignored songs and popular ones.</b>
+  Median popularity ranges only from 34 for EDM to 48 for pop, but the spread within each
+  genre dwarfs the gap between them. Knowing a song's genre tells you remarkably little
+  about whether it will be heard.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig14_popularity_bands_by_genre.png" alt="Horizontal stacked bar chart showing the share of each genre falling into four popularity bands.">
+  <figcaption><b>Figure 17. The mix of ignored and popular songs differs sharply by genre.</b>
+  Pop sends 47 percent of its songs into the top two popularity bands while EDM manages 20
+  percent, and EDM has by far the largest share of songs nobody plays. The same banding will
+  serve as a target class in the supervised work later.</figcaption>
+</figure>
+
+<h3>What charting actually looks like</h3>
+
+<figure>
+  <img src="images/fig08_charted_vs_not.png" alt="Diverging bar chart comparing average audio features of charted versus non-charted songs.">
+  <figcaption><b>Figure 18. Charting songs have vocals and a brighter mood; otherwise they
+  barely differ.</b> Songs that reached the Hot 100 are markedly less instrumental
+  (&minus;0.088) and noticeably more cheerful (+0.067), but essentially identical on
+  danceability, which differs by 0.001. The smallness of these gaps is the finding &mdash;
+  the audible difference between a hit and an unknown is far less than intuition
+  suggests.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig09_chart_turnover.png" alt="Line chart of distinct songs on the Hot 100 per year, falling until 2001 then rising sharply.">
+  <figcaption><b>Figure 19. Chart variety shrank for forty years, then streaming reversed
+  it.</b> The number of distinct songs appearing anywhere on the Hot 100 falls from around
+  800 a year in the mid-1960s to a low of 384 in 2001, then climbs back above 790 by 2020.
+  The turning point sits close to 2012, when streaming counts were folded into the chart
+  formula.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig10_weeks_on_chart_by_decade.png" alt="Two panels: median weeks on chart peaking in the 2000s, and the share of one-week entries rising to 39 percent.">
+  <figcaption><b>Figure 20. Chart runs peaked in the 2000s and then collapsed.</b> The median
+  song debuting in the 2000s spent 17 weeks on the chart; the median 2020s debut spends two.
+  The lower panel explains why: 39 percent of recent chart entries appear for exactly one
+  week and vanish, up from under one percent in the 1980s, as album releases now flood the
+  chart on release day and disappear.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig13_peak_vs_longevity.png" alt="Hexagonal binned density plot of peak chart position against total weeks on chart.">
+  <figcaption><b>Figure 21. Reaching a high position and lasting a long time are the same
+  achievement.</b> Songs cluster tightly along a curve running from bottom-right to top-left:
+  almost nothing peaks in the top ten without staying a long while, and almost nothing lasts
+  long without climbing. For the modelling ahead this means peak position and weeks on chart
+  are largely one variable, not two.</figcaption>
+</figure>
+
+<h2>Where this leaves the project</h2>
+
+<p>The exploration has already done something useful, which is to rule out the easy answer.
+If a song's success were legible in any single measured quality, Figure 10 would have shown
+it, and it does not &mdash; nothing correlates with popularity above 0.15. At the same time,
+the data is plainly not structureless: music has changed in clear, consistent directions over
+sixty years, genres differ in their outcomes even while overlapping in their sound, and
+charting songs are measurably less instrumental and more cheerful than songs that never
+chart. What that combination suggests is that whatever signal exists lives in combinations
+of qualities rather than in any one of them, which is precisely the case for the methods
+that follow.</p>
+
+</main>
+
+<footer>
+  <p>Atharva Zodpe &middot; CSCI 5612 Machine Learning &middot; University of Colorado Boulder</p>
+</footer>
+
+</body>
+</html>
