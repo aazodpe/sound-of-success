@@ -14,7 +14,7 @@ CONTENT = os.path.join(HERE, "content")
 SITE_TITLE = "The Sound of Success"
 TAGLINE = ("What popular music is actually made of, and whether a song's "
            "success can be seen in the music itself.")
-REPO = "https://github.com/AtharvaZodpe/sound-of-success"   # <- edit once, applies everywhere
+REPO = "https://github.com/aazodpe/sound-of-success"   # <- edit once, applies everywhere
 
 BYLINE = "Atharva Zodpe &middot; CSCI 5612 Machine Learning &middot; University of Colorado Boulder"
 

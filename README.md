@@ -3,7 +3,7 @@
 Portfolio project for **CSCI 5612 &mdash; Machine Learning**, University of Colorado Boulder.
 Atharva Zodpe.
 
-**Live site:** https://ATHARVA.github.io/sound-of-success/
+**Live site:** https://aazodpe.github.io/sound-of-success/
 
 What popular music is actually made of, and whether a song's success can be seen in the
 music itself.
