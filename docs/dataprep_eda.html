@@ -182,9 +182,11 @@ User-Agent: CU-CSCI5612-SongSuccess/1.0 ( aazodpe@gmail.com )
   </div>
   <div class="card">
     <h4>Visualization</h4>
-    <p>Python 3 with <code>matplotlib</code> and <code>pandas</code>.</p>
+    <p>Python 3 with <code>matplotlib</code> and <code>pandas</code>. Every figure is rendered twice, once for each site theme.</p>
     <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/03_eda_visualizations.py">03_eda_visualizations.py &rarr;</a>
     <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/04_data_previews.py">04_data_previews.py &rarr;</a>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/05_api_visualizations.py">05_api_visualizations.py &rarr;</a>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/theme.py">theme.py &rarr;</a>
   </div>
   <div class="card">
     <h4>Raw data</h4>
@@ -199,6 +201,11 @@ User-Agent: CU-CSCI5612-SongSuccess/1.0 ( aazodpe@gmail.com )
     <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/spotify_songs_clean.csv">spotify_songs_clean.csv &rarr;</a>
     <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/songs_with_chart_outcome.csv">songs_with_chart_outcome.csv &rarr;</a>
     <a href="https://github.com/aazodpe/sound-of-success/tree/main/data/clean">all clean files &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Everything</h4>
+    <p>The full repository, including the build scripts for this website.</p>
+    <a href="https://github.com/aazodpe/sound-of-success">aazodpe/sound-of-success &rarr;</a>
   </div>
   <div class="card">
     <h4>Cleaning log</h4>
@@ -224,14 +231,15 @@ as it was received and as it ended up, with the reasoning for every change in be
 <figure>
   <img src="images/clean_spotify_dark.png" data-light="images/clean_spotify.png" data-dark="images/clean_spotify_dark.png" loading="lazy" decoding="async" alt="Table of cleaned Spotify data with one row per song, numeric release year and banded variables.">
   <figcaption><b>Clean.</b> One row per song, a single numeric release year parsed
-  from all three date formats, length converted to minutes, and new banded variables added
-  for the methods that need categories rather than continuous values.</figcaption>
+  from all three date formats, and length converted to minutes. New banded variables were
+  added alongside the originals, so the methods that need categories and the methods that
+  need continuous values can both be served from the same file.</figcaption>
 </figure>
 
-<p>The work in between removed 7,116 of the original 32,833 rows, leaving 25,717 songs with
+<p>The work in between removed 7,016 of the original 32,833 rows, leaving 25,817 songs with
 no missing values anywhere. Five rows were missing a track name or artist outright and were
 dropped, since neither can be inferred. A further 4,476 rows were exact duplicate track
-identifiers created by the one-row-per-playlist structure, and 2,633 more were the same song
+identifiers created by the one-row-per-playlist structure, and 2,533 more were the same song
 appearing again as a remaster, a live version or a re-release &mdash; these were collapsed by
 normalising titles and artists down to a comparable key, keeping the most popular version of
 each. One record listed a tempo of zero beats per minute, which is not something a recorded
@@ -280,13 +288,13 @@ survived.</p>
   <img src="images/clean_linked_dark.png" data-light="images/clean_linked.png" data-dark="images/clean_linked_dark.png" loading="lazy" decoding="async" alt="Table showing songs with both audio features and chart outcome columns.">
   <figcaption><b>The linked table.</b> Each row now carries both what a song
   sounds like and how it performed, which is what makes the central question answerable at
-  all. Of the 25,717 songs with audio measurements, 3,336 were matched to a Hot 100 entry
+  all. Of the 25,817 songs with audio measurements, 3,419 were matched to a Hot 100 entry
   by normalised title and artist.</figcaption>
 </figure>
 
 <p>Matching two catalogues that were never designed to be matched is imperfect, and being
 honest about that matters. Titles and artist names were lowercased, stripped of bracketed
-additions, featured-artist suffixes and punctuation, then compared. The 13.0 percent match
+additions, featured-artist suffixes and punctuation, then compared. The 13.2 percent match
 rate is plausible rather than alarming: most of the songs carrying audio measurements are
 recent album tracks that were never chart candidates in the first place. Songs with no match
 are recorded as not having charted, with a peak position of 101 and zero weeks &mdash; again
@@ -316,7 +324,7 @@ not run its analysis on that recording. Leaving them alone would have dragged th
 tempo of the collection down towards 45 beats per minute, a figure that describes nothing
 real. Each was instead marked with a <code>bpm_known</code> indicator and filled with the
 median of the tracks that do have a measurement, 128 beats per minute, so that later work can
-either use the filled values or restrict itself to the 658 genuine ones. Eight tracks outside
+either use the filled values or restrict itself to the 654 genuine ones. Eight tracks outside
 the half-minute to fifteen-minute window were removed. The artist file needed far less: 1,251
 unique artists, with follower counts banded into five audience sizes.</p>
 
@@ -370,7 +378,7 @@ since an artist with no recorded nationality still has perfectly usable tags.</p
   nothing.</b> Energy and loudness correlate at 0.69 and energy and acousticness at &minus;0.55,
   which is exactly what the physics of recording predicts. The striking result is the top row:
   the strongest correlation between any single audio measure and popularity is just
-  &minus;0.15, which is the clearest early evidence that success is not sitting in any one
+  &minus;0.14, which is the clearest early evidence that success is not sitting in any one
   measurement waiting to be found.</figcaption>
 </figure>
 
@@ -390,7 +398,7 @@ since an artist with no recorded nationality still has perfectly usable tags.</p
   <img src="images/fig05_duration_over_time_dark.png" data-light="images/fig05_duration_over_time.png" data-dark="images/fig05_duration_over_time_dark.png" loading="lazy" decoding="async" alt="Line chart of median song duration peaking around 1990 and declining since.">
   <figcaption><b>Songs grew longer through the album era, then began shrinking
   again.</b> Median length rises from about 3:13 in the 1960s to a peak of 4:35
-  in 1990, then falls back to 3:08 for 2020s releases. The rise and the fall both track
+  in 1990, then falls back to 3:09 for 2020s releases. The rise and the fall both track
   the format of the day, from the single to the album and back to a feed where the opening
   seconds decide everything.</figcaption>
 </figure>
@@ -447,7 +455,7 @@ since an artist with no recorded nationality still has perfectly usable tags.</p
   <figcaption><b>Charting songs have vocals and a brighter mood; otherwise they
   barely differ.</b> Songs that reached the Hot 100 are markedly less instrumental
   (&minus;0.088) and noticeably more cheerful (+0.067), but essentially identical on
-  danceability, which differs by 0.001. The smallness of these gaps is the finding &mdash;
+  danceability, which differs by 0.002. The smallness of these gaps is the finding &mdash;
   the audible difference between a hit and an unknown is far less than intuition
   suggests.</figcaption>
 </figure>
@@ -494,7 +502,7 @@ since an artist with no recorded nationality still has perfectly usable tags.</p
   <img src="images/fig16_artist_reach_vs_rank_dark.png" data-light="images/fig16_artist_reach_vs_rank.png" data-dark="images/fig16_artist_reach_vs_rank_dark.png" loading="lazy" decoding="async" alt="Hexbin plot of artist follower count against track popularity rank showing a strong positive relationship.">
   <figcaption><b>Existing audience predicts performance far better than sound does.</b> An
   artist's follower count correlates with their tracks' popularity rank at 0.61, while the
-  strongest correlation between any measured audio quality and popularity was just 0.15. This
+  strongest correlation between any measured audio quality and popularity was just 0.14. This
   single comparison reframes the whole project: whatever success is made of, far more of it
   appears to live in who is already listening than in what the recording sounds like.</figcaption>
 </figure>
@@ -521,7 +529,7 @@ since an artist with no recorded nationality still has perfectly usable tags.</p
 
 <p>The exploration has already done something useful, which is to rule out the easy answer.
 If a song's success were legible in any single measured quality, the correlation figure
-above would have shown it, and it does not &mdash; nothing correlates with popularity above 0.15. At the same time,
+above would have shown it, and it does not &mdash; nothing correlates with popularity above 0.14. At the same time,
 the data is plainly not structureless: music has changed in clear, consistent directions over
 sixty years, genres differ in their outcomes even while overlapping in their sound, and
 charting songs are measurably less instrumental and more cheerful than songs that never

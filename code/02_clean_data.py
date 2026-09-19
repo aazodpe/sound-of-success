@@ -28,6 +28,41 @@ AUDIO_FEATURES = ["danceability", "energy", "loudness", "speechiness",
 
 KEY_NAMES = ["C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"]
 
+
+# Values pandas silently reads back as missing. A match key must never be one
+# of these, or a perfectly good song reappears as a hole in the data.
+NA_TOKENS = {"", "na", "n/a", "nan", "null", "none", "nat", "<na>", "#na",
+             "#n/a", "-nan", "inf", "-inf", "1.#ind", "-1.#ind"}
+
+
+def make_key(value, drop_featured=False):
+    """
+    Normalise a title or artist into a comparable key.
+
+    Keeps letters and digits from any alphabet, so titles in Cyrillic or with
+    accents do not collapse to nothing. Falls back progressively rather than
+    ever returning an empty or NA-looking key.
+    """
+    original = str(value)
+    s = original.casefold()
+    s = re.sub(r"\(.*?\)|\[.*?\]", " ", s)
+    s = re.sub(r"\s*-\s*(remaster|remastered|live|radio edit|mono|stereo|version).*$", " ", s)
+    if drop_featured:
+        s = re.sub(r"\s+(featuring|feat\.?|ft\.?|with|x|&|and)\s+.*$", " ", s)
+    s = re.sub(r"[^\w\s]", " ", s, flags=re.UNICODE)
+    s = re.sub(r"\s+", " ", s).strip()
+
+    if not s:                       # title was only punctuation, e.g. "+" or "!!!"
+        s = re.sub(r"\s+", " ", re.sub(r"[^\w\s]", "", original.casefold())).strip()
+    if not s:                       # still nothing, so keep the original verbatim
+        s = re.sub(r"\s+", " ", original.casefold()).strip()
+    if not s:
+        return "unknown"
+    if s in NA_TOKENS:              # e.g. "Nanã" would otherwise become "nan"
+        s = s + " k"
+    return s
+
+
 log = []
 
 
@@ -62,15 +97,8 @@ def clean_spotify():
 
     # Remasters and re-releases repeat a song under a new id. Normalise the
     # title and artist and collapse those too, keeping the most popular version.
-    def norm(s):
-        s = str(s).lower()
-        s = re.sub(r"\(.*?\)|\[.*?\]", " ", s)          # drop "(Remastered 2011)" etc.
-        s = re.sub(r"\s*-\s*(remaster|remastered|live|radio edit|mono|stereo).*$", " ", s)
-        s = re.sub(r"[^a-z0-9 ]", " ", s)
-        return re.sub(r"\s+", " ", s).strip()
-
-    df["title_key"] = df["track_name"].map(norm)
-    df["artist_key"] = df["track_artist"].map(norm)
+    df["title_key"] = df["track_name"].map(make_key)
+    df["artist_key"] = df["track_artist"].map(make_key)
     n_before = len(df)
     df = df.drop_duplicates(subset=["title_key", "artist_key"], keep="first")
     step(f"removed {n_before - len(df):,} repeated recordings of the same song "
@@ -192,13 +220,6 @@ def clean_billboard():
     df.to_csv(os.path.join(CLEAN, "billboard_weekly_clean.csv"), index=False)
 
     # --- one row per song ---------------------------------------------------
-    def norm(s):
-        s = str(s).lower()
-        s = re.sub(r"\(.*?\)|\[.*?\]", " ", s)
-        s = re.sub(r"\s+(featuring|feat\.?|ft\.?|with|x|&|and)\s+.*$", " ", s)
-        s = re.sub(r"[^a-z0-9 ]", " ", s)
-        return re.sub(r"\s+", " ", s).strip()
-
     songs = (df.groupby(["title", "performer"])
                .agg(peak_position=("peak_pos", "min"),
                     weeks_on_chart=("wks_on_chart", "max"),
@@ -209,8 +230,9 @@ def clean_billboard():
     songs["debut_decade"] = (songs["debut_year"] // 10 * 10).astype(int)
     songs["reached_top10"] = (songs["peak_position"] <= 10).astype(int)
     songs["reached_number1"] = (songs["peak_position"] == 1).astype(int)
-    songs["title_key"] = songs["title"].map(norm)
-    songs["artist_key"] = songs["performer"].map(norm)
+    songs["title_key"] = songs["title"].map(make_key)
+    songs["artist_key"] = songs["performer"].map(
+        lambda v: make_key(v, drop_featured=True))
 
     assert songs.isna().sum().sum() == 0
     step(f"built a song-level table: {len(songs):,} distinct songs that have "
@@ -342,6 +364,31 @@ def build_matched(spotify, bb_songs):
 
 # ============================================================================
 
+
+def verify_written_files():
+    """
+    Re-read every cleaned file exactly the way anyone else would and confirm
+    it really is free of missing values. Asserting on the in-memory frame is
+    not enough: a value like "NA" survives in memory and comes back as a hole.
+    """
+    print("\n=== Verifying written files ===")
+    clean = True
+    for name in sorted(os.listdir(CLEAN)):
+        if not name.endswith(".csv"):
+            continue
+        d = pd.read_csv(os.path.join(CLEAN, name))
+        n_na = int(d.isna().sum().sum())
+        if n_na:
+            clean = False
+            cols = d.isna().sum()[lambda x: x > 0].to_dict()
+            print(f"  FAIL {name}: {n_na} missing values on re-read -> {cols}")
+        else:
+            print(f"  ok   {name}: {len(d):,} rows, zero missing values on re-read")
+    if not clean:
+        raise SystemExit("Cleaned files still contain missing values when read back.")
+    print("  every cleaned file re-reads with zero missing values")
+
+
 def main():
     print("=" * 74)
     print("CSCI 5612 Project Part 1 - cleaning and preparation")
@@ -351,6 +398,8 @@ def main():
     bb_weekly, bb_songs = clean_billboard()
     clean_api_data()
     build_matched(spotify, bb_songs)
+
+    verify_written_files()
 
     with open(os.path.join(CLEAN, "cleaning_log.txt"), "w", encoding="utf-8") as fh:
         fh.write("Cleaning log - CSCI 5612 Project Part 1\n")

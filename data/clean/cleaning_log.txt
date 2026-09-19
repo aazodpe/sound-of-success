@@ -4,14 +4,14 @@ Cleaning log - CSCI 5612 Project Part 1
 - loaded 32,833 rows x 23 columns
 - dropped 5 rows missing a track name or artist
 - removed 4,476 duplicate track_id rows (same song listed on multiple playlists)
-- removed 2,633 repeated recordings of the same song (remasters, live versions, re-releases)
-- release dates arrived in mixed formats (string lengths {10: 24284, 4: 1415, 7: 20}); parsed the leading year from each
+- removed 2,533 repeated recordings of the same song (remasters, live versions, re-releases)
+- release dates arrived in mixed formats (string lengths {10: 24359, 4: 1440, 7: 20}); parsed the leading year from each
 - dropped 0 rows with an impossible release year
 - dropped 1 rows with a tempo of 0 BPM (a recorded song cannot have no tempo)
 - dropped 1 rows shorter than 30s or longer than 15min (interludes, DJ mixes and sound effects, not songs)
 - dropped 0 rows whose 0-1 audio measures fell outside that range
 - added discretised variables: popularity_band, tempo_band, duration_band, and the binary label is_popular
-- FINAL: 25,717 rows x 30 columns, zero missing values (7,116 rows removed in total)
+- FINAL: 25,817 rows x 30 columns, zero missing values (7,016 rows removed in total)
 - wrote a min-max normalised copy for the distance-based methods
 - loaded 355,500 weekly chart entries
 - parsed chart dates: 1958-08-04 to 2026-09-19
@@ -25,6 +25,6 @@ Cleaning log - CSCI 5612 Project Part 1
 - FINAL Deezer tracks: 1,798 rows x 15 columns, zero missing values
 - FINAL Deezer artists: 1,251 rows, zero missing values
 - cleaned free-text tags: 3,818 raw rows -> 3,769 usable artist/tag pairs covering 346 artists
-- matched 3,336 of 25,717 songs (13.0%) to a Billboard Hot 100 entry by normalised title and artist
+- matched 3,419 of 25,817 songs (13.2%) to a Billboard Hot 100 entry by normalised title and artist
 - songs with no match are coded charted = 0 and peak_position = 101 ('never entered the Hot 100'), which is a real outcome rather than a gap
-- FINAL linked table: 25,717 rows x 36 columns
+- FINAL linked table: 25,817 rows x 36 columns

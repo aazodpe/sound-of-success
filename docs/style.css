@@ -215,6 +215,7 @@ nav.tabs ul {
   padding: 0;
   display: flex;
   flex: 1;
+  min-width: 0;
   flex-wrap: nowrap;
   justify-content: center;
   gap: 0;
@@ -288,7 +289,7 @@ main {
   padding: 64px 0 96px;
 }
 
-main > * { grid-column: text; }
+main > * { grid-column: text; min-width: 0; }
 
 main > figure {
   grid-column: full;
@@ -299,6 +300,7 @@ main > figure {
 /* ---------- Typography ---------- */
 
 h2 {
+  overflow-wrap: break-word;
   font-family: "Instrument Serif", Georgia, serif;
   font-weight: 400;
   font-size: clamp(1.85rem, 3.6vw, 2.5rem);
@@ -324,6 +326,7 @@ main > h2:first-child { margin-top: 0; border-top: none; padding-top: 0; }
 main > h2:first-child::before { display: none; }
 
 h3 {
+  overflow-wrap: anywhere;
   font-size: 0.79rem;
   font-weight: 650;
   letter-spacing: 0.14em;
@@ -349,7 +352,8 @@ code {
   font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
   font-size: 0.82em;
   color: var(--accent-deep);
-  word-break: break-word;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 pre {
@@ -526,6 +530,7 @@ tbody tr:hover { background: var(--surface); }
   display: block;
   margin-bottom: 5px;
   text-decoration: none;
+  overflow-wrap: anywhere;
 }
 .card a:hover { text-decoration: underline; }
 
@@ -560,6 +565,8 @@ footer {
   nav.tabs ul { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
   nav.tabs ul::-webkit-scrollbar { display: none; }
   main { padding: 44px 0 64px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; max-width: 100%; }
+  table td, table th { white-space: normal; min-width: 108px; }
   figure { margin: 38px auto; }
   h2 { margin-top: 56px; }
 }
