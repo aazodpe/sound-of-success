@@ -17,9 +17,9 @@ TAGLINE = ("What popular music is actually made of, and whether a song's "
            "success can be seen in the music itself.")
 REPO = "https://github.com/aazodpe/sound-of-success"   # <- edit once, applies everywhere
 
-EYEBROW = "CSCI 5612 &middot; Portfolio Project"
+EYEBROW = "CSCI 5612&nbsp;&middot; Machine Learning for DTSC&nbsp;&middot; Website Project"
 
-BYLINE = "Atharva Zodpe &middot; CSCI 5612 Machine Learning &middot; University of Colorado Boulder"
+BYLINE = "Atharva Zodpe"
 
 # (output filename, tab label, fragment filename)
 # Tab labels follow the names required by the assignment.
@@ -132,7 +132,6 @@ __THEMEBOOT__
   <p class="eyebrow">__EYEBROW__</p>
   <h1>__SITETITLE__</h1>
   <p class="tagline">__TAGLINE__</p>
-  <p class="byline">__BYLINE__</p>
   __WAVEFORM__
 </header>
 
