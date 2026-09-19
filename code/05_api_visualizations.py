@@ -17,19 +17,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CLEAN = os.path.join(HERE, "..", "data", "clean")
 IMG = os.path.join(HERE, "..", "docs", "images")
 
-C = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"]
-ACCENT, INK, INK_SOFT, GRID = "#4a3aa7", "#1b1d21", "#4a4f57", "#e2e5ea"
-
-plt.rcParams.update({
-    "figure.dpi": 130, "savefig.dpi": 130, "savefig.bbox": "tight",
-    "savefig.facecolor": "white", "font.family": "DejaVu Sans", "font.size": 10,
-    "axes.titlesize": 13, "axes.titleweight": "bold", "axes.titlelocation": "left",
-    "axes.titlepad": 14, "axes.labelsize": 10.5, "axes.labelcolor": INK_SOFT,
-    "axes.edgecolor": GRID, "axes.linewidth": 1.0, "axes.grid": True,
-    "axes.axisbelow": True, "grid.color": GRID, "grid.linewidth": 0.9,
-    "xtick.color": INK_SOFT, "ytick.color": INK_SOFT, "xtick.labelsize": 9.5,
-    "ytick.labelsize": 9.5, "legend.frameon": False, "text.color": INK,
-})
+import theme
 
 
 def finish(ax, title, subtitle=None, xlabel=None, ylabel=None):
@@ -38,16 +26,18 @@ def finish(ax, title, subtitle=None, xlabel=None, ylabel=None):
     ax.set_title(f"{title}\n" if subtitle else title, loc="left")
     if subtitle:
         ax.text(0, 1.015, subtitle, transform=ax.transAxes, fontsize=9.8,
-                color=INK_SOFT, va="bottom")
+                color=theme.INK_SOFT, va="bottom")
     if xlabel: ax.set_xlabel(xlabel)
     if ylabel: ax.set_ylabel(ylabel)
 
 
 def save(fig, name):
-    fig.savefig(os.path.join(IMG, name)); plt.close(fig); print(f"  saved {name}")
+    out = theme.out_name(name)
+    fig.savefig(os.path.join(IMG, out)); plt.close(fig); print(f"  saved {out}")
 
 
 def main():
+    C, ACCENT, INK, INK_SOFT, GRID = theme.C, theme.ACCENT, theme.INK, theme.INK_SOFT, theme.GRID
     tp = os.path.join(CLEAN, "deezer_tracks_clean.csv")
     if not os.path.exists(tp):
         sys.exit("Deezer data not found. Run 01_collect_api_data.py then 02_clean_data.py first.")
@@ -62,7 +52,7 @@ def main():
         j = t.merge(a[["artist_id", "nb_fan"]], on="artist_id", how="inner")
         j = j[(j.nb_fan > 0) & (j["rank"] > 0)]
         fig, ax = plt.subplots(figsize=(8.2, 5.0))
-        hb = ax.hexbin(np.log10(j.nb_fan), j["rank"], gridsize=30, cmap="Purples",
+        hb = ax.hexbin(np.log10(j.nb_fan), j["rank"], gridsize=30, cmap=theme.SEQ_CMAP,
                        mincnt=1, linewidths=0)
         cb = fig.colorbar(hb, ax=ax, pad=0.02, shrink=0.85)
         cb.set_label("Number of tracks", color=INK_SOFT, fontsize=9.5)
@@ -82,7 +72,7 @@ def main():
     dec = t.groupby("release_decade").size()
     dec = dec[dec.index >= 1950]
     ax.bar([str(int(d)) + "s" for d in dec.index], dec.values, color=C[2],
-           width=0.62, edgecolor="white", linewidth=1.6)
+           width=0.62, edgecolor=theme.BG, linewidth=1.6)
     for i, v in enumerate(dec.values):
         ax.text(i, v + max(dec.values) * 0.02, f"{v:,}", ha="center", fontsize=9,
                 color=INK_SOFT)
@@ -113,7 +103,7 @@ def main():
         per_artist = g.groupby("artist_name").tag.nunique()
         fig, ax = plt.subplots(figsize=(8.2, 4.2))
         ax.hist(per_artist.values, bins=range(0, int(per_artist.max()) + 2),
-                color=C[1], edgecolor="white", linewidth=0.6)
+                color=C[1], edgecolor=theme.BG, linewidth=0.6)
         ax.axvline(per_artist.median(), color=ACCENT, linewidth=2, linestyle="--")
         ax.annotate(f"median {per_artist.median():.0f} tags",
                     xy=(per_artist.median(), ax.get_ylim()[1] * 0.85),
@@ -128,4 +118,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    for mode in theme.MODES:
+        print(f"\n--- {mode} ---")
+        theme.set_theme(mode)
+        main()

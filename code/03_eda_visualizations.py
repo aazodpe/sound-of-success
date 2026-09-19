@@ -25,47 +25,27 @@ CLEAN = os.path.join(HERE, "..", "data", "clean")
 IMG = os.path.join(HERE, "..", "docs", "images")
 os.makedirs(IMG, exist_ok=True)
 
-# --- a single validated categorical palette, assigned in fixed order --------
-C = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300",
-     "#4a3aa7", "#e34948"]
-ACCENT = "#4a3aa7"
-INK = "#1b1d21"
-INK_SOFT = "#4a4f57"
-GRID = "#e2e5ea"
-
-plt.rcParams.update({
-    "figure.dpi": 130,
-    "savefig.dpi": 130,
-    "savefig.bbox": "tight",
-    "savefig.facecolor": "white",
-    "font.family": "DejaVu Sans",
-    "font.size": 10,
-    "axes.titlesize": 13,
-    "axes.titleweight": "bold",
-    "axes.titlelocation": "left",
-    "axes.titlepad": 14,
-    "axes.labelsize": 10.5,
-    "axes.labelcolor": INK_SOFT,
-    "axes.edgecolor": GRID,
-    "axes.linewidth": 1.0,
-    "axes.facecolor": "white",
-    "axes.grid": True,
-    "axes.axisbelow": True,
-    "grid.color": GRID,
-    "grid.linewidth": 0.9,
-    "xtick.color": INK_SOFT,
-    "ytick.color": INK_SOFT,
-    "xtick.labelsize": 9.5,
-    "ytick.labelsize": 9.5,
-    "legend.frameon": False,
-    "legend.fontsize": 9.5,
-    "text.color": INK,
-})
+import theme
 
 GENRE_ORDER = ["pop", "rap", "rock", "latin", "r&b", "edm"]
 GENRE_LABEL = {"pop": "Pop", "rap": "Rap", "rock": "Rock",
                "latin": "Latin", "r&b": "R&B", "edm": "EDM"}
-GENRE_COLOR = {g: C[i] for i, g in enumerate(GENRE_ORDER)}
+
+
+def palette():
+    """Colours for the mode currently set on the theme module."""
+    return theme.C, theme.ACCENT, theme.INK, theme.INK_SOFT, theme.GRID
+
+
+def genre_colors():
+    return {g: theme.C[i] for i, g in enumerate(GENRE_ORDER)}
+
+
+def on_color(swatch):
+    """Pick black or white label text from a swatch's actual luminance."""
+    r, g, b = matplotlib.colors.to_rgb(swatch)
+    lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    return "#11111a" if lum > 0.55 else "#ffffff"
 
 
 def finish(ax, title, subtitle=None, xlabel=None, ylabel=None, spines=("top", "right")):
@@ -74,7 +54,7 @@ def finish(ax, title, subtitle=None, xlabel=None, ylabel=None, spines=("top", "r
     if subtitle:
         ax.set_title(f"{title}\n", loc="left")
         ax.text(0, 1.015, subtitle, transform=ax.transAxes, fontsize=9.8,
-                color=INK_SOFT, va="bottom", ha="left")
+                color=theme.INK_SOFT, va="bottom", ha="left")
     else:
         ax.set_title(title, loc="left")
     if xlabel: ax.set_xlabel(xlabel)
@@ -82,15 +62,17 @@ def finish(ax, title, subtitle=None, xlabel=None, ylabel=None, spines=("top", "r
 
 
 def save(fig, name):
-    path = os.path.join(IMG, name)
+    path = os.path.join(IMG, theme.out_name(name))
     fig.savefig(path)
     plt.close(fig)
-    print(f"  saved {name}")
+    print(f"  saved {theme.out_name(name)}")
 
 
 # ============================================================================
 
 def main():
+    C, ACCENT, INK, INK_SOFT, GRID = palette()
+    GENRE_COLOR = genre_colors()
     s = pd.read_csv(os.path.join(CLEAN, "spotify_songs_clean.csv"))
     m = pd.read_csv(os.path.join(CLEAN, "songs_with_chart_outcome.csv"))
     bw = pd.read_csv(os.path.join(CLEAN, "billboard_weekly_clean.csv"),
@@ -102,7 +84,7 @@ def main():
     # ---------------------------------------------------------------- 01 ----
     fig, ax = plt.subplots(figsize=(8.4, 4.4))
     ax.hist(s.track_popularity, bins=50, color=ACCENT, alpha=0.9,
-            edgecolor="white", linewidth=0.4)
+            edgecolor=theme.BG, linewidth=0.4)
     med = s.track_popularity.median()
     ax.axvline(med, color=C[1], linewidth=2, linestyle="--")
     ax.annotate(f"median {med:.0f}", xy=(med, ax.get_ylim()[1] * 0.88),
@@ -119,7 +101,7 @@ def main():
     fig, axes = plt.subplots(2, 3, figsize=(11.6, 6.2))
     for ax, f in zip(axes.ravel(), feats):
         ax.hist(s[f], bins=40, color=ACCENT, alpha=0.88,
-                edgecolor="white", linewidth=0.3)
+                edgecolor=theme.BG, linewidth=0.3)
         ax.set_title(f.capitalize(), loc="left", fontsize=11)
         ax.set_xlabel("")
         ax.set_ylabel("")
@@ -143,7 +125,7 @@ def main():
     corr = s[corr_cols].corr()
     labels = [c.replace("_", " ").replace("track ", "").capitalize() for c in corr_cols]
     fig, ax = plt.subplots(figsize=(7.8, 6.6))
-    im = ax.imshow(corr, cmap="RdBu_r", vmin=-1, vmax=1)
+    im = ax.imshow(corr, cmap=theme.DIV_CMAP, vmin=-1, vmax=1)
     ax.set_xticks(range(len(labels)), labels, rotation=45, ha="right")
     ax.set_yticks(range(len(labels)), labels)
     ax.grid(False)
@@ -151,7 +133,7 @@ def main():
         for j in range(len(corr)):
             v = corr.iloc[i, j]
             ax.text(j, i, f"{v:.2f}", ha="center", va="center", fontsize=7.6,
-                    color="white" if abs(v) > 0.55 else INK)
+                    color="#ffffff" if abs(v) > 0.55 else theme.INK)
     cb = fig.colorbar(im, ax=ax, shrink=0.72, pad=0.02)
     cb.set_label("Correlation", color=INK_SOFT, fontsize=9.5)
     cb.outline.set_visible(False)
@@ -189,7 +171,7 @@ def main():
     ax.plot(yr2.index, yr2.dur, color=C[0], linewidth=2.2)
     peak_year = yr2.dur.idxmax()
     ax.scatter([peak_year], [yr2.dur.max()], s=55, color=C[0], zorder=5,
-               edgecolor="white", linewidth=1.6)
+               edgecolor=theme.BG, linewidth=1.6)
     ax.annotate(f"peak: {yr2.dur.max():.1f} min in {peak_year}",
                 xy=(peak_year, yr2.dur.max()), xytext=(8, 6),
                 textcoords="offset points", color=C[0], fontweight="bold", fontsize=9.5)
@@ -204,7 +186,7 @@ def main():
     fig, axes = plt.subplots(2, 3, figsize=(11.6, 6.6), sharex=True, sharey=True)
     for ax, g in zip(axes.ravel(), GENRE_ORDER):
         sub = s[s.playlist_genre == g]
-        ax.scatter(s.danceability, s.energy, s=2, color="#dfe3e8", alpha=0.35,
+        ax.scatter(s.danceability, s.energy, s=2, color=theme.GRID, alpha=0.75,
                    linewidths=0, rasterized=True)
         ax.scatter(sub.danceability, sub.energy, s=3.5, color=GENRE_COLOR[g],
                    alpha=0.45, linewidths=0, rasterized=True)
@@ -225,12 +207,12 @@ def main():
     fig, ax = plt.subplots(figsize=(8.6, 4.6))
     data = [s.loc[s.playlist_genre == g, "track_popularity"].values for g in GENRE_ORDER]
     bp = ax.boxplot(data, patch_artist=True, widths=0.6, showfliers=False,
-                    medianprops=dict(color="white", linewidth=2),
+                    medianprops=dict(color=theme.BG, linewidth=2),
                     whiskerprops=dict(color=INK_SOFT, linewidth=1.1),
                     capprops=dict(color=INK_SOFT, linewidth=1.1))
     for patch, g in zip(bp["boxes"], GENRE_ORDER):
         patch.set_facecolor(GENRE_COLOR[g])
-        patch.set_edgecolor("white")
+        patch.set_edgecolor(theme.BG)
         patch.set_linewidth(1.6)
     ax.set_xticks(range(1, len(GENRE_ORDER) + 1),
                   [f"{GENRE_LABEL[g]}\nmed {np.median(d):.0f}" for g, d in zip(GENRE_ORDER, data)])
@@ -268,7 +250,7 @@ def main():
     ax.fill_between(per_year.index, per_year.values, 0, color=C[6], alpha=0.10)
     lo = per_year.idxmin()
     ax.scatter([lo], [per_year[lo]], s=55, color=C[6], zorder=5,
-               edgecolor="white", linewidth=1.6)
+               edgecolor=theme.BG, linewidth=1.6)
     ax.annotate(f"low point: {per_year[lo]} songs in {lo}", xy=(lo, per_year[lo]),
                 xytext=(0, -26), textcoords="offset points", ha="center",
                 fontsize=9.3, color=C[6], fontweight="bold")
@@ -291,7 +273,7 @@ def main():
 
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8.4, 6.4), sharex=True)
     ax1.plot(xs, med, color=C[2], linewidth=2.4, marker="o", markersize=7,
-             markeredgecolor="white", markeredgewidth=1.6)
+             markeredgecolor=theme.BG, markeredgewidth=1.6)
     peak = int(np.argmax(med))
     ax1.annotate(f"{med[peak]:.0f} weeks", xy=(xs[peak], med[peak]), xytext=(0, 11),
                  textcoords="offset points", ha="center", color=C[2],
@@ -304,7 +286,7 @@ def main():
            "Median number of weeks a song spends on the Hot 100, by the decade it debuted",
            None, "Median weeks on chart")
 
-    bars = ax2.bar(xs, one, color=C[1], width=0.6, edgecolor="white", linewidth=1.8)
+    bars = ax2.bar(xs, one, color=C[1], width=0.6, edgecolor=theme.BG, linewidth=1.8)
     for b, v in zip(bars, one):
         ax2.text(b.get_x() + b.get_width() / 2, v + 1.4, f"{v:.0f}%", ha="center",
                  fontsize=9.3, fontweight="bold", color=INK_SOFT)
@@ -327,8 +309,8 @@ def main():
     ax.bar(x, share["Minor"], bottom=share["Major"] + 0.6, color=C[4],
            width=0.62, label="Minor key")
     for i, v in enumerate(share["Major"]):
-        ax.text(i, v / 2, f"{v:.0f}%", ha="center", va="center", color="white",
-                fontsize=9, fontweight="bold")
+        ax.text(i, v / 2, f"{v:.0f}%", ha="center", va="center",
+                color=on_color(C[0]), fontsize=9, fontweight="bold")
     ax.set_xticks(x, [f"{int(d)}s" for d in share.index])
     ax.set_ylim(0, 104)
     ax.legend(loc="lower right", ncols=2)
@@ -354,7 +336,7 @@ def main():
     fig, ax = plt.subplots(figsize=(8.0, 5.0))
     sub = bs[(bs.weeks_on_chart <= 40)]
     hb = ax.hexbin(sub.peak_position, sub.weeks_on_chart, gridsize=34,
-                   cmap="Purples", mincnt=1, linewidths=0)
+                   cmap=theme.SEQ_CMAP, mincnt=1, linewidths=0)
     cb = fig.colorbar(hb, ax=ax, pad=0.02, shrink=0.85)
     cb.set_label("Number of songs", color=INK_SOFT, fontsize=9.5)
     cb.outline.set_visible(False)
@@ -372,16 +354,17 @@ def main():
     share = tab.div(tab.sum(axis=1), axis=0) * 100
     fig, ax = plt.subplots(figsize=(8.6, 4.4))
     left = np.zeros(len(share))
-    shades = ["#ded9ec", "#b3a6d6", "#7a66bd", ACCENT]
+    shades = theme.SEQ_CMAP(np.linspace(0.25, 0.9, 4)) if not isinstance(theme.SEQ_CMAP, str) \
+        else ["#ded9ec", "#b3a6d6", "#7a66bd", ACCENT]
     for band, col in zip(band_order, shades):
         vals = share[band].values
         ax.barh(range(len(share)), vals, left=left, color=col, height=0.62,
-                edgecolor="white", linewidth=1.6, label=band)
+                edgecolor=theme.BG, linewidth=1.6, label=band)
+        label_ink = on_color(col)
         for i, (val, l) in enumerate(zip(vals, left)):
             if val > 6:
                 ax.text(l + val / 2, i, f"{val:.0f}%", ha="center", va="center",
-                        fontsize=9, fontweight="bold",
-                        color="white" if band in ("Popular", "Hit") else INK)
+                        fontsize=9, fontweight="bold", color=label_ink)
         left += vals + 0.5
     ax.set_yticks(range(len(share)), [GENRE_LABEL[g] for g in share.index])
     ax.invert_yaxis()
@@ -399,7 +382,7 @@ def main():
     cats = ["0 to 10\nstreams", "11 to 1,000\nstreams", "More than 1,000\nstreams"]
     vals = [120.5, 102.1, 30.4]
     bars = ax.bar(cats, vals, color=[C[1], "#f0a98a", C[0]], width=0.55,
-                  edgecolor="white", linewidth=2)
+                  edgecolor=theme.BG, linewidth=2)
     for b, v in zip(bars, vals):
         ax.text(b.get_x() + b.get_width() / 2, v + 3, f"{v:.1f}M",
                 ha="center", fontsize=11.5, fontweight="bold", color=INK)
@@ -419,4 +402,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    for mode in theme.MODES:
+        print(f"\n--- {mode} ---")
+        theme.set_theme(mode)
+        main()

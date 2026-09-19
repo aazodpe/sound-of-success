@@ -5,18 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Clustering &middot; The Sound of Success</title>
 <meta name="description" content="What popular music is actually made of, and whether a song's success can be seen in the music itself.">
+<link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', saved);
+    }
+  } catch (e) {}
+})();
+</script>
 </head>
 <body>
 
 <header class="masthead">
+  <p class="eyebrow">CSCI 5612 &middot; Portfolio Project</p>
   <h1>The Sound of Success</h1>
   <p class="tagline">What popular music is actually made of, and whether a song's success can be seen in the music itself.</p>
   <p class="byline">Atharva Zodpe &middot; CSCI 5612 Machine Learning &middot; University of Colorado Boulder</p>
+  <div class="waveform" aria-hidden="true"><i style="height:18px;animation-delay:0.00s"></i><i style="height:34px;animation-delay:0.13s"></i><i style="height:52px;animation-delay:0.26s"></i><i style="height:28px;animation-delay:0.39s"></i><i style="height:44px;animation-delay:0.52s"></i><i style="height:62px;animation-delay:0.65s"></i><i style="height:30px;animation-delay:0.78s"></i><i style="height:48px;animation-delay:0.91s"></i><i style="height:22px;animation-delay:1.04s"></i><i style="height:56px;animation-delay:1.17s"></i><i style="height:38px;animation-delay:1.30s"></i><i style="height:68px;animation-delay:1.43s"></i><i style="height:26px;animation-delay:0.00s"></i><i style="height:46px;animation-delay:0.13s"></i><i style="height:58px;animation-delay:0.26s"></i><i style="height:32px;animation-delay:0.39s"></i><i style="height:50px;animation-delay:0.52s"></i><i style="height:20px;animation-delay:0.65s"></i><i style="height:42px;animation-delay:0.78s"></i><i style="height:64px;animation-delay:0.91s"></i><i style="height:36px;animation-delay:1.04s"></i><i style="height:54px;animation-delay:1.17s"></i><i style="height:24px;animation-delay:1.30s"></i><i style="height:40px;animation-delay:1.43s"></i><i style="height:60px;animation-delay:0.00s"></i><i style="height:30px;animation-delay:0.13s"></i><i style="height:48px;animation-delay:0.26s"></i><i style="height:34px;animation-delay:0.39s"></i><i style="height:22px;animation-delay:0.52s"></i><i style="height:44px;animation-delay:0.65s"></i><i style="height:56px;animation-delay:0.78s"></i><i style="height:28px;animation-delay:0.91s"></i><i style="height:50px;animation-delay:1.04s"></i><i style="height:38px;animation-delay:1.17s"></i><i style="height:66px;animation-delay:1.30s"></i><i style="height:26px;animation-delay:1.43s"></i><i style="height:46px;animation-delay:0.00s"></i><i style="height:32px;animation-delay:0.13s"></i><i style="height:52px;animation-delay:0.26s"></i><i style="height:20px;animation-delay:0.39s"></i></div>
 </header>
 
 <nav class="tabs">
-  <ul>
+  <div class="bar">
+    <ul>
     <li><a href="index.html">Introduction</a></li>
     <li><a href="dataprep_eda.html">DataPrep_EDA</a></li>
     <li><a href="clustering.html" class="active">Clustering</a></li>
@@ -27,7 +42,11 @@
     <li><a href="regression.html">Regression</a></li>
     <li><a href="nn.html">NN</a></li>
     <li><a href="conclusions.html">Conclusions</a></li>
-  </ul>
+    </ul>
+    <button class="theme-toggle" type="button" aria-label="Switch between light and dark">
+      <span class="moon">&#9789;</span><span class="sun">&#9728;</span>
+    </button>
+  </div>
 </nav>
 
 <main>
@@ -52,5 +71,57 @@
   <p>Atharva Zodpe &middot; CSCI 5612 Machine Learning &middot; University of Colorado Boulder</p>
 </footer>
 
+<script>
+(function () {
+  var root = document.documentElement;
+
+  function current() {
+    var set = root.getAttribute('data-theme');
+    if (set) return set;
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+
+  // Every figure ships a light and a dark rendering; show the right one.
+  function swapFigures(mode) {
+    var imgs = document.querySelectorAll('img[data-dark]');
+    for (var i = 0; i < imgs.length; i++) {
+      var want = mode === 'dark' ? imgs[i].dataset.dark : imgs[i].dataset.light;
+      if (imgs[i].getAttribute('src') !== want) imgs[i].setAttribute('src', want);
+    }
+  }
+
+  function apply(mode) {
+    root.setAttribute('data-theme', mode);
+    try { localStorage.setItem('theme', mode); } catch (e) {}
+    swapFigures(mode);
+  }
+
+  swapFigures(current());
+
+  var btn = document.querySelector('.theme-toggle');
+  if (btn) {
+    btn.addEventListener('click', function () {
+      apply(current() === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function () {
+    if (!localStorage.getItem('theme')) swapFigures(current());
+  });
+
+  // Gentle reveal as sections come into view.
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('main > figure, main > .cards, main > table').forEach(function (el) {
+      el.classList.add('reveal');
+      io.observe(el);
+    });
+  }
+})();
+</script>
 </body>
 </html>

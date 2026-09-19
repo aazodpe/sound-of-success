@@ -17,16 +17,21 @@ CLEAN = os.path.join(HERE, "..", "data", "clean")
 IMG   = os.path.join(HERE, "..", "docs", "images")
 os.makedirs(IMG, exist_ok=True)
 
-INK, INK_SOFT, GRID = "#1b1d21", "#4a4f57", "#e2e5ea"
-HDR_RAW, HDR_CLEAN = "#eb6834", "#4a3aa7"
+import theme
+
+HDR = {"light": ("#eb6834", "#4a3aa7"), "dark": ("#d95926", "#7d6fd6")}
 
 
-def table_png(df, cols, title, subtitle, out, header_color, n=6, colw=None):
+def table_png(df, cols, title, subtitle, out, header_key, n=6, colw=None):
     d = df[cols].head(n).copy()
     for c in d.columns:
         d[c] = d[c].astype(str).str.slice(0, 22)
     ncol = len(cols)
-    fig, ax = plt.subplots(figsize=(min(2.0 * ncol, 15), 0.30 * n + 0.95))
+    mode = "dark" if theme.SUFFIX else "light"
+    header_color = HDR[mode][header_key]
+    row_a, row_b = (theme.BG, "#1d1d22") if mode == "dark" else ("#ffffff", "#f7f8fa")
+    fig, ax = plt.subplots(figsize=(min(2.0 * ncol, 15), 0.30 * n + 0.95),
+                           facecolor=theme.BG)
     ax.axis("off")
     heads = ["\n".join(textwrap.wrap(c.replace("_", " "), 13)[:2]) for c in d.columns]
     tbl = ax.table(cellText=d.values, colLabels=heads,
@@ -35,24 +40,26 @@ def table_png(df, cols, title, subtitle, out, header_color, n=6, colw=None):
     tbl.set_fontsize(8)
     tbl.scale(1, 1.55)
     for (r, c), cell in tbl.get_celld().items():
-        cell.set_edgecolor(GRID)
+        cell.set_edgecolor(theme.GRID)
         cell.set_linewidth(0.8)
         if r == 0:
             cell.set_facecolor(header_color)
             cell.set_text_props(color="white", fontweight="bold", fontsize=7.6)
             cell.set_height(cell.get_height() * 1.7)
         else:
-            cell.set_facecolor("#ffffff" if r % 2 else "#f7f8fa")
-            cell.set_text_props(color=INK)
+            cell.set_facecolor(row_a if r % 2 else row_b)
+            cell.set_text_props(color=theme.INK)
     if colw:
         for (r, c), cell in tbl.get_celld().items():
             cell.set_width(colw)
-    ax.set_title(title, loc="left", fontsize=12, fontweight="bold", color=INK, pad=20)
+    ax.set_title(title, loc="left", fontsize=12, fontweight="bold", color=theme.INK, pad=20)
     ax.text(0, 1.03, subtitle, transform=ax.transAxes, fontsize=9,
-            color=INK_SOFT, va="bottom")
-    fig.savefig(os.path.join(IMG, out), dpi=150, bbox_inches="tight", facecolor="white")
+            color=theme.INK_SOFT, va="bottom")
+    name = theme.out_name(out)
+    fig.savefig(os.path.join(IMG, name), dpi=150, bbox_inches="tight",
+                facecolor=theme.BG)
     plt.close(fig)
-    print(f"  saved {out}")
+    print(f"  saved {name}")
 
 
 def main():
@@ -64,7 +71,7 @@ def main():
               "RAW: Spotify track features",
               f"{len(r):,} rows before cleaning. Release dates arrive in three different "
               f"formats, songs repeat across playlists, and length is in milliseconds.",
-              "raw_spotify.png", HDR_RAW)
+              "raw_spotify.png", 0)
 
     c = pd.read_csv(os.path.join(CLEAN, "spotify_songs_clean.csv"))
     table_png(c, ["track_name", "track_artist", "release_year", "playlist_genre",
@@ -73,7 +80,7 @@ def main():
               "CLEAN: Spotify track features",
               f"{len(c):,} rows after cleaning. One row per song, a single numeric release "
               f"year, length in minutes, and new banded variables for later use.",
-              "clean_spotify.png", HDR_CLEAN)
+              "clean_spotify.png", 1)
 
     # ---- Billboard ---------------------------------------------------------
     r = pd.read_csv(os.path.join(RAW, "billboard_hot100_raw.csv"))
@@ -82,7 +89,7 @@ def main():
               "RAW: Billboard Hot 100 weekly entries",
               f"{len(r):,} weekly rows before cleaning. The last_week column is blank "
               f"wherever a song was not on the chart the previous week.",
-              "raw_billboard.png", HDR_RAW)
+              "raw_billboard.png", 0)
 
     c = pd.read_csv(os.path.join(CLEAN, "billboard_songs_clean.csv"))
     table_png(c.sort_values("weeks_on_chart", ascending=False),
@@ -91,7 +98,7 @@ def main():
               "CLEAN: Billboard, one row per song",
               f"{len(c):,} distinct songs after cleaning. Weekly entries are collapsed into "
               f"one record per song carrying its best position and total time on the chart.",
-              "clean_billboard.png", HDR_CLEAN)
+              "clean_billboard.png", 1)
 
     # ---- Linked table ------------------------------------------------------
     c = pd.read_csv(os.path.join(CLEAN, "songs_with_chart_outcome.csv"))
@@ -101,7 +108,7 @@ def main():
               "CLEAN: audio qualities joined to chart outcome",
               f"{len(c):,} songs, each carrying both what it sounds like and how it "
               f"performed. Songs that never charted are coded 101, a real outcome not a gap.",
-              "clean_linked.png", HDR_CLEAN)
+              "clean_linked.png", 1)
 
     # ---- Deezer / MusicBrainz (only once the API script has run) -----------
     p = os.path.join(RAW, "deezer_tracks_raw.csv")
@@ -112,14 +119,14 @@ def main():
                   "RAW: Deezer API track records",
                   f"{len(r):,} tracks as returned by the API. Tempo is reported as 0 when "
                   f"no analysis exists, and length is in seconds.",
-                  "raw_deezer.png", HDR_RAW)
+                  "raw_deezer.png", 0)
         c = pd.read_csv(os.path.join(CLEAN, "deezer_tracks_clean.csv"))
         table_png(c, ["title", "artist_name", "release_year", "duration_min", "bpm",
                       "bpm_known", "rank", "explicit_lyrics", "source_genre"],
                   "CLEAN: Deezer API track records",
                   f"{len(c):,} tracks after cleaning. Missing tempos are flagged and filled "
                   f"rather than silently kept as zero.",
-                  "clean_deezer.png", HDR_CLEAN)
+                  "clean_deezer.png", 1)
 
     p = os.path.join(RAW, "musicbrainz_tags_raw.csv")
     if os.path.exists(p):
@@ -129,17 +136,20 @@ def main():
                   "RAW: MusicBrainz listener tags",
                   f"{len(r):,} artist and tag pairs. Tags are typed freely by listeners, so "
                   f"casing, punctuation and blanks are all inconsistent.",
-                  "raw_tags.png", HDR_RAW)
+                  "raw_tags.png", 0)
         c = pd.read_csv(os.path.join(CLEAN, "musicbrainz_tags_clean.csv"))
         table_png(c, ["artist_name", "mb_country", "mb_type", "mb_begin_year",
                       "tag", "tag_count"],
                   "CLEAN: MusicBrainz listener tags",
                   f"{len(c):,} usable pairs after cleaning. Tags are lowercased, stripped of "
                   f"punctuation, de-duplicated, and empty entries removed.",
-                  "clean_tags.png", HDR_CLEAN)
+                  "clean_tags.png", 1)
 
     print("\nPreviews written to", os.path.abspath(IMG))
 
 
 if __name__ == "__main__":
-    main()
+    for mode in theme.MODES:
+        print(f"\n--- {mode} ---")
+        theme.set_theme(mode)
+        main()
