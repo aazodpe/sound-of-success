@@ -145,6 +145,36 @@ def main():
                   f"punctuation, de-duplicated, and empty entries removed.",
                   "clean_tags.png", 1)
 
+
+    # ---- Module 2: the exact unlabelled matrices handed to the algorithms --
+    p = os.path.join(CLEAN, "clustering_input.csv")
+    if os.path.exists(p):
+        c = pd.read_csv(p)
+        table_png(c, list(c.columns[:8]),
+                  "CLUSTERING INPUT: unlabelled, numeric, standardised",
+                  f"{len(c):,} rows x {c.shape[1]} columns. No title, no artist, no genre "
+                  f"and no popularity: clustering is only shown the sound.",
+                  "clustering_input.png", 1, n=6)
+
+    p = os.path.join(CLEAN, "pca_input.csv")
+    if os.path.exists(p):
+        c = pd.read_csv(p)
+        table_png(c, list(c.columns[:8]),
+                  "PCA INPUT: the same matrix, standardised to a common scale",
+                  f"{len(c):,} rows x {c.shape[1]} columns. Every column now has mean 0 and "
+                  f"standard deviation 1, so no variable dominates on units alone.",
+                  "pca_input.png", 1, n=6)
+
+    p = os.path.join(CLEAN, "pca_components.csv")
+    if os.path.exists(p):
+        c = pd.read_csv(p)
+        c = c.rename(columns={c.columns[0]: "variable"})
+        table_png(c, ["variable", "PC1", "PC2", "PC3", "PC4", "PC5"],
+                  "PCA OUTPUT: the loadings",
+                  "How strongly each original variable contributes to each component. "
+                  "These are the eigenvectors of the correlation matrix.",
+                  "pca_components.png", 1, n=10)
+
     print("\nPreviews written to", os.path.abspath(IMG))
 
 

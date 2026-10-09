@@ -37,9 +37,10 @@
     <li><a href="pca.html" class="active">PCA</a></li>
     <li><a href="naivebayes.html">NaiveBayes</a></li>
     <li><a href="dectrees.html">DecTrees</a></li>
-    <li><a href="svms.html">SVMs</a></li>
     <li><a href="regression.html">Regression</a></li>
-    <li><a href="nn.html">NN</a></li>
+    <li><a href="adaboost.html">AdaBoost</a></li>
+    <li><a href="gradientboosting.html">GradientBoosting</a></li>
+    <li><a href="xgboost.html">XGBoost</a></li>
     <li><a href="conclusions.html">Conclusions</a></li>
     </ul>
     <button class="theme-toggle" type="button" aria-label="Switch between light and dark">
@@ -49,20 +50,222 @@
 </nav>
 
 <main>
-<h2>PCA</h2>
+<h2>Principal Component Analysis</h2>
+
+<p class="lede">Ten measurements describe every song in this project, which is more dimensions than
+anyone can picture at once. PCA asks whether those ten are really ten independent things, or
+whether a handful of underlying factors would do almost as well &mdash; and the answer turns out to
+matter for everything that follows.</p>
 
 <h3>Overview</h3>
-<p>A song in this dataset is described by a dozen or so numbers at once, which is more dimensions than anyone can picture. PCA finds the few combined directions along which songs differ most, so the whole collection can be viewed in two or three dimensions without throwing away much of what made the songs different.</p>
-<p>PCA will be used both to visualize the song space and to ask which qualities actually carry the variation. If energy, loudness and acousticness turn out to move together as a single underlying factor, that factor &mdash; not the individual measurements &mdash; is the real axis along which popular music varies.</p>
 
-<h3>Data</h3>
-<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for principal component analysis, shown as a sample image, with links to both the raw and the cleaned data.</div>
+<p>Principal Component Analysis takes a cloud of points described by many variables and finds a new
+set of axes for it. The first new axis is placed along the direction in which the data varies most;
+the second is placed along the direction of greatest remaining variation, at right angles to the
+first; and so on until the new axes are exhausted. Nothing is thrown away at this stage and no
+information is lost &mdash; the cloud has simply been rotated so that its most important directions
+line up with the axes. What makes this useful is that the variation is now concentrated. If most of
+the spread lies along the first two or three new axes, the rest can be dropped, and a
+ten-dimensional problem becomes a two-dimensional one that fits on a page.</p>
+
+<p>Those new axes are the <b>eigenvectors</b> of the data's covariance matrix, and each comes with an
+<b>eigenvalue</b> that measures how much variance lies along it. The relationship is worth stating
+plainly, because it is the whole mechanism: an eigenvector is a direction that the covariance matrix
+stretches without rotating, and its eigenvalue is the factor by which it stretches. Directions in
+which the data varies a lot get stretched a lot and earn large eigenvalues; directions in which it
+barely varies earn small ones. Sorting the eigenvectors by their eigenvalues therefore sorts the
+possible axes from most to least informative, and the share of total variance each one carries is
+simply its eigenvalue divided by the sum of all of them. The same decomposition can be reached
+through the <b>singular value decomposition</b>, which factors the centred data matrix directly
+rather than going through the covariance matrix; the two routes agree to within rounding error, as
+confirmed in the results below.</p>
+
+<figure>
+  <img src="images/diag_pca_concept_dark.png" data-light="images/diag_pca_concept.png" data-dark="images/diag_pca_concept_dark.png" loading="lazy" decoding="async" alt="Two panels: an elliptical point cloud with PC1 and PC2 drawn as arrows along its widest and narrowest directions, and the same cloud with every point projected onto the PC1 line.">
+  <figcaption><b>What PCA is doing.</b> The eigenvectors point along the directions the data
+  actually spreads in, and each eigenvalue says how much of the spread lies along its direction.
+  Reducing dimensions then means projecting every point onto a smaller set of those directions,
+  which is why PCA picks the ones it does: they are the projection that loses the least.</figcaption>
+</figure>
+
+<p>The reason to want this is that high-dimensional data is genuinely difficult, and not only
+because it is hard to draw. As the number of dimensions grows, points spread out into a space that
+expands far faster than any realistic sample can fill, so almost every point ends up roughly the
+same distance from almost every other &mdash; the gap between the nearest and the furthest neighbour
+narrows until "close together" stops carrying much meaning. This directly undermines any method that
+works by measuring distance, which includes the clustering on the previous tab. Correlated variables
+make it worse by a different route: when several columns measure overlapping aspects of the same
+thing, they inflate the apparent dimensionality while adding no real information, and models fitted
+on them become unstable because the data cannot tell which of the correlated columns deserves the
+credit. Reducing to a few independent components addresses both problems at once.</p>
+
+<figure>
+  <img src="images/diag_dimensionality_dark.png" data-light="images/diag_dimensionality.png" data-dark="images/diag_dimensionality_dark.png" loading="lazy" decoding="async" alt="Two panels: a declining curve showing the relative spread of distances shrinking as dimensions increase, and a bar chart showing the variance retained by keeping one through ten components.">
+  <figcaption><b>The problem dimensionality reduction is for, and the price of solving it.</b> As
+  dimensions multiply, distances between points become more and more alike, which is what makes
+  high-dimensional spaces hard to work in. Compression is the remedy, but it costs information: on
+  this project's ten audio measures, keeping the first two components retains only 37% of the
+  variation.</figcaption>
+</figure>
+
+<h3>Data Prep</h3>
+
+<p>PCA needs numeric data with no missing values, and it needs every column on a comparable scale.
+The scale requirement is not a technicality. PCA works by finding directions of maximum variance,
+and variance is measured in whatever units a column happens to use, so a variable recorded in large
+numbers will appear to carry more variation than one recorded in small numbers even when it is less
+informative. In this data tempo takes values near 120 and loudness near &minus;7, while danceability
+and valence never leave the range zero to one. Run on the raw columns, PCA would report that the
+first component is almost entirely tempo, which would be a fact about beats per minute rather than
+about music.</p>
+
+<p>The same ten numeric audio measurements used for clustering were therefore standardised to mean
+zero and standard deviation one before the decomposition. Standardising turns the covariance matrix
+into the correlation matrix, which is the appropriate choice whenever variables are measured in
+different units. Unlike clustering, PCA does not strictly require unlabelled data &mdash; it is a
+transformation rather than a discovery procedure &mdash; but the labels are withheld here anyway,
+so that the component space can afterwards be checked against genre as a genuine test rather than a
+circular one.</p>
+
+<figure>
+  <img src="images/pca_input_dark.png" data-light="images/pca_input.png" data-dark="images/pca_input_dark.png" loading="lazy" decoding="async" alt="Table showing the first rows of the standardised PCA input matrix, with every audio feature column centred near zero.">
+  <figcaption><b>The standardised input matrix.</b> 25,817 songs by ten numeric columns, each
+  centred on zero with a standard deviation of one, so that no variable can dominate the
+  decomposition on the strength of its units alone. Values now read as "standard deviations above
+  or below average" rather than beats per minute or decibels.</figcaption>
+</figure>
+
+<div class="cards">
+  <div class="card">
+    <h4>PCA input</h4>
+    <p>The standardised numeric matrix shown above, exactly as decomposed.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/pca_input.csv">pca_input.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Loadings</h4>
+    <p>The eigenvectors: how strongly each variable contributes to each component.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/pca_components.csv">pca_components.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Projection</h4>
+    <p>Every song's position on the first three components, with genre and popularity rejoined.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/pca_projection.csv">pca_projection.csv &rarr;</a>
+  </div>
+</div>
 
 <h3>Code</h3>
-<div class="pending"><strong>Coming in a later module.</strong>A link to the code for this section, with the language and core packages noted.</div>
+
+<p>Python 3, using <code>scikit-learn</code> for the decomposition and <code>numpy</code> for the
+independent SVD cross-check, with <code>pandas</code> and <code>matplotlib</code> for preparation
+and figures. Every eigenvalue, loading and variance share quoted below is written out by the script
+to a JSON file rather than transcribed by hand.</p>
+
+<div class="cards">
+  <div class="card">
+    <h4>PCA</h4>
+    <p>Standardisation, decomposition, the SVD check, and all four result figures.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/07_pca.py">07_pca.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Diagrams</h4>
+    <p>The two explanatory figures in the Overview above.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/08_concept_diagrams.py">08_concept_diagrams.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Measured values</h4>
+    <p>Every eigenvalue and loading quoted on this page.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/pca_metrics.json">pca_metrics.json &rarr;</a>
+  </div>
+</div>
 
 <h3>Results</h3>
-<div class="pending"><strong>Coming in a later module.</strong>Results, parameter choices, visualizations, and what they mean for the question of what makes a song succeed.</div>
+
+<p>The decomposition was computed two ways as a check on the arithmetic. Taking the eigenvalues of
+the correlation matrix directly, and taking them from a singular value decomposition of the centred
+matrix, gave answers differing by at most 1.8&nbsp;&times;&nbsp;10<sup>&minus;15</sup> &mdash;
+machine rounding error, and confirmation that the two routes to PCA really are the same
+calculation.</p>
+
+<figure>
+  <img src="images/fig26_scree_cumulative_dark.png" data-light="images/fig26_scree_cumulative.png" data-dark="images/fig26_scree_cumulative_dark.png" loading="lazy" decoding="async" alt="Top panel: bar chart of the ten eigenvalues descending from 2.18 to 0.22 with a line marking eigenvalue equals one. Bottom panel: cumulative variance rising gradually and reaching 95 percent only at the ninth component.">
+  <figcaption><b>The variance refuses to concentrate.</b> Only three components have an eigenvalue
+  above 1, the conventional threshold for carrying more information than a single original variable.
+  But the lower panel is the real result: the cumulative curve climbs almost in a straight line, and
+  reaching 95% of the variance takes nine of the ten components. There is no small set of hidden
+  factors underneath these measurements.</figcaption>
+</figure>
+
+<p>That shape is unusual and worth dwelling on. In most datasets with ten correlated columns, two or
+three components capture the bulk of the variation and the rest is noise. Here the first component
+holds 21.8%, the second 15.4% and the third 11.4%, for a combined 48.6% &mdash; less than half the
+information in three of ten dimensions. The practical consequence is that PCA cannot usefully
+compress this data. What it can still do is tell us what the components mean.</p>
+
+<figure>
+  <img src="images/fig27_pca_biplot_dark.png" data-light="images/fig27_pca_biplot.png" data-dark="images/fig27_pca_biplot_dark.png" loading="lazy" decoding="async" alt="Biplot of songs on the first two principal components with each audio variable drawn as an arrow; energy and loudness point right, acousticness points left, danceability and valence point up.">
+  <figcaption><b>Each component is a recognisable musical idea.</b> Drawing the variables as arrows
+  shows what the axes mean: energy (+0.61) and loudness (+0.56) pull right while acousticness
+  (&minus;0.49) pulls left, making PC1 an axis of sonic intensity. Arrows pointing the same way are
+  correlated variables, arrows at right angles are independent ones, and arrows pointing opposite
+  ways trade off against each other.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig28_pca_loadings_dark.png" data-light="images/fig28_pca_loadings.png" data-dark="images/fig28_pca_loadings_dark.png" loading="lazy" decoding="async" alt="Heatmap of the loadings of all ten variables on the first three components, with the strongest contributions highlighted.">
+  <figcaption><b>What each component is made of.</b> PC1 is production intensity, loading on energy
+  and loudness against acousticness. PC2 is mood and groove, loading on danceability (+0.59) and
+  valence (+0.54) against instrumentalness. PC3 is closer to format, setting long instrumental
+  tracks against short, speech-heavy and live ones.</figcaption>
+</figure>
+
+<p>The first component is worth comparing against the previous tab. PC1 runs from quiet and acoustic
+to loud and energetic &mdash; precisely the axis along which k-means split the catalogue in two,
+arrived at by a completely different method with a different distance measure. When an unsupervised
+grouping and a variance decomposition independently pick out the same direction, that direction is a
+genuine property of the music rather than an artefact of either technique.</p>
+
+<figure>
+  <img src="images/fig29_pca_by_genre_dark.png" data-light="images/fig29_pca_by_genre.png" data-dark="images/fig29_pca_by_genre_dark.png" loading="lazy" decoding="async" alt="Six small scatter plots of the same two-component space, each highlighting one genre, showing all six occupying broadly the same region.">
+  <figcaption><b>Reducing to two dimensions does not pull the genres apart.</b> Each panel
+  highlights one genre in the same component space. EDM leans toward the high-intensity end and
+  R&amp;B toward the quieter end, but every genre spreads across most of the space and none occupies
+  territory the others leave empty. The overlap that Module&nbsp;1 found on pairs of raw measures
+  survives the rotation into principal components.</figcaption>
+</figure>
+
+<h3>Conclusions</h3>
+
+<p>PCA was expected to be a compression step and instead became a finding in its own right. Ten
+measured qualities of a song turn out to be very nearly ten independent pieces of information:
+reaching 95% of the variation requires nine of the ten components, and even three components capture
+under half of it. There is no small set of hidden factors lurking beneath danceability, energy,
+loudness and the rest. The measurements are not redundant descriptions of two or three underlying
+musical traits &mdash; they genuinely describe ten different things, and a song needs close to all
+ten numbers to be specified.</p>
+
+<p>That explains something that was puzzling in Module&nbsp;1. If songs really did vary along two or
+three dominant axes, then simple correlations between individual measures and popularity ought to
+have picked up a signal, because each measure would have been a rough proxy for one of the dominant
+factors. The finding that no measure correlated with popularity above 0.14 now fits with the finding
+here: the measures are close to independent, so each one carries only its own small slice of what a
+song is, and no single slice is enough to predict anything.</p>
+
+<p>The components that do emerge are musically coherent, which is reassuring about the data even
+while being unhelpful for compression. The first is an axis of production intensity running from
+quiet and acoustic to loud and electric. The second is mood and groove, separating upbeat danceable
+records from downbeat instrumental ones. The third is closer to format, dividing long instrumental
+tracks from short, speech-heavy and live ones. These are recognisable ways of describing records,
+and the first of them is the same axis the clustering found independently &mdash; two methods, two
+distance measures, one answer.</p>
+
+<p>And once again the genres refuse to separate. Rotating into the directions of maximum variance
+is the most generous possible two-dimensional view of this data, and even there the six genres sit
+on top of one another. Combined with the clustering result, the conclusion is hard to avoid: the
+audible qualities captured by these measurements simply do not encode genre. For the project as a
+whole this sharpens the central question. If what a song sounds like does not determine what it is
+called, and does not predict whether it is heard, then the supervised methods ahead are being asked
+to find a signal that the unsupervised ones have now twice failed to see &mdash; and the honest
+expectation should be that they will struggle too.</p>
 
 </main>
 

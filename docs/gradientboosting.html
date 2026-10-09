@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SVMs &middot; The Sound of Success</title>
+<title>GradientBoosting &middot; The Sound of Success</title>
 <meta name="description" content="What popular music is actually made of, and whether a song's success can be seen in the music itself.">
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
@@ -37,9 +37,10 @@
     <li><a href="pca.html">PCA</a></li>
     <li><a href="naivebayes.html">NaiveBayes</a></li>
     <li><a href="dectrees.html">DecTrees</a></li>
-    <li><a href="svms.html" class="active">SVMs</a></li>
     <li><a href="regression.html">Regression</a></li>
-    <li><a href="nn.html">NN</a></li>
+    <li><a href="adaboost.html">AdaBoost</a></li>
+    <li><a href="gradientboosting.html" class="active">GradientBoosting</a></li>
+    <li><a href="xgboost.html">XGBoost</a></li>
     <li><a href="conclusions.html">Conclusions</a></li>
     </ul>
     <button class="theme-toggle" type="button" aria-label="Switch between light and dark">
@@ -49,14 +50,14 @@
 </nav>
 
 <main>
-<h2>SVMs</h2>
+<h2>GradientBoosting</h2>
 
 <h3>Overview</h3>
-<p>A support vector machine looks for the boundary that separates two groups with the widest possible margin, and its kernel trick lets that boundary bend into shapes a straight line could never make.</p>
-<p>Where a decision tree carves the song space into rectangles, an SVM can draw curved borders through it. Linear, polynomial and radial basis function kernels will be compared on the same classification task, which shows directly how much of the structure in the data is genuinely non-linear.</p>
+<p>Gradient boosting also builds its models in sequence, but instead of re-weighting awkward cases it fits each new model to the error left over by the ones before it. Every round is an attempt to correct the current running total by a small, controlled amount.</p>
+<p>That controlled correction is what makes it worth comparing against a single decision tree on the same data. If a long sequence of small corrections finds structure that one tree misses, the signal in song success is subtle and additive rather than carved along a few obvious thresholds.</p>
 
 <h3>Data</h3>
-<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for support vector machines, shown as a sample image, with links to both the raw and the cleaned data.</div>
+<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for gradient boosting, shown as a sample image, with links to both the raw and the cleaned data.</div>
 
 <h3>Code</h3>
 <div class="pending"><strong>Coming in a later module.</strong>A link to the code for this section, with the language and core packages noted.</div>

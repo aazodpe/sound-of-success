@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NN &middot; The Sound of Success</title>
+<title>XGBoost &middot; The Sound of Success</title>
 <meta name="description" content="What popular music is actually made of, and whether a song's success can be seen in the music itself.">
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
@@ -37,9 +37,10 @@
     <li><a href="pca.html">PCA</a></li>
     <li><a href="naivebayes.html">NaiveBayes</a></li>
     <li><a href="dectrees.html">DecTrees</a></li>
-    <li><a href="svms.html">SVMs</a></li>
     <li><a href="regression.html">Regression</a></li>
-    <li><a href="nn.html" class="active">NN</a></li>
+    <li><a href="adaboost.html">AdaBoost</a></li>
+    <li><a href="gradientboosting.html">GradientBoosting</a></li>
+    <li><a href="xgboost.html" class="active">XGBoost</a></li>
     <li><a href="conclusions.html">Conclusions</a></li>
     </ul>
     <button class="theme-toggle" type="button" aria-label="Switch between light and dark">
@@ -49,14 +50,14 @@
 </nav>
 
 <main>
-<h2>NN</h2>
+<h2>XGBoost</h2>
 
 <h3>Overview</h3>
-<p>A neural network stacks many simple units into layers, letting later layers build on combinations the earlier ones found. Given enough data, it can capture interactions that no one specified in advance.</p>
-<p>A neural network is the most flexible model in this project and therefore the fairest test of a specific question: does song success have structure that the simpler models are missing? If the network only matches regression and trees, that is itself a finding &mdash; it would suggest the audible part of success is genuinely simple, and the rest lies outside the audio.</p>
+<p>XGBoost is a particular implementation of gradient boosting that adds explicit penalties for complexity, handles missing values natively, and is built to run fast on large datasets. It has become the standard reference point for structured, tabular problems like this one.</p>
+<p>It serves as the ceiling test for this project. If a heavily tuned XGBoost model cannot predict song success much better than logistic regression, that is strong evidence the limit lies in the data rather than the method, which is the central claim this whole project is set up to examine.</p>
 
 <h3>Data</h3>
-<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for neural networks, shown as a sample image, with links to both the raw and the cleaned data.</div>
+<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for XGBoost, shown as a sample image, with links to both the raw and the cleaned data.</div>
 
 <h3>Code</h3>
 <div class="pending"><strong>Coming in a later module.</strong>A link to the code for this section, with the language and core packages noted.</div>

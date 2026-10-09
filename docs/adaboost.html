@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NaiveBayes &middot; The Sound of Success</title>
+<title>AdaBoost &middot; The Sound of Success</title>
 <meta name="description" content="What popular music is actually made of, and whether a song's success can be seen in the music itself.">
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
@@ -35,10 +35,10 @@
     <li><a href="dataprep_eda.html">DataPrep_EDA</a></li>
     <li><a href="clustering.html">Clustering</a></li>
     <li><a href="pca.html">PCA</a></li>
-    <li><a href="naivebayes.html" class="active">NaiveBayes</a></li>
+    <li><a href="naivebayes.html">NaiveBayes</a></li>
     <li><a href="dectrees.html">DecTrees</a></li>
     <li><a href="regression.html">Regression</a></li>
-    <li><a href="adaboost.html">AdaBoost</a></li>
+    <li><a href="adaboost.html" class="active">AdaBoost</a></li>
     <li><a href="gradientboosting.html">GradientBoosting</a></li>
     <li><a href="xgboost.html">XGBoost</a></li>
     <li><a href="conclusions.html">Conclusions</a></li>
@@ -50,14 +50,14 @@
 </nav>
 
 <main>
-<h2>NaiveBayes</h2>
+<h2>AdaBoost</h2>
 
 <h3>Overview</h3>
-<p>Na&iuml;ve Bayes estimates how likely each possible label is given what it observes, assuming each piece of evidence contributes independently. That assumption is usually wrong in detail, but it makes the method fast and surprisingly hard to beat, particularly on text.</p>
-<p>Two uses are planned. On the numeric side, predicting a song's genre from its discretized audio qualities. On the text side, using the free-text tags listeners write about artists to predict genre or era &mdash; a natural fit, since Na&iuml;ve Bayes was built for exactly this kind of word-count data.</p>
+<p>AdaBoost builds a long line of very simple models, each one trained to pay most attention to the cases the previous models got wrong. No single member of that line is any good on its own; the strength comes from how their votes are weighted and combined.</p>
+<p>The appeal here is that it keeps re-weighting toward the hard cases. If the songs that break the pattern are a small, distinctive group rather than random noise, a method that deliberately chases its own mistakes should expose them, and the examples it struggles with longest are worth looking at directly.</p>
 
 <h3>Data</h3>
-<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for the Na&iuml;ve Bayes classifier, shown as a sample image, with links to both the raw and the cleaned data.</div>
+<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for AdaBoost, shown as a sample image, with links to both the raw and the cleaned data.</div>
 
 <h3>Code</h3>
 <div class="pending"><strong>Coming in a later module.</strong>A link to the code for this section, with the language and core packages noted.</div>

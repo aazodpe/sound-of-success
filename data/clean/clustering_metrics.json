@@ -1,0 +1,94 @@
+{
+  "n_songs": 25817,
+  "n_features": 10,
+  "features": [
+    "danceability",
+    "energy",
+    "loudness",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo",
+    "duration_min"
+  ],
+  "kmeans": [
+    {
+      "k": 2,
+      "silhouette": 0.1755,
+      "inertia": 222174.3
+    },
+    {
+      "k": 3,
+      "silhouette": 0.1255,
+      "inertia": 200412.8
+    },
+    {
+      "k": 4,
+      "silhouette": 0.1318,
+      "inertia": 183885.3
+    },
+    {
+      "k": 5,
+      "silhouette": 0.1324,
+      "inertia": 169849.7
+    },
+    {
+      "k": 6,
+      "silhouette": 0.1344,
+      "inertia": 159742.9
+    },
+    {
+      "k": 7,
+      "silhouette": 0.1236,
+      "inertia": 152068.1
+    },
+    {
+      "k": 8,
+      "silhouette": 0.1187,
+      "inertia": 146022.9
+    }
+  ],
+  "best_k": 2,
+  "best_silhouette": 0.1755,
+  "sil_sample": 6000,
+  "hclust_sample": 1500,
+  "hclust_metric": "cosine",
+  "hclust_linkage": "average",
+  "hclust_suggested_k": 3,
+  "cosine_median": 1.0182752545000424,
+  "ari_genre": 0.01965343146039651,
+  "ari_hclust_kmeans": 0.04580362316566176,
+  "plot_pca_var": 0.37248571433712563,
+  "cluster_sizes": {
+    "0": 18398,
+    "1": 7419
+  },
+  "cluster_profile": {
+    "0": {
+      "danceability": 0.654,
+      "energy": 0.783,
+      "loudness": -5.592,
+      "speechiness": 0.109,
+      "acousticness": 0.096,
+      "instrumentalness": 0.084,
+      "liveness": 0.205,
+      "valence": 0.528,
+      "tempo": 123.957,
+      "duration_min": 3.737
+    },
+    "1": {
+      "danceability": 0.653,
+      "energy": 0.481,
+      "loudness": -9.955,
+      "speechiness": 0.11,
+      "acousticness": 0.393,
+      "instrumentalness": 0.125,
+      "liveness": 0.155,
+      "valence": 0.449,
+      "tempo": 113.801,
+      "duration_min": 3.802
+    }
+  }
+}

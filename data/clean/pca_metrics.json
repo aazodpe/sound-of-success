@@ -1,0 +1,99 @@
+{
+  "n_songs": 25817,
+  "n_features": 10,
+  "eigenvalues": [
+    2.1809,
+    1.5441,
+    1.139,
+    0.9882,
+    0.9741,
+    0.9573,
+    0.8465,
+    0.6069,
+    0.5419,
+    0.2215
+  ],
+  "explained": [
+    0.2181,
+    0.1544,
+    0.1139,
+    0.0988,
+    0.0974,
+    0.0957,
+    0.0846,
+    0.0607,
+    0.0542,
+    0.0221
+  ],
+  "cumulative": [
+    0.2181,
+    0.3725,
+    0.4864,
+    0.5852,
+    0.6826,
+    0.7783,
+    0.863,
+    0.9237,
+    0.9779,
+    1.0
+  ],
+  "pc1": 21.8,
+  "pc2": 15.4,
+  "pc3": 11.4,
+  "first_two": 37.2,
+  "first_three": 48.6,
+  "n_for_90": 8,
+  "n_for_95": 9,
+  "kaiser": 3,
+  "svd_max_diff": 1.7763568394002505e-15,
+  "top_pc1": [
+    "energy",
+    "loudness",
+    "acousticness",
+    "tempo"
+  ],
+  "top_pc2": [
+    "danceability",
+    "valence",
+    "speechiness",
+    "instrumentalness"
+  ],
+  "loadings": {
+    "PC1": {
+      "danceability": -0.03,
+      "energy": 0.612,
+      "loudness": 0.555,
+      "speechiness": 0.005,
+      "acousticness": -0.491,
+      "instrumentalness": -0.08,
+      "liveness": 0.164,
+      "valence": 0.107,
+      "tempo": 0.177,
+      "duration_min": -0.003
+    },
+    "PC2": {
+      "danceability": 0.592,
+      "energy": -0.033,
+      "loudness": 0.074,
+      "speechiness": 0.359,
+      "acousticness": 0.058,
+      "instrumentalness": -0.303,
+      "liveness": -0.124,
+      "valence": 0.538,
+      "tempo": -0.215,
+      "duration_min": -0.26
+    },
+    "PC3": {
+      "danceability": 0.346,
+      "energy": 0.093,
+      "loudness": -0.061,
+      "speechiness": -0.415,
+      "acousticness": -0.244,
+      "instrumentalness": 0.411,
+      "liveness": -0.382,
+      "valence": 0.178,
+      "tempo": -0.296,
+      "duration_min": 0.448
+    }
+  }
+}

@@ -24,16 +24,17 @@ BYLINE = "Atharva Zodpe"
 # (output filename, tab label, fragment filename)
 # Tab labels follow the names required by the assignment.
 PAGES = [
-    ("index.html",        "Introduction",  "introduction.html"),
-    ("dataprep_eda.html", "DataPrep_EDA",  "dataprep_eda.html"),
-    ("clustering.html",   "Clustering",    "clustering.html"),
-    ("pca.html",          "PCA",           "pca.html"),
-    ("naivebayes.html",   "NaiveBayes",    "naivebayes.html"),
-    ("dectrees.html",     "DecTrees",      "dectrees.html"),
-    ("svms.html",         "SVMs",          "svms.html"),
-    ("regression.html",   "Regression",    "regression.html"),
-    ("nn.html",           "NN",            "nn.html"),
-    ("conclusions.html",  "Conclusions",   "conclusions.html"),
+    ("index.html",             "Introduction",      "introduction.html"),
+    ("dataprep_eda.html",      "DataPrep_EDA",      "dataprep_eda.html"),
+    ("clustering.html",        "Clustering",        "clustering.html"),
+    ("pca.html",               "PCA",               "pca.html"),
+    ("naivebayes.html",        "NaiveBayes",        "naivebayes.html"),
+    ("dectrees.html",          "DecTrees",          "dectrees.html"),
+    ("regression.html",        "Regression",        "regression.html"),
+    ("adaboost.html",          "AdaBoost",          "adaboost.html"),
+    ("gradientboosting.html",  "GradientBoosting",  "gradientboosting.html"),
+    ("xgboost.html",           "XGBoost",           "xgboost.html"),
+    ("conclusions.html",       "Conclusions",       "conclusions.html"),
 ]
 
 WAVE_HEIGHTS = [18, 34, 52, 28, 44, 62, 30, 48, 22, 56, 38, 68, 26, 46, 58,

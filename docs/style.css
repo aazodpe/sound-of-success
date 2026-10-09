@@ -193,7 +193,7 @@ nav.tabs {
 }
 
 nav.tabs .bar {
-  max-width: 1120px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 0 16px;
   display: flex;
@@ -219,10 +219,10 @@ nav.tabs ul::-webkit-scrollbar { display: none; }
 
 nav.tabs a {
   display: block;
-  padding: 15px 9px;
-  font-size: 0.735rem;
+  padding: 15px 8px;
+  font-size: 0.72rem;
   font-weight: 500;
-  letter-spacing: 0.035em;
+  letter-spacing: 0.022em;
   text-transform: uppercase;
   color: var(--ink-soft);
   text-decoration: none;

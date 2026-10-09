@@ -1,14 +1,244 @@
 <h2>Clustering</h2>
 
-<h3>Overview</h3>
-<p>Clustering looks for natural groupings in data without being told what the groups are. Each song becomes a point in a space defined by its measurable qualities &mdash; how danceable it is, how loud, how fast, how acoustic &mdash; and the algorithm asks which songs sit close together.</p>
-<p>The interesting question here is whether the clusters the data forms on its own line up with the genre labels the industry uses. If a clustering algorithm that has never seen the word &ldquo;country&rdquo; still separates country songs from electronic ones, that says genre is audible. If the clusters cut across genre lines instead, that says the labels are more about marketing and audience than about sound.</p>
+<p class="lede">If the six genres the industry uses describe real, audible differences, then an
+algorithm that has never seen a genre label should rediscover something like them from the sound
+alone. This tab puts that to the test twice over, with two different clustering methods and two
+different notions of distance.</p>
 
-<h3>Data</h3>
-<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for partitional (k-means) and hierarchical clustering, shown as a sample image, with links to both the raw and the cleaned data.</div>
+<h3>Overview</h3>
+
+<p>Clustering is the part of machine learning that works without an answer key. Nothing is
+labelled, nothing is being predicted, and the algorithm is never told what it is looking for.
+It is handed a set of points and asked a single question: which of these belong together? The
+answer depends entirely on what "together" is taken to mean, which is why the choice of distance
+measure matters as much as the choice of algorithm. For this project the points are songs, and
+the dimensions of the space they live in are the measured qualities of each recording &mdash;
+how loud, how fast, how acoustic, how danceable. A cluster, in that space, is a region where
+songs pile up: a kind of record that gets made often.</p>
+
+<p>Two families of clustering are used here, and they work in genuinely different ways.
+<b>Partitional</b> methods, of which k-means is the best known, require the number of groups to be
+decided in advance. k-means places that many centres in the space, assigns every song to its
+nearest centre, moves each centre to the middle of whatever it just collected, and repeats until
+nothing moves. It is fast and it scales, but it has to be told how many groups to look for, and
+it will happily produce exactly that many whether or not they exist. <b>Hierarchical</b>
+clustering makes no such commitment. Every song starts as its own group, the two closest groups
+merge, and the process repeats until a single group remains &mdash; leaving behind a tree that
+records the entire merge history. That tree can be cut at any height, which means the number of
+clusters becomes something read off the result rather than supplied to it.</p>
+
+<figure>
+  <img src="images/diag_clustering_types.png" alt="Two panels contrasting k-means, where three centres are marked with crosses, against hierarchical clustering, where nested ellipses show groups merging into larger groups.">
+  <figcaption><b>Partitional and hierarchical clustering compared.</b> k-means commits to a number
+  of groups before it starts and moves centres until the assignment stops changing, while
+  hierarchical clustering merges the closest pair over and over and leaves a tree that can be cut
+  at any height. Running both is a way of checking whether a result is a property of the data or
+  an artefact of one algorithm's assumptions.</figcaption>
+</figure>
+
+<p>The distance measure deserves as much attention as the algorithm. k-means here uses
+<b>Euclidean distance</b>, the ordinary straight-line distance between two points, which is the
+only measure its averaging step is mathematically consistent with. The hierarchical clustering
+instead uses <b>cosine distance</b>, which ignores magnitude entirely and compares only the
+direction two songs point in. The distinction is not academic for music. A quiet acoustic
+recording and a loud, heavily compressed one can have the same <em>balance</em> of qualities while
+sitting far apart in absolute terms; Euclidean distance calls them different, and cosine distance
+calls them the same shape at a different volume. Using both means the project gets to see which
+groupings survive a change in what "close" means.</p>
+
+<figure>
+  <img src="images/diag_distance_metrics.png" alt="Two panels showing Euclidean distance as a straight line between two points, and cosine distance as the angle between two vectors drawn from the origin.">
+  <figcaption><b>Why the distance measure changes the answer.</b> Euclidean distance asks how far
+  apart two songs are, so a quiet mix and a loud mix of similar material are counted as different;
+  cosine distance asks which direction they point from the origin, so the same two are counted as
+  nearly identical. Any grouping that appears under both measures is more trustworthy than one
+  that appears under only one.</figcaption>
+</figure>
+
+<p>What this is being used to discover is specific. The Module&nbsp;1 exploration found that genres
+overlap heavily on every pair of measured qualities, but overlap on two axes at a time is not
+proof that the genres are inseparable on all ten at once. Clustering settles that properly: if
+groups discovered from the sound alone line up with the genre labels, then genre is audible and
+the industry's categories track something real in the recordings. If they do not, the categories
+are doing something else &mdash; organising audiences, marketing, and history rather than sound.
+The same clusters can then be checked against popularity, which asks whether the kinds of record
+that get made often are also the kinds that get heard.</p>
+
+<h3>Data Prep</h3>
+
+<p>Clustering requires a particular shape of data, and the requirements are strict. Every column
+must be numeric, because the algorithms work by computing distances and there is no meaningful
+distance between the words "pop" and "rock". Nothing may be missing, because a single absent value
+makes a distance undefined. And critically, the data must be <b>unlabelled</b>: the whole point is
+to find structure without being told the answer, so anything that encodes the answer has to be
+withheld. If genre were left in the matrix, discovering that the clusters match genre would prove
+nothing at all.</p>
+
+<p>The input is therefore a strict subset of the cleaned song table. Track name, artist, album,
+genre, subgenre, popularity score, popularity band and every derived label were all removed,
+leaving ten numeric measurements per song: danceability, energy, loudness, speechiness,
+acousticness, instrumentalness, liveness, valence, tempo and duration. Those ten columns were then
+standardised to mean zero and standard deviation one. Without that step the clustering would be
+decided almost entirely by tempo and loudness, which run to values in the hundreds and the negative
+tens respectively, while danceability and valence never leave the range zero to one &mdash; the
+algorithm would be measuring units rather than music.</p>
+
+<figure>
+  <img src="images/clustering_input.png" alt="Table showing the first rows of the standardised clustering input, with numeric audio feature columns and no labels.">
+  <figcaption><b>The exact matrix handed to the algorithms.</b> 25,817 rows and ten standardised
+  numeric columns, with every name, genre and popularity figure stripped out. This is the complete
+  input: the clustering sees nothing about a song except how it sounds.</figcaption>
+</figure>
+
+<div class="cards">
+  <div class="card">
+    <h4>Clustering input</h4>
+    <p>The unlabelled, standardised numeric matrix shown above, exactly as the algorithms received it.</p>
+    <a href="__REPO__/blob/main/data/clean/clustering_input.csv">clustering_input.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Cluster assignments</h4>
+    <p>Each song's cluster, rejoined to the labels that were withheld, so the result can be checked.</p>
+    <a href="__REPO__/blob/main/data/clean/clustering_results.csv">clustering_results.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Source data</h4>
+    <p>The cleaned song table these columns were drawn from.</p>
+    <a href="__REPO__/blob/main/data/clean/spotify_songs_clean.csv">spotify_songs_clean.csv &rarr;</a>
+  </div>
+</div>
 
 <h3>Code</h3>
-<div class="pending"><strong>Coming in a later module.</strong>A link to the code for this section, with the language and core packages noted.</div>
+
+<p>Written in Python 3, using <code>scikit-learn</code> for k-means and the silhouette measures,
+<code>scipy</code> for the hierarchical linkage and the cosine distance matrix, and
+<code>pandas</code> and <code>matplotlib</code> for everything else. Every run is seeded so the
+figures reproduce exactly. The full numeric output is written to a JSON file, which is where every
+figure quoted on this page comes from.</p>
+
+<div class="cards">
+  <div class="card">
+    <h4>Clustering</h4>
+    <p>k-means across seven values of k, silhouette selection, and cosine-distance hierarchical clustering.</p>
+    <a href="__REPO__/blob/main/code/06_clustering.py">06_clustering.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Diagrams</h4>
+    <p>The two explanatory figures in the Overview above.</p>
+    <a href="__REPO__/blob/main/code/08_concept_diagrams.py">08_concept_diagrams.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Measured values</h4>
+    <p>Every number quoted on this page, written out by the script.</p>
+    <a href="__REPO__/blob/main/data/clean/clustering_metrics.json">clustering_metrics.json &rarr;</a>
+  </div>
+</div>
 
 <h3>Results</h3>
-<div class="pending"><strong>Coming in a later module.</strong>Results, parameter choices, visualizations, and what they mean for the question of what makes a song succeed.</div>
+
+<p>k-means was run at seven values of k, from two through eight, and each result scored with the
+silhouette measure. Silhouette width compares how close a song sits to its own cluster against how
+close it sits to the nearest rival cluster, on a scale running from &minus;1 to 1. A score near 1
+means a song is comfortably inside its group; a score near 0 means it sits on a boundary and could
+belong to either side.</p>
+
+<figure>
+  <img src="images/fig20_silhouette_by_k.png" alt="Line chart of average silhouette width against k, peaking at k equals 2 with a value of 0.175 and staying between 0.12 and 0.14 for larger k.">
+  <figcaption><b>The silhouette method points to two clusters, weakly.</b> The score peaks at
+  k&nbsp;=&nbsp;2 with an average width of 0.175, dips at k&nbsp;=&nbsp;3, and then sits flat
+  between 0.12 and 0.14 for every larger k. The peak answers the question of which k is best, but
+  the height of that peak is the more important result: 0.175 is a long way from the 0.5 or above
+  that would indicate genuinely well-separated groups.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig21_silhouette_detail.png" alt="Silhouette plot showing per-song widths for the two clusters, with most values between 0 and 0.3 and a visible tail of negative values.">
+  <figcaption><b>Most songs sit near a boundary rather than inside a cluster.</b> Plotting every
+  sampled song individually shows the problem behind the headline score: the widths tail off
+  smoothly toward zero instead of forming a solid block of confident assignments, and a visible
+  share of songs fall below zero, meaning they are closer to the other cluster than their own.
+  The structure the algorithm found is real but shallow.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig22_kmeans_clusters.png" alt="Three scatter plots of songs on the first two principal components, coloured by k-means cluster at k equals 2, 3 and 6, showing cuts through one continuous cloud.">
+  <figcaption><b>The clusters carve a single cloud rather than finding separate islands.</b> At
+  every value of k the picture is the same: one continuous mass of songs with straight boundaries
+  drawn through it, not distinct groups separated by empty space. This is what a silhouette of
+  0.175 looks like, and it is why raising k simply slices the same cloud more finely instead of
+  revealing anything new.</figcaption>
+</figure>
+
+<p>What the two clusters actually contain is more interesting than how well separated they are.
+Comparing each cluster's average song against the catalogue average shows that the split is not
+arbitrary &mdash; it runs along one clear axis.</p>
+
+<figure>
+  <img src="images/fig23_cluster_profiles.png" alt="Heatmap of the two cluster profiles, with cluster 0 high on energy and loudness and low on acousticness, and cluster 1 the reverse.">
+  <figcaption><b>The split is about production, not genre.</b> Cluster&nbsp;0 holds 18,398 songs
+  that are louder and more energetic than average and markedly less acoustic; cluster&nbsp;1 holds
+  7,419 that are the mirror image, quieter and more acoustic. Danceability, speechiness and
+  duration are nearly identical across both, so the single strongest division in the data is how
+  densely a record is produced.</figcaption>
+</figure>
+
+<p>Hierarchical clustering was then run as an independent check, on a random sample of 1,500 songs
+because a full distance matrix over 25,817 songs would require more than 300 million pairwise
+values. Cosine distance was used as the measure and average linkage as the merge rule.</p>
+
+<figure>
+  <img src="images/fig24_dendrogram.png" alt="Dendrogram of 1,500 songs clustered with cosine distance and average linkage, showing two broad branches with merge heights rising gradually.">
+  <figcaption><b>The hierarchy suggests three groups where k-means preferred two.</b> Reading the
+  tree by its largest vertical gap &mdash; the usual rule &mdash; points to cutting at three
+  clusters rather than two, and the merge heights climb gradually from around 0.6 to 1.1 with no
+  decisive break. That the two methods disagree about the number of groups is itself evidence:
+  where real clusters exist, the answer does not usually depend this much on how you ask.</figcaption>
+</figure>
+
+<p>Measured formally, the agreement between the hierarchical and k-means solutions is 0.046 on the
+adjusted Rand index, a scale on which 0 means no more agreement than chance and 1 means identical
+groupings. Two methods looking at the same songs, with different distance measures, barely
+recovered the same structure. The comparison that matters most, though, is against the labels
+neither algorithm was shown.</p>
+
+<figure>
+  <img src="images/fig25_clusters_vs_genre.png" alt="Horizontal stacked bars showing the genre composition of each cluster, with every genre present in both clusters in broadly similar proportions.">
+  <figcaption><b>No cluster belongs to a single genre.</b> Both clusters contain all six genres,
+  and the strongest tilt is mild &mdash; EDM makes up 23% of cluster&nbsp;0 against 7% of
+  cluster&nbsp;1, and R&amp;B 29% of cluster&nbsp;1 against 11% of cluster&nbsp;0. Agreement with
+  the genre labels scores 0.020 on the adjusted Rand index, which is very close to no relationship
+  at all.</figcaption>
+</figure>
+
+<h3>Conclusions</h3>
+
+<p>The clearest finding is a negative one, and it answers a question this project set out to ask.
+Genre is not audible in these measurements. An algorithm given ten numbers describing every song
+and no hint of what any of them were called recovered groupings that match the industry's genre
+labels at 0.020 on a scale where zero means chance. Whatever separates pop from rock from Latin
+music, it is not something captured by how loud, fast, danceable or acoustic a recording is. The
+categories that organise record shops, radio formats and streaming playlists appear to be
+categories of audience, tradition and marketing rather than categories of sound.</p>
+
+<p>The one real division the data does contain is about production rather than style. The single
+strongest split separates loud, energetic, electric records from quieter, more acoustic ones, and
+it cuts straight across every genre: there are hushed rap records and abrasive pop records, and the
+algorithm groups each with its sonic neighbours rather than its labelled peers. That axis is worth
+naming because it is the same one that will reappear in the next tab from a completely different
+method, which is a reassuring sign that it is a property of music rather than of one algorithm.</p>
+
+<p>Equally striking is what the clusters fail to explain. The loud group averages 40.3 on the
+popularity scale and the quiet group 41.5 &mdash; a difference of barely one point out of a hundred.
+The biggest structural division in how records are made has essentially no bearing on whether they
+get heard. Taken together with Module&nbsp;1's finding that no single measured quality correlates
+with popularity above 0.14, a consistent picture is forming: the audible properties of a song
+describe what kind of record it is, and say remarkably little about what happens to it afterwards.</p>
+
+<p>There is a methodological lesson here too, and it is worth stating plainly rather than hiding.
+A silhouette score of 0.175 is weak. It would have been easy to report "the best k is 2" and move
+on, as though the method had found something solid, but the honest reading is that k&nbsp;=&nbsp;2
+is the least bad option among several poor ones. The song space is a continuum, not a collection
+of types, and the two methods disagreeing about whether it holds two groups or three is exactly
+what a continuum looks like when you insist on dividing it. That shape is the reason the supervised
+methods in the modules ahead are worth running: if the structure were obvious, it would already
+have shown up here.</p>
