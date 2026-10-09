@@ -165,16 +165,6 @@ def main():
                   f"standard deviation 1, so no variable dominates on units alone.",
                   "pca_input.png", 1, n=6)
 
-    p = os.path.join(CLEAN, "pca_components.csv")
-    if os.path.exists(p):
-        c = pd.read_csv(p)
-        c = c.rename(columns={c.columns[0]: "variable"})
-        table_png(c, ["variable", "PC1", "PC2", "PC3", "PC4", "PC5"],
-                  "PCA OUTPUT: the loadings",
-                  "How strongly each original variable contributes to each component. "
-                  "These are the eigenvectors of the correlation matrix.",
-                  "pca_components.png", 1, n=10)
-
     print("\nPreviews written to", os.path.abspath(IMG))
 
 
