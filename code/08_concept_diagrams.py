@@ -74,10 +74,18 @@ def diagram_clustering_types():
                          edgecolor=theme.ACCENT, linewidth=1.6, linestyle="--"))
     a2.add_patch(Ellipse((0.1, 0.0), 7.9, 6.4, facecolor="none",
                          edgecolor=theme.ACCENT, linewidth=1.4, linestyle=":"))
-    a2.annotate("merge 2", xy=(2.95, 2.5), fontsize=8.6, color=theme.ACCENT,
-                fontweight="bold")
-    a2.annotate("merge 3", xy=(3.55, 3.05), fontsize=8.6, color=theme.ACCENT,
-                fontweight="bold")
+    # The three solid circles are each the product of many earlier merges, so
+    # numbering the outer two "2" and "3" implied a first merge that is not
+    # drawn. Describe the stages instead of numbering them.
+    a2.annotate("each of these is\nalready many merges", xy=(-2.25, 0.45),
+                xytext=(-2.75, -1.45), fontsize=8.4, color=theme.INK_SOFT,
+                ha="center", va="top",
+                arrowprops=dict(arrowstyle="-", color=theme.INK_SOFT,
+                                linewidth=0.9, shrinkA=2, shrinkB=4))
+    a2.annotate("next merge", xy=(3.15, 2.45), fontsize=8.6, color=theme.ACCENT,
+                fontweight="bold", ha="center")
+    a2.annotate("final merge", xy=(3.15, 3.05), fontsize=8.6, color=theme.ACCENT,
+                fontweight="bold", ha="center")
     a2.annotate("cut the tree at any height\nto get any number of groups",
                 xy=(0, -3.95), ha="center", fontsize=9, color=theme.INK_SOFT)
     frame(a2, "Hierarchical  ·  agglomerative")

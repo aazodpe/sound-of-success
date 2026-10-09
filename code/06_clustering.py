@@ -214,10 +214,13 @@ def main():
         ax.scatter([res.k[bi]], [res.silhouette[bi]], s=190, facecolor="none",
                    edgecolor=C[1], linewidth=2.2, zorder=5)
         ax.annotate(f"best: k = {best_k}\nsilhouette {res.silhouette[bi]:.3f}",
-                    xy=(res.k[bi], res.silhouette[bi]), xytext=(12, 10),
-                    textcoords="offset points", color=C[1], fontweight="bold",
-                    fontsize=9.6)
+                    xy=(res.k[bi], res.silhouette[bi]), xytext=(18, -6),
+                    textcoords="offset points", va="top", color=C[1],
+                    fontweight="bold", fontsize=9.6)
         ax.set_xticks(K_VALUES)
+        # headroom so the marker and its callout never reach the subtitle
+        lo, hi = res.silhouette.min(), res.silhouette.max()
+        ax.set_ylim(lo - (hi - lo) * 0.18, hi + (hi - lo) * 0.16)
         finish(ax, "The silhouette score peaks at a small number of clusters",
                f"Average silhouette width for k-means at each k, measured on "
                f"{len(sil_idx):,} sampled songs",
