@@ -165,6 +165,35 @@ def main():
                   f"standard deviation 1, so no variable dominates on units alone.",
                   "pca_input.png", 1, n=6)
 
+
+    # ---- Module 3: the labelled data and the disjoint train/test split ----
+    for task, nice in [("genre", "GENRE"), ("charted", "CHARTED")]:
+        tr_p = os.path.join(CLEAN, f"supervised_{task}_train.csv")
+        te_p = os.path.join(CLEAN, f"supervised_{task}_test.csv")
+        if not (os.path.exists(tr_p) and os.path.exists(te_p)):
+            continue
+        tr, te = pd.read_csv(tr_p), pd.read_csv(te_p)
+        cols = ["label"] + [c for c in tr.columns if c != "label"][:6]
+        table_png(tr, cols,
+                  f"{nice} TRAINING SET",
+                  f"{len(tr):,} labelled songs the models are built from. The label "
+                  f"column is what is being predicted; the rest is what the model sees.",
+                  f"train_{task}.png", 1, n=6)
+        table_png(te, cols,
+                  f"{nice} TEST SET",
+                  f"{len(te):,} songs held back entirely. Same columns, no overlap "
+                  f"with the training set, used only to score the finished model.",
+                  f"test_{task}.png", 0, n=6)
+
+    p = os.path.join(CLEAN, "nb_input_sample.csv")
+    if os.path.exists(p):
+        c = pd.read_csv(p)
+        table_png(c, list(c.columns[:8]),
+                  "NAIVE BAYES INPUT: scaled into 0-1",
+                  "Multinomial Naive Bayes cannot accept negative numbers, so every "
+                  "feature is rescaled to the 0-1 range using the training set only.",
+                  "nb_input.png", 1, n=6)
+
     print("\nPreviews written to", os.path.abspath(IMG))
 
 

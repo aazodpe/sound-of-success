@@ -50,20 +50,261 @@
 </nav>
 
 <main>
-<h2>NaiveBayes</h2>
+<h2>Naïve Bayes</h2>
+
+<p class="lede">Clustering and PCA both failed to find genre in the sound, but neither was ever
+told what a genre is. Supervised learning changes the terms: the model is shown thousands of
+labelled examples first. This tab asks whether being given the answers to study makes the pattern
+findable &mdash; and whether the same help works on the harder question of what charts.</p>
 
 <h3>Overview</h3>
-<p>Na&iuml;ve Bayes estimates how likely each possible label is given what it observes, assuming each piece of evidence contributes independently. That assumption is usually wrong in detail, but it makes the method fast and surprisingly hard to beat, particularly on text.</p>
-<p>Two uses are planned. On the numeric side, predicting a song's genre from its discretized audio qualities. On the text side, using the free-text tags listeners write about artists to predict genre or era &mdash; a natural fit, since Na&iuml;ve Bayes was built for exactly this kind of word-count data.</p>
 
-<h3>Data</h3>
-<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for the Na&iuml;ve Bayes classifier, shown as a sample image, with links to both the raw and the cleaned data.</div>
+<p>Naïve Bayes is a classifier built directly on Bayes' theorem. Given a song, it asks how likely
+each possible label is in light of what it observes, and picks the label with the highest answer.
+To get there it needs two ingredients from the training data: how common each label is to begin
+with, and how typical each measured value is within each label. A song that is loud, fast and
+barely acoustic is evaluated against every genre in turn, and the genre under which that
+combination looks least surprising wins.</p>
+
+<p>The word "naïve" refers to the assumption that makes the arithmetic tractable: every feature is
+treated as independent of every other, given the label. That is plainly false here &mdash; loudness
+and energy correlate at 0.69, as the exploration showed &mdash; and the model will effectively
+count that shared information twice. The surprise of Naïve Bayes is that it often classifies well
+anyway, because picking the <em>largest</em> probability does not require the probabilities
+themselves to be right, only for the correct label to come out ahead. Its other strengths are
+practical: it trains in a single pass over the data, needs relatively few examples per class, and
+has no parameters to tune. This makes it a sensible first supervised method and a useful
+yardstick &mdash; whatever it achieves is roughly the floor that more elaborate methods should
+clear.</p>
+
+<p>There is not one Naïve Bayes but a family, and the members differ in what they assume a feature
+fundamentally <em>is</em>. <b>Multinomial Naïve Bayes</b>, the standard variant and the one this
+assignment requires, treats each feature as a non-negative count or weight, as though every value
+were a tally of how many times something occurred. It was designed for text, where the features
+are word counts in a document, and it cannot accept negative numbers at all. <b>Bernoulli Naïve
+Bayes</b> instead treats every feature as a yes-or-no flag: not how much of something there is,
+but whether it is there. On text it models whether a word appears in a document rather than how
+often, and its distinguishing property is that it explicitly uses the <em>absence</em> of a feature
+as evidence, which Multinomial simply passes over. A third member, <b>Gaussian Naïve Bayes</b>,
+assumes each feature follows a bell curve with its own mean and spread within each class, which
+makes it the natural fit for continuous measurements like the ones in this project.</p>
+
+<figure>
+  <img src="images/diag_nb_variants_dark.png" data-light="images/diag_nb_variants.png" data-dark="images/diag_nb_variants_dark.png" loading="lazy" decoding="async" alt="Three panels contrasting Multinomial Naive Bayes as non-negative amounts, Bernoulli as present-or-absent flags, and Gaussian as overlapping bell curves per class.">
+  <figcaption><b>The three variants differ in what a feature is assumed to be.</b> Multinomial
+  reads each value as an amount, Bernoulli reduces it to present or absent, and Gaussian models it
+  as a bell curve whose centre and width differ by class. All three are fitted below, because the
+  audio measurements in this project are continuous and the choice of assumption turns out to
+  matter a great deal.</figcaption>
+</figure>
+
+<p>What this is being used for here is a direct follow-up to Module&nbsp;2. The clustering found
+almost no correspondence between the sound of a song and its genre, scoring 0.020 on the adjusted
+Rand index. But clustering was working blind. If genre information exists in these ten numbers at
+all, a supervised method given twenty thousand labelled examples should be able to extract at
+least some of it, and the amount it manages is a far better measure of how much genre is really
+there. The same approach is then turned on the question the project actually cares about: whether
+a song reached the Billboard Hot 100.</p>
+
+<h3>Data Prep</h3>
+
+<p>Supervised learning imposes two requirements that the unsupervised methods did not. The first is
+labels. Every row must carry the answer being predicted, which means only labelled data can be used
+at all &mdash; the model learns by comparing its guesses against known outcomes, and a row without
+an outcome teaches it nothing. Two labels were available in the cleaned data: the genre each song
+was catalogued under, and whether it ever appeared on the Hot 100. Both were used, as separate
+prediction tasks.</p>
+
+<p>The second requirement is a split. A model scored on the same songs it was built from will
+flatter itself, because it can succeed by memorising rather than generalising. The data was
+therefore divided into a <b>training set</b> of 20,653 songs, from which the models are built, and
+a <b>test set</b> of 5,164 songs, which is held back and used only once the model is finished. The
+split is <b>stratified</b>, meaning each class appears in the same proportion in both halves, so
+the test set is not accidentally harder or easier than the training set. Crucially the two sets
+are <b>disjoint</b>: no song appears in both. This is not a formality. If even a fraction of the
+test songs had been seen during training, the reported accuracy would partly measure recall of
+specific songs rather than any learned pattern, and the number would be meaningless. The split
+script asserts disjointness rather than assuming it.</p>
+
+<figure>
+  <img src="images/diag_train_test_dark.png" data-light="images/diag_train_test.png" data-dark="images/diag_train_test_dark.png" loading="lazy" decoding="async" alt="Diagram showing 25,817 labelled songs dividing into a training set of 20,653 and a test set of 5,164, with a note that no song appears in both.">
+  <figcaption><b>How the data was split, and why the halves must stay separate.</b> Eighty percent
+  of the labelled songs build the model and twenty percent are held back to judge it, with the
+  class balance preserved on both sides. The two sets share no songs, which is what makes the
+  accuracy figures below mean anything at all.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/train_genre_dark.png" data-light="images/train_genre.png" data-dark="images/train_genre_dark.png" loading="lazy" decoding="async" alt="Table showing the first rows of the genre training set, with a label column followed by numeric audio feature columns.">
+  <figcaption><b>The training set.</b> Each row carries the label being predicted alongside the ten
+  numeric measurements the model is allowed to see. This is the only data used to build the
+  classifier.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/test_genre_dark.png" data-light="images/test_genre.png" data-dark="images/test_genre_dark.png" loading="lazy" decoding="async" alt="Table showing the first rows of the genre test set, with the same columns as the training set.">
+  <figcaption><b>The test set.</b> Identical in structure and drawn from the same catalogue, but
+  withheld entirely during training. Every accuracy figure on this page comes from these songs and
+  no others.</figcaption>
+</figure>
+
+<p>One further step was needed for the required model. Multinomial Naïve Bayes cannot accept
+negative values, and loudness is measured in negative decibels while the standardised features used
+in Module&nbsp;2 are centred on zero. Every feature was therefore rescaled into the range zero to
+one. The scaler was fitted on the <em>training data only</em> and then applied to the test data;
+fitting it across everything would let the minimum and maximum of the held-out songs influence the
+model, which is a subtle form of the same leakage the split exists to prevent. For Bernoulli Naïve
+Bayes, which needs present-or-absent inputs, each feature was instead reduced to whether it sits
+above its training-set median.</p>
+
+<figure>
+  <img src="images/nb_input_dark.png" data-light="images/nb_input.png" data-dark="images/nb_input_dark.png" loading="lazy" decoding="async" alt="Table showing the Naive Bayes input matrix with all values scaled between zero and one.">
+  <figcaption><b>The matrix Multinomial Naïve Bayes actually received.</b> The same ten
+  measurements, rescaled into the zero-to-one range the model requires, with the label kept
+  alongside. The scaling was learned from the training songs alone.</figcaption>
+</figure>
+
+<div class="cards">
+  <div class="card">
+    <h4>Training set</h4>
+    <p>20,653 labelled songs, genre task.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/supervised_genre_train.csv">supervised_genre_train.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Test set</h4>
+    <p>5,164 held-out songs, disjoint from the training set.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/supervised_genre_test.csv">supervised_genre_test.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Charting task</h4>
+    <p>The same split for the binary charted/not-charted target.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/supervised_charted_train.csv">supervised_charted_train.csv &rarr;</a>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/supervised_charted_test.csv">supervised_charted_test.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Scaled model input</h4>
+    <p>The 0-1 matrix handed to Multinomial Naïve Bayes.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/nb_input_sample.csv">nb_input_sample.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Split summary</h4>
+    <p>Sizes, class balance and the disjointness check.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/split_summary.json">split_summary.json &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Measured results</h4>
+    <p>Every accuracy and confusion matrix quoted below.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/nb_metrics.json">nb_metrics.json &rarr;</a>
+  </div>
+</div>
 
 <h3>Code</h3>
-<div class="pending"><strong>Coming in a later module.</strong>A link to the code for this section, with the language and core packages noted.</div>
+
+<p>Python 3, using <code>scikit-learn</code> for the three Naïve Bayes variants, the train/test
+split and the scoring, with <code>pandas</code> and <code>matplotlib</code> for preparation and
+figures. The split is seeded so the same songs land on the same side every run.</p>
+
+<div class="cards">
+  <div class="card">
+    <h4>Data preparation</h4>
+    <p>Builds both labelled tasks and the disjoint stratified splits, with assertions.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/09_supervised_prep.py">09_supervised_prep.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Naïve Bayes</h4>
+    <p>Multinomial, Bernoulli and Gaussian on both tasks, with confusion matrices.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/10_naive_bayes.py">10_naive_bayes.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Diagrams</h4>
+    <p>The explanatory figures in the Overview and Data Prep sections.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/12_concept_diagrams_m3.py">12_concept_diagrams_m3.py &rarr;</a>
+  </div>
+</div>
 
 <h3>Results</h3>
-<div class="pending"><strong>Coming in a later module.</strong>Results, parameter choices, visualizations, and what they mean for the question of what makes a song succeed.</div>
+
+<p>Accuracy on its own is a treacherous measure, so it is reported here against the only honest
+reference point: the accuracy of a model that ignores the song entirely and always guesses the
+commonest answer. For genre that baseline is 19.1%, because rap is the largest of six roughly
+balanced classes. For charting it is 86.8%, because only 13.2% of songs ever charted &mdash; and
+that high number is exactly why accuracy alone cannot be trusted on this task.</p>
+
+<figure>
+  <img src="images/fig32_nb_variants_dark.png" data-light="images/fig32_nb_variants.png" data-dark="images/fig32_nb_variants_dark.png" loading="lazy" decoding="async" alt="Grouped bar chart of the three Naive Bayes variants on both tasks, with genre bars well above the 19 percent baseline and charted bars sitting exactly on the 87 percent baseline.">
+  <figcaption><b>What a feature is assumed to be changes the answer.</b> On genre, all three
+  variants beat the 19.1% baseline, and the ordering is instructive: Multinomial reaches 33.0%,
+  Bernoulli 38.6%, and Gaussian 44.2%. On charting, every bar lands on or below the 86.8% baseline,
+  which means none of them learned anything at all.</figcaption>
+</figure>
+
+<p>The ordering on genre is not arbitrary. Multinomial performs worst because its core assumption
+is wrong for this data: it reads danceability of 0.7 as though it were a count of seven
+occurrences of something, when the value is really a position on a scale. Bernoulli does better by
+throwing away the magnitudes and keeping only "above typical or not", which is a cruder description
+but a less mistaken one. Gaussian does best because its assumption is the one that actually
+matches &mdash; these are continuous measurements that really do cluster around different averages
+in different genres. Fitting all three turns the textbook distinction between them into something
+measurable.</p>
+
+<figure>
+  <img src="images/fig30_nb_confusion_genre_dark.png" data-light="images/fig30_nb_confusion_genre.png" data-dark="images/fig30_nb_confusion_genre_dark.png" loading="lazy" decoding="async" alt="Six-by-six confusion matrix for Multinomial Naive Bayes on genre, with strong diagonal entries only for EDM and rap and near-zero recall for latin, pop and rock.">
+  <figcaption><b>Multinomial Naïve Bayes collapses onto two genres.</b> The matrix shows where the
+  33.0% accuracy comes from: it recognises rap 80% of the time and EDM 66% of the time, while
+  correctly identifying Latin music in 0% of cases and rock in under 1%. Rather than classifying
+  six genres badly, it has effectively become a two-genre model that files almost everything else
+  into those two bins.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig33_nb_recall_by_genre_dark.png" data-light="images/fig33_nb_recall_by_genre.png" data-dark="images/fig33_nb_recall_by_genre_dark.png" loading="lazy" decoding="async" alt="Horizontal bar chart of per-genre recall for Multinomial Naive Bayes, ranging from zero for latin to eighty percent for rap.">
+  <figcaption><b>Some genres are far easier to recognise than others.</b> Rap and EDM are
+  recoverable from the audio measurements because both carry a distinctive signature &mdash; high
+  speechiness for one, high energy and low acousticness for the other. Pop, rock and Latin music
+  have no such marker in these ten numbers and are essentially invisible to the model.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig31_nb_confusion_charted_dark.png" data-light="images/fig31_nb_confusion_charted.png" data-dark="images/fig31_nb_confusion_charted_dark.png" loading="lazy" decoding="async" alt="Two-by-two confusion matrix showing all 5,164 test songs predicted as did not chart, including all 684 that actually charted.">
+  <figcaption><b>On charting, the model never once predicts a hit.</b> Every one of the 5,164
+  held-out songs was labelled "did not chart", including all 684 that actually did. The resulting
+  86.8% accuracy is identical to the baseline and entirely hollow: recall on the charted class is
+  0.000, meaning the model found none of the hits it was asked to find.</figcaption>
+</figure>
+
+<h3>Conclusions</h3>
+
+<p>The genre result is the one that changes the project's story. Module&nbsp;2 concluded that genre
+was not present in the sound, on the evidence that clustering recovered it at 0.020 out of 1. That
+conclusion now needs qualifying. Given labelled examples to learn from, Naïve Bayes identifies
+genre at more than twice the rate of guessing &mdash; 44.2% against 19.1% for the best variant. So
+the information <em>is</em> in the audio measurements. What Module&nbsp;2 really established is
+subtler and more interesting: genre is not the dominant structure in the data, so a method looking
+for the strongest pattern will find production intensity instead and walk straight past genre. It
+takes supervision to pull out a signal that weak.</p>
+
+<p>Which genres are recoverable tells us what the signal actually consists of. Rap is found 80% of
+the time and EDM 66%, because each has a measurable fingerprint &mdash; speech-like vocals in one
+case, relentless energy with no acoustic content in the other. Pop, rock and Latin music are found
+almost never. That is not a failure of the classifier so much as a statement about the categories:
+pop in particular is defined by commercial position rather than by any sound, and a genre that can
+absorb anything popular cannot have an audio signature. The model is telling us which genre labels
+describe music and which describe marketing.</p>
+
+<p>On the central question of the project, the answer is unambiguous and worth stating bluntly. The
+model never predicted a single hit. Its 86.8% accuracy came entirely from saying "no" 5,164 times
+in a row, which is exactly what a model should do when the features carry no usable signal about
+the outcome and one answer is far more common than the other. Guessing the majority is the
+rational strategy when you know nothing, and Naïve Bayes arrived at it. The ten audible qualities
+of a recording, on this evidence, contain essentially nothing about whether that recording will
+chart.</p>
+
+<p>There is a lesson here about evaluation that is worth carrying into the remaining modules. An
+86.8% accuracy looks like a strong result and is in fact a complete failure, while a 44.2% accuracy
+looks poor and represents real learning. The difference only becomes visible when accuracy is read
+against a baseline and when the confusion matrix is inspected rather than summarised. Every
+supervised method that follows will be reported the same way, because on an outcome this imbalanced
+a headline accuracy figure can conceal a model that has learned nothing whatsoever.</p>
 
 </main>
 

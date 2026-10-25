@@ -50,20 +50,262 @@
 </nav>
 
 <main>
-<h2>DecTrees</h2>
+<h2>Decision Trees</h2>
+
+<p class="lede">A decision tree is the rare model you can read. It does not weigh evidence in the
+abstract: it asks one question at a time, writes its reasoning down as a flowchart, and lets anyone
+check the logic. That transparency is why it is worth running here even though Naïve Bayes has
+already given an answer.</p>
 
 <h3>Overview</h3>
-<p>A decision tree splits the data one question at a time &mdash; is the song louder than this, faster than that &mdash; until each branch ends in a reasonably pure group. The result is a model anyone can read straight off the page.</p>
-<p>That readability is the point. A tree that predicts whether a song charts will show, in plain sequence, which qualities it checked first. Comparing the tree's top splits against the correlations found during exploration is a direct test of whether the obvious signals are the ones that actually matter.</p>
 
-<h3>Data</h3>
-<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for decision trees, shown as a sample image, with links to both the raw and the cleaned data.</div>
+<p>A decision tree classifies by asking a sequence of yes-or-no questions about the measurements.
+Is speechiness above 0.15? Is energy below 0.6? Each answer sends a song down one branch, and when
+it reaches the bottom it is given whatever label was most common among the training songs that
+ended up in the same place. Building the tree means choosing those questions, and the algorithm
+does it greedily: it examines every variable at every possible threshold, scores each candidate
+split, keeps the best one, and then repeats the whole procedure independently inside each of the
+two groups it just created. Decision trees handle non-linear relationships without being told to,
+need no feature scaling, and produce a model that reads like a set of instructions rather than a
+list of coefficients.</p>
+
+<figure>
+  <img src="images/fig34_tree_shallow_dark.png" data-light="images/fig34_tree_shallow.png" data-dark="images/fig34_tree_shallow_dark.png" loading="lazy" decoding="async" alt="A rendered decision tree three levels deep, with each node showing its split condition, Gini impurity, sample proportion and predicted class.">
+  <figcaption><b>A real tree from this project, read from the top down.</b> The first question it
+  asks is about speechiness, the second about danceability and energy, and each box reports its
+  impurity, the share of training songs that reach it, and the genre it would guess. This is the
+  entire model &mdash; there is nothing hidden behind it.</figcaption>
+</figure>
+
+<p>Scoring a split requires a way to measure how mixed a group is, and two measures dominate.
+<b>Entropy</b>, borrowed from information theory, measures the average number of bits needed to
+communicate the label of a randomly chosen member of a group; it is 0 when every member shares a
+label and at its maximum when the labels are evenly spread. <b>Gini impurity</b> measures the
+probability that two members drawn at random have different labels, and behaves almost identically
+while being cheaper to compute, since it avoids logarithms. Neither measure scores a split by
+itself &mdash; both describe a single group. What scores the split is <b>Information Gain</b>: the
+impurity of the parent minus the weighted average impurity of the children it produces. The
+weighting matters, because a split that isolates three songs into a perfectly pure group has
+achieved almost nothing; the children are weighted by how many songs land in each, so a good split
+must separate the bulk of the data, not a corner of it.</p>
+
+<figure>
+  <img src="images/diag_information_gain_dark.png" data-light="images/diag_information_gain.png" data-dark="images/diag_information_gain_dark.png" loading="lazy" decoding="async" alt="Worked example showing 20,653 training songs with entropy 0.7025 splitting on speechiness into two groups with entropies 0.5037 and 0.9960, giving a weighted child entropy of 0.6146 and an information gain of 0.0879.">
+  <figcaption><b>Measuring the goodness of a split, worked through on this project's data.</b>
+  Asking "is this song rap?" across the 20,653 training songs gives a parent entropy of 0.7025.
+  Splitting on speechiness sends 16,000 songs left, where rap is rare and entropy drops to 0.5037,
+  and 4,653 right, where the group is nearly half rap and entropy rises to 0.9960. Weighting those
+  by group size gives 0.6146, so the information gain is 0.7025 &minus; 0.6146 = 0.0879 &mdash; and
+  the tree keeps whichever split across all ten variables scores highest.</figcaption>
+</figure>
+
+<p>Notice what that example shows about the right-hand branch. Its entropy went <em>up</em>, from
+0.7025 to 0.9960, because that group is almost evenly divided between rap and everything else. A
+split can increase the impurity of one child and still be worthwhile, provided the other child
+improves enough and holds enough of the data. This is why information gain is computed on the
+weighted average rather than judged branch by branch, and it is also why the same split scored with
+Gini rather than entropy will usually, though not always, pick the same winner.</p>
+
+<p>One consequence of this procedure is that there is no such thing as <em>the</em> decision tree
+for a dataset &mdash; there are infinitely many. Every continuous variable offers infinitely many
+thresholds to split on, and nothing stops a threshold being nudged by an arbitrarily small amount
+to produce a different but equally valid tree. Beyond that, any variable can be chosen at any node,
+in any order, to any depth, and a tree can always be made larger by splitting an already-pure group
+again. The greedy algorithm does not search this space; it cannot, since the number of possible
+trees grows faster than any search could cover. It simply takes the locally best question at each
+step, which means the tree it returns is a good tree rather than the best one. Finding the smallest
+tree that classifies a dataset correctly is NP-hard, which is precisely why the greedy shortcut is
+universal.</p>
+
+<figure>
+  <img src="images/diag_infinite_trees_dark.png" data-light="images/diag_infinite_trees.png" data-dark="images/diag_infinite_trees_dark.png" loading="lazy" decoding="async" alt="Three panels showing the same points split by a vertical line, a horizontal line, and a combination of both, illustrating that many different trees describe the same data.">
+  <figcaption><b>Why a dataset has infinitely many possible trees.</b> The same songs and the same
+  labels admit entirely different trees depending on which variable is split first and where the
+  thresholds are placed, and since the thresholds are continuous they can be shifted endlessly.
+  The algorithm returns one workable tree, not the definitive one.</figcaption>
+</figure>
+
+<h3>Data Prep</h3>
+
+<p>Decision trees are supervised, so they carry the same two requirements as Naïve Bayes: every row
+must be labelled, and the data must be split into a training set the model is built from and a test
+set used only to judge it. The identical split from the previous tab is reused here, which also
+makes the two methods directly comparable &mdash; they are scored on exactly the same 5,164 songs.
+25,817 labelled songs were divided 80/20 into 20,653 for training and 5,164 for testing, stratified
+so each class keeps its proportion, and verified <b>disjoint</b> so that no song can be used to
+both build and grade the same model. Without that separation a deep tree would score near-perfectly
+by simply recalling songs it had already filed, which is a failure mode demonstrated explicitly in
+the results below.</p>
+
+<p>One requirement Naïve Bayes had that trees do not is scaling. A tree only ever compares a single
+variable against a threshold, so it is indifferent to units: loudness in negative decibels and
+danceability on a zero-to-one scale are handled equally well side by side, and no rescaling was
+applied. In scikit-learn the inputs must still be numeric, which they are. An implementation in R
+could take categorical columns directly.</p>
+
+<figure>
+  <img src="images/train_charted_dark.png" data-light="images/train_charted.png" data-dark="images/train_charted_dark.png" loading="lazy" decoding="async" alt="Table showing the first rows of the charted training set, with a binary label column followed by numeric audio feature columns.">
+  <figcaption><b>The training set for the charting task.</b> The label is 1 if the song reached the
+  Billboard Hot 100 and 0 otherwise, alongside the same ten measurements. 2,735 of these 20,653
+  training songs charted.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/test_charted_dark.png" data-light="images/test_charted.png" data-dark="images/test_charted_dark.png" loading="lazy" decoding="async" alt="Table showing the first rows of the charted test set with the same columns as the training set.">
+  <figcaption><b>The matching test set.</b> 5,164 songs held back from training, of which 684
+  charted. The class balance matches the training set because the split was stratified.</figcaption>
+</figure>
+
+<div class="cards">
+  <div class="card">
+    <h4>Training set</h4>
+    <p>20,653 labelled songs. Same split as the Naïve Bayes tab, so the two are comparable.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/supervised_genre_train.csv">supervised_genre_train.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Test set</h4>
+    <p>5,164 held-out songs, verified disjoint from the training set.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/supervised_genre_test.csv">supervised_genre_test.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Charting task</h4>
+    <p>The same split for the binary target.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/supervised_charted_train.csv">supervised_charted_train.csv &rarr;</a>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/supervised_charted_test.csv">supervised_charted_test.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Tree A as rules</h4>
+    <p>The shallow tree written out in full as readable text.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/tree_a_rules.txt">tree_a_rules.txt &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Measured results</h4>
+    <p>Every accuracy, depth, leaf count and confusion matrix quoted below.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/dt_metrics.json">dt_metrics.json &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Split summary</h4>
+    <p>Sizes, class balance and the disjointness check.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/split_summary.json">split_summary.json &rarr;</a>
+  </div>
+</div>
 
 <h3>Code</h3>
-<div class="pending"><strong>Coming in a later module.</strong>A link to the code for this section, with the language and core packages noted.</div>
+
+<p>Python 3 with <code>scikit-learn</code> for the trees and the scoring, <code>pandas</code> for
+the data and <code>matplotlib</code> for the figures. The same script computes the worked entropy
+and information gain example shown in the Overview, so those numbers come from the data rather than
+from a textbook.</p>
+
+<div class="cards">
+  <div class="card">
+    <h4>Decision trees</h4>
+    <p>Three trees, the depth sweep, the worked split example, and all five figures.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/11_decision_trees.py">11_decision_trees.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Data preparation</h4>
+    <p>The shared labelled split used by both supervised tabs.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/09_supervised_prep.py">09_supervised_prep.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Diagrams</h4>
+    <p>The information gain and infinite trees figures above.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/12_concept_diagrams_m3.py">12_concept_diagrams_m3.py &rarr;</a>
+  </div>
+</div>
 
 <h3>Results</h3>
-<div class="pending"><strong>Coming in a later module.</strong>Results, parameter choices, visualizations, and what they mean for the question of what makes a song succeed.</div>
+
+<p>Three trees were grown on the same training data, differing in how deep they were allowed to go
+and in which impurity measure scored their splits. Tree A is three levels deep and scored with
+Gini. Tree B is six levels deep and scored with entropy. Tree C was left unconstrained and allowed
+to grow until every leaf was pure.</p>
+
+<figure>
+  <img src="images/fig35_three_trees_dark.png" data-light="images/fig35_three_trees.png" data-dark="images/fig35_three_trees_dark.png" loading="lazy" decoding="async" alt="Grouped bars comparing training and test accuracy for three trees, with the unpruned tree reaching 100 percent on training but only 40 percent on test.">
+  <figcaption><b>The deepest tree learns the training set almost perfectly and generalises worst.</b>
+  Tree A manages 36.1% on held-out songs, Tree B 44.8%, and Tree C &mdash; which reached 100% on the
+  data it was built from, using 6,865 leaves across 32 levels &mdash; falls back to 39.9% on songs
+  it had not seen. The gap between the two bars is the clearest possible picture of overfitting: all
+  that extra structure encoded individual training songs rather than anything general about
+  genre.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig36_tree_depth_dark.png" data-light="images/fig36_tree_depth.png" data-dark="images/fig36_tree_depth_dark.png" loading="lazy" decoding="async" alt="Line chart of training and test accuracy against maximum tree depth, with training accuracy climbing toward 100 percent while test accuracy peaks near depth 10 and then declines.">
+  <figcaption><b>Past a certain depth the tree stops learning and starts memorising.</b> Training
+  accuracy climbs steadily toward 100% as depth increases, but held-out accuracy peaks at 47.0% at
+  depth 10 and then falls away. The point where the two lines separate is where the tree stops
+  describing music and starts describing this particular set of songs.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig37_dt_confusion_genre_dark.png" data-light="images/fig37_dt_confusion_genre.png" data-dark="images/fig37_dt_confusion_genre_dark.png" loading="lazy" decoding="async" alt="Six-by-six confusion matrix for the best tree on genre, with a visible diagonal across all six genres.">
+  <figcaption><b>The best tree recognises some genres and confuses others.</b> Unlike Multinomial
+  Naïve Bayes, which collapsed onto two genres, the tree makes a genuine attempt at all six and has
+  a visible diagonal throughout. The errors are also sensible: the heaviest confusion is between
+  pop, Latin and R&amp;B, which share production conventions, while EDM and rap stay largely
+  distinct.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig38_dt_importance_dark.png" data-light="images/fig38_dt_importance.png" data-dark="images/fig38_dt_importance_dark.png" loading="lazy" decoding="async" alt="Horizontal bar chart of feature importances, with speechiness at 24 percent, tempo at 20, danceability at 19 and energy at 17, trailing down to liveness at zero.">
+  <figcaption><b>Four measurements carry almost the whole tree.</b> Speechiness (23.8%), tempo
+  (20.2%), danceability (19.3%) and energy (16.7%) account for 80% of the tree's split quality
+  between them. Loudness contributes 1.1% and liveness nothing at all, which is striking given that
+  loudness was half of the dominant axis both clustering and PCA found &mdash; the measurement that
+  best describes how records differ turns out to be nearly useless for telling genres apart.</figcaption>
+</figure>
+
+<p>On the charting task the trees behaved exactly as Naïve Bayes did. Tree A scored 86.8% and Tree
+B 86.8%, both identical to the baseline of always guessing "did not chart", and the unpruned Tree C
+managed 79.2% &mdash; substantially <em>worse</em> than guessing, because its memorised rules
+transfer badly to new songs. Three different trees, two different impurity measures, and not one of
+them extracted anything usable about whether a song charts.</p>
+
+<h3>Conclusions</h3>
+
+<p>Decision trees did better on genre than Naïve Bayes, and the reason is instructive. The best
+tree reached 47.0% against the 44.2% of the best Naïve Bayes variant and the 19.1% baseline, but
+more telling than the margin is the shape of the errors. Naïve Bayes collapsed onto rap and EDM and
+abandoned the other four genres; the tree makes a real attempt at all six. Because the tree can
+combine conditions &mdash; speech-like <em>and</em> energetic <em>and</em> not acoustic &mdash; it
+picks up genres that have no single distinguishing measurement but do have a distinguishing
+combination. That is precisely the kind of structure the independence assumption in Naïve Bayes
+cannot represent, and it supports what PCA suggested in Module&nbsp;2: the information in this data
+lives in combinations of measurements rather than in any one of them.</p>
+
+<p>What the tree chose to split on is worth noting for the project's larger argument. Speechiness,
+tempo, danceability and energy account for 80% of its split quality, which means the distinction it
+is exploiting is roughly "is someone rapping over this, and is it built around a fast beat". Those
+are real musical properties and they genuinely separate rap and EDM from the rest. More surprising
+is what the tree ignored: loudness earned just 1.1% and liveness nothing, even though loudness was
+half of the production-intensity axis that both clustering and PCA identified as the strongest
+structure in the data. The loudest division in the catalogue turns out to be nearly irrelevant to
+genre, which is a neat demonstration that the most prominent pattern in a dataset and the most
+useful one need not be the same. Pop, rock and Latin music remain largely indistinguishable
+regardless, and no amount of tree depth changed that: the ceiling here is not the method but the
+information content of the ten measurements.</p>
+
+<p>The overfitting result deserves to be stated plainly because it is the clearest demonstration in
+the whole project of why the train/test split exists. Tree C classified 99.99% of its training songs
+correctly. Reported without a held-out set, that would look like a triumph. On songs it had never
+seen, the same tree managed 39.9% &mdash; worse than a tree one fifth its size. It had not learned
+what makes a song rap; it had learned which specific songs in the training set were rap, which is a
+different and far less useful thing. This is also the practical answer to the infinite-trees
+question from the Overview: among the infinitely many trees that fit the training data perfectly,
+almost all of them are useless, and the only way to tell is to test on data the tree has never
+touched.</p>
+
+<p>On the central question, the verdict is now doubly confirmed. Two supervised methods, five
+models between them, and the charting task defeated all of them &mdash; the best any managed was to
+match a model that ignores the music entirely and says "no" every time. Clustering found no
+structure relating to success, PCA found no compressible structure at all, and now two classifiers
+with labelled examples to learn from have found nothing predictive either. Whether a song reaches
+the Hot 100 is, on this evidence, not written in how it sounds. The boosting methods in the modules
+ahead are the last and strongest attempt, and the honest expectation after three modules of
+consistent results is that they will confirm the same thing rather than overturn it.</p>
 
 </main>
 

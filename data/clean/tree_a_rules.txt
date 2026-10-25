@@ -1,0 +1,22 @@
+|--- speechiness <= 0.16
+|   |--- danceability <= 0.59
+|   |   |--- energy <= 0.64
+|   |   |   |--- class: rock
+|   |   |--- energy >  0.64
+|   |   |   |--- class: rock
+|   |--- danceability >  0.59
+|   |   |--- tempo <= 120.92
+|   |   |   |--- class: latin
+|   |   |--- tempo >  120.92
+|   |   |   |--- class: edm
+|--- speechiness >  0.16
+|   |--- energy <= 0.91
+|   |   |--- instrumentalness <= 0.00
+|   |   |   |--- class: rap
+|   |   |--- instrumentalness >  0.00
+|   |   |   |--- class: rap
+|   |--- energy >  0.91
+|   |   |--- instrumentalness <= 0.00
+|   |   |   |--- class: rap
+|   |   |--- instrumentalness >  0.00
+|   |   |   |--- class: edm

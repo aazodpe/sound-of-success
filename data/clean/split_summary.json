@@ -1,0 +1,71 @@
+{
+  "genre": {
+    "n_total": 25817,
+    "n_train": 20653,
+    "n_test": 5164,
+    "test_fraction": 0.2,
+    "n_features": 10,
+    "classes": [
+      "edm",
+      "latin",
+      "pop",
+      "r&b",
+      "rap",
+      "rock"
+    ],
+    "train_counts": {
+      "edm": 3853,
+      "latin": 3161,
+      "pop": 3316,
+      "r&b": 3409,
+      "rap": 3934,
+      "rock": 2980
+    },
+    "test_counts": {
+      "edm": 963,
+      "latin": 790,
+      "pop": 829,
+      "r&b": 853,
+      "rap": 984,
+      "rock": 745
+    },
+    "majority_class": "rap",
+    "baseline_accuracy": 0.19054996127033308,
+    "disjoint_verified": true
+  },
+  "charted": {
+    "n_total": 25817,
+    "n_train": 20653,
+    "n_test": 5164,
+    "test_fraction": 0.2,
+    "n_features": 10,
+    "classes": [
+      "0",
+      "1"
+    ],
+    "train_counts": {
+      "0": 17918,
+      "1": 2735
+    },
+    "test_counts": {
+      "0": 4480,
+      "1": 684
+    },
+    "majority_class": "0",
+    "baseline_accuracy": 0.8675445391169636,
+    "disjoint_verified": true
+  },
+  "features": [
+    "danceability",
+    "energy",
+    "loudness",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo",
+    "duration_min"
+  ],
+  "seed": 5612
+}
