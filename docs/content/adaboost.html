@@ -1,14 +1,262 @@
 <h2>AdaBoost</h2>
 
-<h3>Overview</h3>
-<p>AdaBoost builds a long line of very simple models, each one trained to pay most attention to the cases the previous models got wrong. No single member of that line is any good on its own; the strength comes from how their votes are weighted and combined.</p>
-<p>The appeal here is that it keeps re-weighting toward the hard cases. If the songs that break the pattern are a small, distinctive group rather than random noise, a method that deliberately chases its own mistakes should expose them, and the examples it struggles with longest are worth looking at directly.</p>
+<p class="lede">The previous tab found that a model can rank songs by their chances better than
+chance, but not confidently enough to act on. Boosting is the natural response: instead of one
+model trying to get everything right, build hundreds of deliberately weak ones, each sent to work
+on what the last one missed.</p>
 
-<h3>Data</h3>
-<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for AdaBoost, shown as a sample image, with links to both the raw and the cleaned data.</div>
+<h3>Overview</h3>
+
+<p><b>Boosting</b> is a way of assembling many weak models into one strong one, and its defining
+feature is that the models are built <em>in sequence</em>, each with knowledge of how its
+predecessors did. This is the opposite of <b>bagging</b>, the other great ensemble strategy, where
+many models are trained independently and in parallel on different random samples of the data and
+then allowed to vote equally. Bagging reduces variance: individual trees are unstable, so
+averaging a crowd of them smooths out the noise, and random forests are the familiar example.
+Boosting attacks bias instead. Each new model is fitted specifically to the part of the problem
+still being got wrong, so the ensemble grows more accurate by accumulating corrections rather than
+by averaging away noise.</p>
+
+<figure>
+  <img src="images/diag_boosting_vs_bagging.png" alt="Two panels: bagging showing three trees built in parallel feeding into an equal-weighted average, and boosting showing three stumps built in sequence each feeding the next, combined by a weighted vote.">
+  <figcaption><b>Boosting and bagging combine trees in opposite ways.</b> Bagging builds its trees
+  independently and gives each an equal vote; boosting builds them one after another, each focused
+  on the previous model's mistakes, and weights their votes by how well each performed. The
+  difference in wiring produces a real difference in behaviour.</figcaption>
+</figure>
+
+<p>The weak model AdaBoost uses is the <b>decision stump</b>: a decision tree of depth one, which
+asks a single question about a single variable and gives an answer. A stump is barely a model at
+all &mdash; on a six-class problem one can hardly do better than guessing, and on a two-class
+problem it might manage 55% where 50% is chance. That weakness is deliberate. Boosting needs its
+members to be only slightly better than random, because the strength is supposed to come from how
+they are combined, and a committee of strong models would simply agree with one another and add
+nothing.</p>
+
+<p>The mechanism that makes the sequence work is <b>reweighting</b>. Every training row starts with
+equal weight. The first stump is fitted, and the rows it got wrong have their weights increased
+while the rows it got right have theirs decreased. The second stump is then fitted to that
+reweighted data, so it is pulled toward exactly the examples the first one fumbled. Repeat a few
+hundred times and each stump is specialising in the residue left by everything before it. Rows
+that are easy get quietly ignored after the first few rounds; rows that sit near the boundary keep
+growing in importance until some stump finally handles them.</p>
+
+<p>Each stump also earns a weight of its own, conventionally called <b>alpha</b>, computed from its
+error rate on the weighted data as <code>&alpha; = ½ ln((1 &minus; error) / error)</code>. A stump
+with a low error rate gets a large alpha and a loud voice in the final decision; a stump barely
+better than guessing gets an alpha near zero and is effectively ignored. A stump that is
+<em>worse</em> than guessing would get a negative alpha, meaning the ensemble learns to do the
+opposite of what it says. The <b>final prediction</b> is the sign of the alpha-weighted sum of all
+the stumps' votes &mdash; not a majority count, but a vote in which the stumps that proved
+themselves count for more.</p>
+
+<figure>
+  <img src="images/diag_adaboost_rounds.png" alt="Four panels showing three rounds of AdaBoost, where misclassified points grow larger each round and pull the next split toward them, followed by the combined weighted vote.">
+  <figcaption><b>How AdaBoost reweights the rows and combines its stumps.</b> Circled points were
+  misclassified; they grow for the next round, so the following stump is pulled toward them. Each
+  round reports its alpha, and the final panel shows all three boundaries combined into one
+  weighted decision. Note that the second round earns the largest alpha here: it inherited a
+  reweighted problem it could solve cleanly.</figcaption>
+</figure>
+
+<p>Two settings control the process. <b>n_estimators</b> is how many rounds to run, and
+<b>learning_rate</b> scales down each stump's contribution, trading more rounds for smaller, more
+careful steps. Both are tuned on the validation set below, never on the test set.</p>
+
+<h3>Data Prep</h3>
+
+<p>AdaBoost is supervised, so it needs labelled data and the same disjoint partitions used
+throughout: <b>15,489 training songs</b>, <b>5,164 validation</b> and <b>5,164 test</b>, verified
+non-overlapping, with the test set matching Module 3's row for row so the comparison at the end is
+fair. The target is <code>charted</code>, the same two-class label the decision tree and Naïve
+Bayes were given.</p>
+
+<p>What is new here is the feature side. Scikit-learn's implementation requires every input to be
+numeric, and three genuinely useful columns in the cleaned data are not: a song's genre, its
+musical key and its mode. These cannot simply be numbered, because assigning pop&nbsp;=&nbsp;1,
+rap&nbsp;=&nbsp;2, rock&nbsp;=&nbsp;3 would invent an ordering that does not exist and let the
+model split on "genre &le; 2" as though that meant something. <b>One-hot encoding</b> avoids this
+by giving each level its own column holding 1 or 0.</p>
+
+<table>
+  <thead>
+    <tr><th>Column</th><th>Levels</th><th>Becomes</th><th>Example</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>playlist_genre</code></td><td>6</td><td>6 indicator columns</td>
+        <td><code>playlist_genre_rap</code> = 1, the other five = 0</td></tr>
+    <tr><td><code>key_name</code></td><td>12</td><td>12 indicator columns</td>
+        <td><code>key_name_C</code> = 1, the other eleven = 0</td></tr>
+    <tr><td><code>mode_name</code></td><td>2</td><td>2 indicator columns</td>
+        <td><code>mode_name_Major</code> = 1, <code>mode_name_Minor</code> = 0</td></tr>
+  </tbody>
+</table>
+
+<p>The result takes the feature count from 10 numeric columns to <b>30</b>. Every stump can now
+ask questions like "is this song EDM?" alongside "is energy above 0.64", which is exactly the kind
+of single-variable question a depth-one tree is built to handle.</p>
+
+<figure>
+  <img src="images/m4_encoding.png" alt="Side-by-side tables showing three categorical columns of text values on the left and the same rows expanded into twenty columns of ones and zeros on the right.">
+  <figcaption><b>The encoding step, before and after.</b> Three text columns on the left become
+  twenty indicator columns on the right, each holding 1 or 0. Exactly one column within each group
+  is 1 for any given song, which preserves the information while introducing no false ordering
+  between the levels.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/m4_adaboost_train.png" alt="Table showing the first rows of the AdaBoost training set, with the charted label, numeric audio features and one-hot encoded indicator columns.">
+  <figcaption><b>The training set as AdaBoost receives it.</b> The charted label, then the ten
+  numeric measurements, then the indicator columns. 15,489 rows, of which 2,051 charted.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/m4_adaboost_test.png" alt="Table showing the first rows of the AdaBoost test set with the same columns as the training set.">
+  <figcaption><b>The held-out test set.</b> Same 30 columns, 5,164 rows, 684 of which charted, and
+  no overlap with either the training or validation rows. It was not consulted until the final
+  model had been chosen.</figcaption>
+</figure>
+
+<div class="cards">
+  <div class="card">
+    <h4>Encoded data</h4>
+    <p>All three partitions with the 30-column encoded feature set.</p>
+    <a href="__REPO__/blob/main/data/clean/m4_adaboost_train.csv">m4_adaboost_train.csv &rarr;</a>
+    <a href="__REPO__/blob/main/data/clean/m4_adaboost_val.csv">m4_adaboost_val.csv &rarr;</a>
+    <a href="__REPO__/blob/main/data/clean/m4_adaboost_test.csv">m4_adaboost_test.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>The encoding step</h4>
+    <p>The same rows before and after, as shown in the figure above.</p>
+    <a href="__REPO__/blob/main/data/clean/m4_encoding_before.csv">m4_encoding_before.csv &rarr;</a>
+    <a href="__REPO__/blob/main/data/clean/m4_encoding_after.csv">m4_encoding_after.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Split summary</h4>
+    <p>Partition sizes, class balance, and the one-hot column list.</p>
+    <a href="__REPO__/blob/main/data/clean/m4_split_summary.json">m4_split_summary.json &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Measured results</h4>
+    <p>The full tuning grid and every number quoted below.</p>
+    <a href="__REPO__/blob/main/data/clean/adaboost_metrics.json">adaboost_metrics.json &rarr;</a>
+  </div>
+</div>
 
 <h3>Code</h3>
-<div class="pending"><strong>Coming in a later module.</strong>A link to the code for this section, with the language and core packages noted.</div>
+
+<p>Python 3 with <code>scikit-learn</code>'s <code>AdaBoostClassifier</code>, using an explicit
+depth-one <code>DecisionTreeClassifier</code> as the base estimator so the stump is visible in the
+code rather than left as a default. Forty configurations were fitted on the training data and
+scored on validation; the test set was touched once.</p>
+
+<div class="cards">
+  <div class="card">
+    <h4>AdaBoost</h4>
+    <p>The tuning grid, the one-hot experiment, the final model, and all five figures.</p>
+    <a href="__REPO__/blob/main/code/15_adaboost.py">15_adaboost.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Data preparation</h4>
+    <p>The three-way split and the one-hot encoding step.</p>
+    <a href="__REPO__/blob/main/code/13_supervised_prep_m4.py">13_supervised_prep_m4.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Diagrams</h4>
+    <p>The two explanatory figures in the Overview.</p>
+    <a href="__REPO__/blob/main/code/16_concept_diagrams_m4.py">16_concept_diagrams_m4.py &rarr;</a>
+  </div>
+</div>
 
 <h3>Results</h3>
-<div class="pending"><strong>Coming in a later module.</strong>Results, parameter choices, visualizations, and what they mean for the question of what makes a song succeed.</div>
+
+<p>Eight round counts from 1 to 400 were crossed with five learning rates from 0.05 to 1.0, giving
+forty configurations, each fitted on the training set and scored on validation. The two panels
+below show why the choice had to be made on ranking quality rather than accuracy.</p>
+
+<figure>
+  <img src="images/fig44_adaboost_validation.png" alt="Two stacked panels: validation accuracy flat along the baseline across all settings, and validation ROC AUC climbing from 0.5 to 0.745 as rounds increase.">
+  <figcaption><b>Adding rounds barely moves accuracy, but the ranking improves a great deal.</b>
+  Note the scale on the upper panel: every configuration sits within 0.12 of a percentage point of
+  the baseline, so accuracy cannot distinguish them at all. The lower panel shows what is really
+  happening &mdash; validation AUC climbs from 0.50 at one round to 0.745 at four hundred. Settings
+  were chosen on AUC for exactly this reason.</figcaption>
+</figure>
+
+<p>The chosen configuration was <b>400 rounds at a learning rate of 1.0</b>, with a validation AUC
+of 0.745. The one-hot encoding also earned its place as a measurable experiment rather than a
+formality: fitting the same configuration on the ten numeric columns alone gives a validation AUC
+of <b>0.701</b>, and adding the twenty indicator columns raises it to <b>0.745</b>. Knowing a
+song's genre, key and mode genuinely helps predict whether it charts.</p>
+
+<figure>
+  <img src="images/fig45_adaboost_alphas.png" alt="Line chart of stump weight alpha across the first sixty rounds, starting near 1.9 and decaying toward zero.">
+  <figcaption><b>Each stump earns a say proportional to how right it was.</b> The first stump finds
+  the easiest structure in the data and earns an alpha of 1.88. By the sixtieth round the stumps
+  are working on genuinely hard leftovers and earn alphas near 0.01, contributing almost nothing
+  individually. This decay is the mechanism working as designed, not a fault.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig48_adaboost_importance.png" alt="Horizontal bar chart of feature importances with instrumentalness at 33 percent, genre EDM at 22 percent and duration at 16 percent leading.">
+  <figcaption><b>The encoded categories earned nearly a third of the model.</b> Instrumentalness
+  dominates at 33.3%, confirming once more that vocals are the strongest single signal, but
+  <em>genre: EDM</em> alone accounts for 22.2% and the one-hot columns together make up 31.9% of
+  the model. The information the encoding step added is being used heavily, not decoratively.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig46_adaboost_confusion.png" alt="Two-by-two confusion matrix showing 4,469 correct non-charting predictions, 14 correct charting predictions, and 670 charting songs missed.">
+  <figcaption><b>The strongest method so far lands in the same place.</b> Accuracy is 86.81%
+  against an 86.75% baseline. AdaBoost flagged 25 songs as likely hits and was right about 14 of
+  them &mdash; a precision of 56%, better than a coin flip &mdash; but it missed 670 of the 684
+  real hits. More capable than its predecessors, and still unable to commit.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig47_adaboost_vs_tree.png" alt="Bar chart comparing the Module 3 decision tree at 86.77 percent against AdaBoost at 86.81 percent, with the axis starting at 80 percent.">
+  <figcaption><b>AdaBoost beats the single tree by +0.04 percentage points.</b> On the identical
+  held-out songs, Module 3's best tree reached 86.77% and AdaBoost reaches 86.81% &mdash; a
+  difference of two songs out of 5,164. The axis has to start at 80% to make a gap this small
+  visible, which is itself the finding: four hundred boosted stumps bought essentially nothing in
+  accuracy terms.</figcaption>
+</figure>
+
+<p><b>Which did best, and by how much?</b> On accuracy, AdaBoost by 0.04 percentage points over the
+decision tree &mdash; a margin of two songs, and not a real difference. On ranking, the gap is
+genuine and much larger: AdaBoost's test ROC AUC is <b>0.757</b> against logistic regression's
+0.681, the best figure any model in this project has produced. Boosting did improve the model. It
+improved the part that accuracy cannot see.</p>
+
+<h3>Conclusions</h3>
+
+<p>AdaBoost is the most capable method this project has applied, and it produced the clearest
+illustration yet of the difference between learning something and being able to use it. Measured
+on accuracy it gained 0.04 percentage points over a single decision tree, which is nothing.
+Measured on ranking it reached an AUC of 0.757, comfortably the best result across four modules and
+a real improvement over logistic regression's 0.681. Four hundred stumps, each correcting the last,
+genuinely did extract more signal from these recordings than anything before them.</p>
+
+<p>And it still cannot pick a hit. Out of 684 charting songs in the held-out set it identified 14.
+When it did commit, it was right 56% of the time, which is better than a coin flip and the best
+precision any model here has managed &mdash; but it committed 25 times out of 5,164 opportunities.
+A method this reluctant is telling us something about the problem rather than about itself: at a
+13% base rate, an AUC of 0.757 is simply not enough to push individual songs past the threshold
+where a confident call becomes justified.</p>
+
+<p>The one-hot experiment produced the most unexpected result on this tab. Adding genre, key and
+mode lifted validation AUC from 0.701 to 0.745, and the encoded columns went on to claim 31.9% of
+the finished model, with EDM alone accounting for 22.2%. Knowing what kind of record something is
+helps predict whether it charts &mdash; more than most of the acoustic measurements do. That is
+worth sitting with, because Module 2 showed genre is barely audible in those same measurements. The
+label carries information that the sound does not, which suggests what it encodes is something
+about how a record is marketed, promoted and placed rather than anything about how it sounds.</p>
+
+<p>Four modules in, the pattern across every method is consistent enough to state plainly. There is
+real signal relating a recording to its commercial fate, and successive methods have extracted more
+of it: no usable correlation in Module 1, nothing in the unsupervised structure in Module 2, a
+refusal to predict in Module 3, a 0.681 ranking from logistic regression, and now 0.757 from
+boosting. The trend is upward and the ceiling is visible. Gradient boosting and XGBoost in the
+final module will push on the same signal with better machinery, and the honest expectation is a
+further modest gain in ranking and no change at all in the ability to call a hit &mdash; because
+the limit being hit is in the data, not in the algorithms.</p>

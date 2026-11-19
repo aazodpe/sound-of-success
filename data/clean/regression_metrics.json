@@ -1,0 +1,152 @@
+{
+  "linear": {
+    "target": "track_popularity",
+    "n_train": 15489,
+    "n_val": 5164,
+    "n_test": 5164,
+    "rmse": 22.485709512467736,
+    "mae": 18.673827797936067,
+    "r2": 0.06222173351948723,
+    "val_r2": 0.05254340199583163,
+    "baseline_rmse": 23.219777984797027,
+    "baseline_mae": 19.283425322855994,
+    "rmse_improvement": 0.734068472329291,
+    "intercept": 68.59141731646474,
+    "target_sd": 23.222516958236437,
+    "coefficients": {
+      "energy": {
+        "raw": -23.60339498725132,
+        "standardised": -4.361634417364983
+      },
+      "loudness": {
+        "raw": 1.1628402288335917,
+        "standardised": 3.5498506853813088
+      },
+      "duration_min": {
+        "raw": -2.5351946763763094,
+        "standardised": -2.567165249065041
+      },
+      "instrumentalness": {
+        "raw": -10.242710606632981,
+        "standardised": -2.43310213266672
+      },
+      "tempo": {
+        "raw": 0.031635445403573215,
+        "standardised": 0.8526184172627729
+      },
+      "acousticness": {
+        "raw": 3.583799328551149,
+        "standardised": 0.8121240828515723
+      },
+      "speechiness": {
+        "raw": -6.819149033137084,
+        "standardised": -0.7073230357573645
+      },
+      "liveness": {
+        "raw": -4.100821920213026,
+        "standardised": -0.6417310404742101
+      },
+      "danceability": {
+        "raw": 4.278564021200925,
+        "standardised": 0.6238504740268846
+      },
+      "valence": {
+        "raw": 2.233331715774857,
+        "standardised": 0.5257636961621381
+      }
+    }
+  },
+  "logistic": {
+    "default": {
+      "accuracy": 0.8675445391169636,
+      "confusion": [
+        [
+          4477,
+          3
+        ],
+        [
+          681,
+          3
+        ]
+      ],
+      "roc_auc": 0.6808146668755221,
+      "recall_charted": 0.0043859649122807015,
+      "precision_charted": 0.5,
+      "val_accuracy": 0.8669635941130907,
+      "coefficients": {
+        "danceability": -0.09701312067986949,
+        "energy": -0.3070636625887396,
+        "loudness": -0.09356467521096211,
+        "speechiness": -0.11909784531372705,
+        "acousticness": -0.2780225486633607,
+        "instrumentalness": -0.9274223016668385,
+        "liveness": -0.07223913737158061,
+        "valence": 0.33727286514152344,
+        "tempo": -0.008616056026796999,
+        "duration_min": 0.31039154398099084
+      },
+      "odds_ratios": {
+        "danceability": 0.9075440984595711,
+        "energy": 0.7356037689763285,
+        "loudness": 0.9106791171575052,
+        "speechiness": 0.8877209371788217,
+        "acousticness": 0.7572797456757625,
+        "instrumentalness": 0.39557206275191276,
+        "liveness": 0.9303083977034735,
+        "valence": 1.4011213287524265,
+        "tempo": 0.9914209558089688,
+        "duration_min": 1.3639590595538846
+      }
+    },
+    "balanced": {
+      "accuracy": 0.6005034856700232,
+      "confusion": [
+        [
+          2657,
+          1823
+        ],
+        [
+          240,
+          444
+        ]
+      ],
+      "roc_auc": 0.6811850590016708,
+      "recall_charted": 0.6491228070175439,
+      "precision_charted": 0.19585355094838994,
+      "val_accuracy": 0.614833462432223,
+      "coefficients": {
+        "danceability": -0.11323944151796098,
+        "energy": -0.3611074565894777,
+        "loudness": -0.05735186756491908,
+        "speechiness": -0.09558309804912948,
+        "acousticness": -0.2896052105140461,
+        "instrumentalness": -0.8892295419626695,
+        "liveness": -0.07806821428549594,
+        "valence": 0.37255874963102453,
+        "tempo": -0.004232367208219528,
+        "duration_min": 0.37631913109451914
+      },
+      "odds_ratios": {
+        "danceability": 0.8929368283673104,
+        "energy": 0.6969041075045956,
+        "loudness": 0.9442617558201062,
+        "speechiness": 0.9088428354490834,
+        "acousticness": 0.7485590324871497,
+        "instrumentalness": 0.41097226769271233,
+        "liveness": 0.9249013329080416,
+        "valence": 1.4514437484230323,
+        "tempo": 0.995776576635547,
+        "duration_min": 1.4569120055125642
+      }
+    },
+    "baseline": 0.8675445391169636,
+    "n_test": 5164,
+    "n_charted_test": 684
+  },
+  "nb_comparison": {
+    "nb_multinomial_accuracy": 0.8675445391169636,
+    "nb_multinomial_recall": 0.0,
+    "nb_gaussian_accuracy": 0.8559256390395042,
+    "nb_gaussian_recall": 0.12573099415204678
+  }
+}

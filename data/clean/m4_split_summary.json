@@ -1,0 +1,72 @@
+{
+  "matches_module3_test": true,
+  "n_numeric": 10,
+  "n_onehot": 20,
+  "n_features_encoded": 30,
+  "onehot_columns": [
+    "playlist_genre_edm",
+    "playlist_genre_latin",
+    "playlist_genre_pop",
+    "playlist_genre_r&b",
+    "playlist_genre_rap",
+    "playlist_genre_rock",
+    "key_name_A",
+    "key_name_A#/Bb",
+    "key_name_B",
+    "key_name_C",
+    "key_name_C#/Db",
+    "key_name_D",
+    "key_name_D#/Eb",
+    "key_name_E",
+    "key_name_F",
+    "key_name_F#/Gb",
+    "key_name_G",
+    "key_name_G#/Ab",
+    "mode_name_Major",
+    "mode_name_Minor"
+  ],
+  "train": {
+    "n": 15489,
+    "charted": 2051,
+    "charted_rate": 0.13241655368325908,
+    "popularity_mean": 40.571696042352634,
+    "popularity_sd": 23.222516958236437
+  },
+  "val": {
+    "n": 5164,
+    "charted": 684,
+    "charted_rate": 0.13245546088303642,
+    "popularity_mean": 40.997676219984506,
+    "popularity_sd": 22.946779966898244
+  },
+  "test": {
+    "n": 5164,
+    "charted": 684,
+    "charted_rate": 0.13245546088303642,
+    "popularity_mean": 40.509682416731216,
+    "popularity_sd": 23.221943728227817
+  },
+  "seed": 5612,
+  "test_size": 0.2,
+  "val_size_of_train": 0.25,
+  "numeric_features": [
+    "danceability",
+    "energy",
+    "loudness",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo",
+    "duration_min"
+  ],
+  "categorical_features": [
+    "playlist_genre",
+    "key_name",
+    "mode_name"
+  ],
+  "regression_target": "track_popularity",
+  "classification_target": "charted",
+  "baseline_accuracy": 0.8675445391169636
+}

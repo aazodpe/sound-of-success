@@ -1,14 +1,291 @@
 <h2>Regression</h2>
 
-<h3>Overview</h3>
-<p>Regression fits a relationship between inputs and an outcome and reports how strong each contribution is. Linear regression predicts a number; logistic regression predicts the probability of a yes-or-no outcome.</p>
-<p>Popularity is scored on a continuous scale, which makes it a natural regression target &mdash; how much popularity does a song gain per unit of danceability, holding the rest constant? Charting, by contrast, is a yes-or-no outcome, and logistic regression gives a calibrated probability for it rather than a bare verdict.</p>
+<p class="lede">Every method so far has sorted songs into boxes. Regression asks a different
+question: not which group a song belongs to, but how much. This tab fits a line through
+popularity itself, and then uses the same machinery to put a probability on charting &mdash;
+which finally reveals something the classifiers had been hiding.</p>
 
-<h3>Data</h3>
-<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for linear and logistic regression, shown as a sample image, with links to both the raw and the cleaned data.</div>
+<h3>Overview</h3>
+
+<p><b>Linear regression</b> predicts a number. It assumes the thing being predicted can be
+written as a weighted sum of the inputs plus a constant, and it chooses those weights to make the
+total squared error as small as possible. The output is unbounded and continuous, which makes it
+the right tool for a quantity like popularity, measured here from 0 to 100. Each weight has a
+plain reading: it is how much the prediction moves when that one input rises by one unit and
+everything else is held still. That interpretability is the method's real attraction, because
+unlike a tree or a boosted ensemble it hands back a sentence you can argue with.</p>
+
+<p><b>Logistic regression</b> predicts a class, despite the name. It begins the same way, by
+computing a weighted sum of the inputs, but that sum &mdash; the <em>log-odds</em>, or score
+&mdash; runs from minus infinity to plus infinity and so cannot be a probability. The
+<b>sigmoid</b> function fixes this. It takes any number and squashes it into the range 0 to 1: a
+very negative score maps close to 0, a very positive score close to 1, and a score of exactly 0
+maps to 0.5. The curve is steepest in the middle, meaning the model is most sensitive to changes
+in evidence when it is genuinely undecided and increasingly indifferent once it is already
+confident.</p>
+
+<figure>
+  <img src="images/diag_linear_vs_logistic.png" alt="Two panels: linear regression fitting a straight line through scattered points, and logistic regression fitting an S-shaped curve between two groups of points at zero and one.">
+  <figcaption><b>Two regressions that answer different questions.</b> Linear regression runs a
+  straight line through the data and reads a number off it. Logistic regression fits an S-shaped
+  curve between two outcomes and reads a probability off it, which is why the same family of
+  method can serve two quite different purposes.</figcaption>
+</figure>
+
+<p>Turning that probability into a class takes one more step, and it is a choice rather than a
+consequence. A threshold is applied: above it the answer is yes, below it no. The default is 0.5,
+which is only the right answer when the two classes are equally common and the two kinds of
+mistake cost the same. Neither holds here &mdash; 13.2% of songs charted, so a model can be
+right 86.8% of the time by never saying yes at all. The threshold therefore does real work in
+this project, and the Results section shows exactly how much.</p>
+
+<figure>
+  <img src="images/diag_sigmoid.png" alt="Three panels showing a linear score running from minus infinity to plus infinity, the sigmoid squashing it into zero to one, and a cut-off at 0.5 turning eight example probabilities into yes or no answers.">
+  <figcaption><b>How logistic regression gets from a score to a yes or no.</b> The weighted sum is
+  unbounded, the sigmoid compresses it into a probability, and a cut-off converts that probability
+  into a decision. The first two steps are fixed by the mathematics; the third is a judgement
+  call, and on imbalanced data it is the one that decides whether the model is useful.</figcaption>
+</figure>
+
+<p>Both methods are being used here to attack the project's central question from a new angle.
+Classification has so far asked whether a song charts, and has answered by refusing to commit.
+Linear regression sidesteps that by predicting a continuous popularity score, where there is no
+threshold to hide behind and the error can be stated in the same units as the thing being
+predicted. Logistic regression then returns to charting, but reports probabilities rather than
+verdicts &mdash; and probabilities can be checked for whether they rank songs correctly even when
+the verdicts are useless.</p>
+
+<h3>Data Prep</h3>
+
+<p>Both models are supervised, so both need labelled data and a split that keeps the scoring
+honest. This module also adds a third partition. Because the assignment requires that settings be
+chosen without consulting the final test set, the 25,817 labelled songs were divided into
+<b>15,489 for training</b>, <b>5,164 for validation</b>, and <b>5,164 for testing</b>. All three
+are verified disjoint. Tuning decisions are made against validation; the test set is read once, at
+the end.</p>
+
+<p>The split reproduces the one used in Module 3 with the same seed and the same stratification,
+and the script asserts that the held-out songs match row for row. That matters because the
+comparison this tab draws against the earlier Naïve Bayes model is only meaningful if both were
+scored on identical songs, which they were.</p>
+
+<p>The two models need different targets, and the distinction is the heart of the data preparation
+here:</p>
+
+<table>
+  <thead>
+    <tr><th>Model</th><th>Target column</th><th>Why that column</th><th>Features</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>Linear regression</b></td>
+      <td><code>track_popularity</code></td>
+      <td>Linear regression predicts a number, so it needs a continuous target. Popularity runs 0 to 100 with a mean of 40.6 and a standard deviation of 23.2. The binary charted flag cannot be used here.</td>
+      <td>The 10 numeric audio measurements</td>
+    </tr>
+    <tr>
+      <td><b>Logistic regression</b></td>
+      <td><code>charted</code></td>
+      <td>Logistic regression predicts a probability between two outcomes, so it needs a two-class label. 1 if the song reached the Billboard Hot 100, 0 otherwise &mdash; the same target Module 3 used.</td>
+      <td>The same 10, standardised</td>
+    </tr>
+  </tbody>
+</table>
+
+<figure>
+  <img src="images/diag_train_test.png" alt="Diagram showing the labelled songs dividing into a training set and a held-out test set, with a note that no song appears in both.">
+  <figcaption><b>Why the partitions must stay separate.</b> A model scored on songs it was built
+  from can succeed by memorising rather than generalising, which is why the test set is held back.
+  This module adds a validation set in between, so that choosing settings never touches the songs
+  used for the final number.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/train_charted.png" alt="Table showing the first rows of the training set, with a label column followed by numeric audio feature columns.">
+  <figcaption><b>The training set.</b> Each row carries the outcome being predicted alongside the
+  ten numeric measurements. Only these rows are used to fit either model.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/test_charted.png" alt="Table showing the first rows of the test set with the same columns as the training set.">
+  <figcaption><b>The test set.</b> Identical in structure, withheld entirely, and the same 5,164
+  songs that Module 3 reported on. Every number in the Results below comes from these rows and
+  no others.</figcaption>
+</figure>
+
+<p>For logistic regression the features were standardised to mean zero and unit variance, fitted
+on the training rows only. This is not required by the method but it makes the coefficients
+comparable with one another: without it, a coefficient on tempo (measured in the hundreds) and one
+on danceability (measured between 0 and 1) could not be read side by side. Linear regression was
+fitted on the raw values so that its coefficients keep their natural units, with a standardised
+version computed alongside purely for comparing magnitudes.</p>
+
+<div class="cards">
+  <div class="card">
+    <h4>Regression data</h4>
+    <p>Numeric features with the continuous popularity target, split three ways.</p>
+    <a href="__REPO__/blob/main/data/clean/m4_regression_train.csv">m4_regression_train.csv &rarr;</a>
+    <a href="__REPO__/blob/main/data/clean/m4_regression_val.csv">m4_regression_val.csv &rarr;</a>
+    <a href="__REPO__/blob/main/data/clean/m4_regression_test.csv">m4_regression_test.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Logistic data</h4>
+    <p>The same features with the two-class charted target.</p>
+    <a href="__REPO__/blob/main/data/clean/m4_logistic_train.csv">m4_logistic_train.csv &rarr;</a>
+    <a href="__REPO__/blob/main/data/clean/m4_logistic_val.csv">m4_logistic_val.csv &rarr;</a>
+    <a href="__REPO__/blob/main/data/clean/m4_logistic_test.csv">m4_logistic_test.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Split summary</h4>
+    <p>Sizes, class balance, and the check that the test set matches Module 3.</p>
+    <a href="__REPO__/blob/main/data/clean/m4_split_summary.json">m4_split_summary.json &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Measured results</h4>
+    <p>Every coefficient, error and odds ratio quoted below.</p>
+    <a href="__REPO__/blob/main/data/clean/regression_metrics.json">regression_metrics.json &rarr;</a>
+  </div>
+</div>
 
 <h3>Code</h3>
-<div class="pending"><strong>Coming in a later module.</strong>A link to the code for this section, with the language and core packages noted.</div>
+
+<p>Python 3 with <code>scikit-learn</code>'s <code>LinearRegression</code> and
+<code>LogisticRegression</code>, plus <code>pandas</code> and <code>matplotlib</code>. The
+logistic model is fitted twice, once as standard and once with the rare class weighted up, to show
+what the threshold choice is actually costing.</p>
+
+<div class="cards">
+  <div class="card">
+    <h4>Regression</h4>
+    <p>Both models, the coefficient analysis, and all five figures.</p>
+    <a href="__REPO__/blob/main/code/14_regression.py">14_regression.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Data preparation</h4>
+    <p>The three-way split, with the match against Module 3 asserted.</p>
+    <a href="__REPO__/blob/main/code/13_supervised_prep_m4.py">13_supervised_prep_m4.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Diagrams</h4>
+    <p>The two explanatory figures in the Overview.</p>
+    <a href="__REPO__/blob/main/code/16_concept_diagrams_m4.py">16_concept_diagrams_m4.py &rarr;</a>
+  </div>
+</div>
 
 <h3>Results</h3>
-<div class="pending"><strong>Coming in a later module.</strong>Results, parameter choices, visualizations, and what they mean for the question of what makes a song succeed.</div>
+
+<h4 style="font-size:0.95rem;margin:34px 0 10px;color:var(--ink)">Linear regression: predicting popularity</h4>
+
+<p>On the held-out songs the model achieves an <b>RMSE of 22.49</b> and an <b>MAE of 18.67</b>
+points, with an <b>R&sup2; of 0.062</b>. Those numbers need a reference point to mean anything.
+Predicting the training average for every single song &mdash; a model that ignores the music
+entirely &mdash; gives an RMSE of 23.22. So ten measurements of what a song sounds like improve the
+typical error by <b>0.73 points out of 100</b>. The R&sup2; says the same thing in different units:
+6.2% of the variation in popularity is accounted for, and 93.8% is not.</p>
+
+<figure>
+  <img src="images/fig39_linear_pred_vs_actual.png" alt="Scatter plot of predicted against actual popularity, with all predictions compressed into a horizontal band between 10 and 59 while actual values span the full 0 to 100 range.">
+  <figcaption><b>The model predicts almost the same number for every song.</b> If predictions were
+  good the cloud would hug the diagonal; instead it forms a horizontal band, because every
+  prediction falls between 10 and 59 while the real values run the full 0 to 100. This is what an
+  R&sup2; of 0.062 looks like: the model has found a small amount of signal and is sensibly
+  refusing to bet much on it.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig40_linear_coefficients.png" alt="Horizontal bar chart of standardised regression coefficients, with energy at minus 4.36 and loudness at plus 3.55 dominating and the rest much smaller.">
+  <figcaption><b>Energy and loudness pull hard in opposite directions.</b> Measured per standard
+  deviation so the sizes are comparable, energy scores &minus;4.36 and loudness +3.55 &mdash; two
+  large effects that very nearly cancel. The pattern is a signature of collinearity: the two
+  correlate at 0.69, so the model can raise one and lower the other almost freely without changing
+  its predictions.</figcaption>
+</figure>
+
+<p><b>Two coefficients in plain words.</b> The coefficient on <b>loudness is +1.16</b>, which in
+natural units means that making a track one decibel louder is associated with roughly one extra
+point of popularity, holding the other nine measurements fixed. The coefficient on
+<b>instrumentalness is &minus;10.24</b>, meaning a track at the fully instrumental end of the
+scale is predicted about ten points less popular than an otherwise identical track with vocals
+&mdash; by some distance the most interpretable effect in the model, and consistent with what
+every earlier module found about vocals.</p>
+
+<p>Those readings come with a caveat worth stating rather than burying. "Holding the others fixed"
+is doing heavy lifting in a dataset where energy and loudness move together. Because the model can
+trade one against the other, their individual coefficients are unstable even though their combined
+effect is not, which is precisely why the standardised chart shows two large opposing bars rather
+than one moderate one. The honest summary is that loudness and energy jointly matter a little, and
+that attributing the effect to either one separately is not supported.</p>
+
+<h4 style="font-size:0.95rem;margin:40px 0 10px;color:var(--ink)">Logistic regression: predicting charting</h4>
+
+<figure>
+  <img src="images/fig41_logistic_confusion.png" alt="Two-by-two confusion matrix showing 4,477 correct non-charting predictions, 3 correct charting predictions, and 681 charting songs missed.">
+  <figcaption><b>Logistic regression reaches the same dead end.</b> Accuracy is 86.75%, identical
+  to the baseline, because the model said "charted" just 3 times out of 5,164. It happened to be
+  right on all three, but it missed 681 of the 684 real hits. As in Module 3, a respectable-looking
+  accuracy conceals a model that is declining to answer.</figcaption>
+</figure>
+
+<p><b>One coefficient in terms of the odds.</b> Logistic coefficients are additive on the log-odds
+scale, so exponentiating one turns it into a multiplier on the odds themselves. For
+<b>instrumentalness the odds ratio is 0.396</b>: a one-standard-deviation increase in how
+instrumental a track is multiplies its odds of charting by about 0.40, which is to say it
+<em>cuts those odds by roughly 60%</em>. Vocals are the single strongest thing this model has to
+say about charting, and it says it clearly.</p>
+
+<figure>
+  <img src="images/fig42_logistic_vs_nb.png" alt="Two panels comparing Multinomial Naive Bayes, Gaussian Naive Bayes and logistic regression, with near-identical accuracy but recall near zero for all three.">
+  <figcaption><b>Three models, one conclusion.</b> Compared against Module 3's Naïve Bayes on the
+  identical held-out songs, logistic regression matches Multinomial Naïve Bayes almost exactly:
+  86.75% accuracy against 86.75%, and 0.4% of hits found against 0.0%. Gaussian Naïve Bayes trades
+  a little accuracy for a little recall and ends up no more useful. The left panel is why accuracy
+  must never be reported alone; the right panel is the actual result.</figcaption>
+</figure>
+
+<p>But logistic regression also reports something Naïve Bayes did not, and it changes the picture.
+Its <b>ROC AUC is 0.681</b>. AUC measures how often the model gives a genuine hit a higher
+probability than a non-hit, where 0.5 is a coin flip and 1.0 is perfect. At 0.681 the model is
+ranking songs meaningfully better than chance &mdash; it is not blind. It simply never becomes
+confident enough to cross a 0.5 threshold, because when only 13 songs in 100 chart, even a decent
+ranking rarely pushes any individual song past even odds.</p>
+
+<figure>
+  <img src="images/fig43_logistic_balanced.png" alt="Grouped bars comparing the standard logistic model against one with re-weighted classes, showing recall rising from near zero to 65 percent while accuracy falls to 60 percent and precision sits at 20 percent.">
+  <figcaption><b>Forcing the model to guess hits trades away far more than it gains.</b> Weighting
+  the rare class up makes the same model find 64.9% of the real hits instead of 0.4%, but accuracy
+  collapses from 86.8% to 60.1% and only 19.6% of the songs it flags actually charted. Four out of
+  five predicted hits would be wrong. The signal exists; it is nowhere near strong enough to act
+  on.</figcaption>
+</figure>
+
+<h3>Conclusions</h3>
+
+<p>Linear regression gave the clearest answer yet to the question this project has been circling,
+because it reports its failure in units anyone can understand. Knowing ten things about how a
+record sounds improves a guess at its popularity by three quarters of a point on a hundred-point
+scale. Not three quarters of a standard deviation &mdash; three quarters of a point. Put the other
+way, 93.8% of what makes one song more popular than another is invisible to these measurements.
+After three modules of weak correlations and baseline-matching classifiers, this is the same
+conclusion stated in the plainest possible terms.</p>
+
+<p>The coefficients are nonetheless interpretable, and two of them say something real. Vocals
+matter: a fully instrumental track is predicted about ten points less popular, and on the charting
+side being one standard deviation more instrumental cuts the odds of charting by around 60%. That
+is the single most consistent finding in the entire project, visible in Module 1's raw comparison
+of charted against non-charted songs, in the decision tree's splits, and now in two regressions
+fitted independently. Popular music, almost definitionally, has someone singing on it.</p>
+
+<p>The more interesting result is one earlier modules could not have produced. Logistic regression
+matched Naïve Bayes exactly on accuracy and recall &mdash; both effectively refuse to predict a hit
+&mdash; but its ROC AUC of 0.681 shows the refusal is not blindness. The model <em>can</em> rank
+songs by their chances better than chance would. What it cannot do is convert that ranking into a
+confident yes. This distinction matters, because "the model learned nothing" and "the model learned
+something too weak to act on" are different claims, and only the second one is true. Three modules
+of accuracy figures had been quietly hiding that difference.</p>
+
+<p>Re-weighting the classes makes the trade-off explicit and settles the practical question. Force
+the model to find hits and it finds 65% of them &mdash; while being wrong about four out of every
+five songs it flags. For anyone deciding where to put a marketing budget that is not a usable tool,
+and no change of threshold fixes it, because the underlying ranking is only modestly better than
+chance. What AdaBoost offers on the next tab is a chance to improve that ranking rather than merely
+re-slice it, which is now the only avenue left worth testing.</p>

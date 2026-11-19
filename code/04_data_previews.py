@@ -62,6 +62,61 @@ def table_png(df, cols, title, subtitle, out, header_key, n=6, colw=None):
     print(f"  saved {name}")
 
 
+
+def encoding_png():
+    """The one-hot step, shown as the same rows before and after."""
+    bp = os.path.join(CLEAN, "m4_encoding_before.csv")
+    ap = os.path.join(CLEAN, "m4_encoding_after.csv")
+    if not (os.path.exists(bp) and os.path.exists(ap)):
+        return
+    before, after = pd.read_csv(bp), pd.read_csv(ap)
+    n = 6
+    before, after = before.head(n), after.head(n)
+    show = [c for c in after.columns
+            if c.startswith(("playlist_genre_", "mode_name_"))][:8]
+    after = after[show]
+
+    mode = "dark" if theme.SUFFIX else "light"
+    hdr_raw, hdr_clean = HDR[mode]
+    row_a, row_b = (theme.BG, "#1d1d22") if mode == "dark" else ("#ffffff", "#f7f8fa")
+
+    fig, (a1, a2) = plt.subplots(
+        1, 2, figsize=(14.5, 0.34 * n + 1.5), facecolor=theme.BG,
+        gridspec_kw={"width_ratios": [len(before.columns), len(show)]})
+    fig.subplots_adjust(left=0.01, right=0.99, top=0.70, bottom=0.04, wspace=0.07)
+
+    for ax, d, title, col in [
+            (a1, before, "BEFORE  ·  three text columns", hdr_raw),
+            (a2, after, "AFTER  ·  one column per level (first 8 of 20)", hdr_clean)]:
+        ax.axis("off")
+        heads = ["\n".join(textwrap.wrap(c.replace("playlist_genre_", "genre: ")
+                                          .replace("mode_name_", "mode: ")
+                                          .replace("_", " "), 11)[:2])
+                 for c in d.columns]
+        tbl = ax.table(cellText=d.astype(str).values, colLabels=heads,
+                       cellLoc="center", loc="center")
+        tbl.auto_set_font_size(False); tbl.set_fontsize(8); tbl.scale(1, 1.55)
+        for (r, c), cell in tbl.get_celld().items():
+            cell.set_edgecolor(theme.GRID); cell.set_linewidth(0.8)
+            if r == 0:
+                cell.set_facecolor(col)
+                cell.set_text_props(color="white", fontweight="bold", fontsize=7.4)
+                cell.set_height(cell.get_height() * 1.7)
+            else:
+                cell.set_facecolor(row_a if r % 2 else row_b)
+                cell.set_text_props(color=theme.INK)
+        ax.set_title(title, loc="left", fontsize=11, fontweight="bold",
+                     color=theme.INK, pad=16)
+
+    fig.suptitle("One-hot encoding, step by step", x=0.012, ha="left",
+                 fontsize=13, fontweight="bold", y=0.985)
+    name = theme.out_name("m4_encoding.png")
+    fig.savefig(os.path.join(IMG, name), dpi=150, bbox_inches="tight",
+                facecolor=theme.BG)
+    plt.close(fig)
+    print(f"  saved {name}")
+
+
 def main():
     # ---- Spotify -----------------------------------------------------------
     r = pd.read_csv(os.path.join(RAW, "spotify_songs_raw.csv"))
@@ -193,6 +248,22 @@ def main():
                   "Multinomial Naive Bayes cannot accept negative numbers, so every "
                   "feature is rescaled to the 0-1 range using the training set only.",
                   "nb_input.png", 1, n=6)
+
+
+    # ---- Module 4: the encoded AdaBoost inputs ---------------------------
+    encoding_png()
+    for part in ["train", "test"]:
+        p = os.path.join(CLEAN, f"m4_adaboost_{part}.csv")
+        if not os.path.exists(p):
+            continue
+        d = pd.read_csv(p)
+        cols = (["charted"] + [c for c in d.columns if c != "charted"][:5]
+                + [c for c in d.columns if c.startswith("playlist_genre_")][:2])
+        table_png(d, cols,
+                  f"ADABOOST {part.upper()} SET",
+                  f"{len(d):,} rows x {d.shape[1]} columns ({len(d.columns)-11} of them "
+                  f"one-hot indicators). {int(d.charted.sum()):,} of these songs charted.",
+                  f"m4_adaboost_{part}.png", 1 if part == "train" else 0, n=6)
 
     print("\nPreviews written to", os.path.abspath(IMG))
 
