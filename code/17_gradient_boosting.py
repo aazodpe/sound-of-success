@@ -269,8 +269,8 @@ def main():
         vmin = int(np.argmin(cur["val_loss"])) + 1
         a1.scatter([vmin], [min(cur["val_loss"])], s=150, facecolor="none",
                    edgecolor=C[1], linewidth=2.0, zorder=6)
-        finish(a1, "Training error keeps falling. Held-out error bottoms out and "
-                   "turns back up.",
+        finish(a1, "Training error keeps falling. Validation error bottoms out "
+                   "and turns back up.",
                f"Log loss after every tree is added. The two lines start together;\n"
                f"validation bottoms out at {vmin} trees, and the gap after that "
                f"is overfitting.",

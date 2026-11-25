@@ -103,16 +103,16 @@ trees</b> is the other side of that trade, and it is the setting that can quietl
 model. Because the running total is always being fitted to its own remaining error, and because
 some of that error is noise rather than signal, a long enough sequence will start modelling the
 accidents of the training set. Training error keeps falling the whole time &mdash; that is what
-makes it dangerous. The only way to see the problem is to score held-out data after every tree and
-watch for the point where it stops improving.</p>
+makes it dangerous. The only way to see the problem is to score a separate validation set after
+every tree and watch for the point where it stops improving.</p>
 
 <figure>
-  <img src="images/diag_gb_learning_rate_dark.png" data-light="images/diag_gb_learning_rate.png" data-dark="images/diag_gb_learning_rate_dark.png" loading="lazy" decoding="async" alt="Two panels: three fitted curves at different learning rates and tree counts on the left, and training error falling while held-out error turns upward on the right.">
+  <img src="images/diag_gb_learning_rate_dark.png" data-light="images/diag_gb_learning_rate.png" data-dark="images/diag_gb_learning_rate_dark.png" loading="lazy" decoding="async" alt="Two panels: three fitted curves at different learning rates and tree counts on the left, and training error falling while validation error turns upward on the right.">
   <figcaption><b>Two settings that decide whether boosting helps or hurts.</b> On the left, the same
   problem approached three ways: big steps arrive quickly but jaggedly, small steps with too few
   trees barely leave the starting point, and small steps with enough trees land closest to the real
   pattern. On the right, the overfitting picture, measured on a real run &mdash; training error
-  falls forever while held-out error bottoms out and climbs. Everything in the shaded region is a
+  falls forever while validation error bottoms out and climbs. Everything in the shaded region is a
   tree fitted to noise.</figcaption>
 </figure>
 
@@ -292,7 +292,7 @@ same.</p>
 
 <p>One tab remains, and the honest expectation for it can be stated before the results arrive.
 XGBoost is a more refined implementation of exactly the mechanism described here, with an explicit
-penalty on complexity and a stopping rule that uses held-out data directly. It should edge ahead of
+penalty on complexity and a stopping rule that reads the validation set directly. It should edge ahead of
 gradient boosting on ranking by a small amount, and it should land in precisely the same place on
 accuracy. If that is what happens, the ceiling is not an artefact of any one method, and the
 project's central claim can be made with some confidence.</p>

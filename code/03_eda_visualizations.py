@@ -278,8 +278,10 @@ def main():
     ax1.annotate(f"{med[peak]:.0f} weeks", xy=(xs[peak], med[peak]), xytext=(0, 11),
                  textcoords="offset points", ha="center", color=C[2],
                  fontweight="bold", fontsize=9.5)
-    ax1.annotate(f"{med[-1]:.0f} weeks", xy=(xs[-1], med[-1]), xytext=(-4, 12),
-                 textcoords="offset points", ha="right", color=C[2],
+    # Placed level with the point rather than above it: the line drops into
+    # this point from the upper left, so anything above it sits on the line.
+    ax1.annotate(f"{med[-1]:.0f} weeks", xy=(xs[-1], med[-1]), xytext=(-12, 0),
+                 textcoords="offset points", ha="right", va="center", color=C[2],
                  fontweight="bold", fontsize=9.5)
     ax1.set_ylim(0, max(med) * 1.35)
     finish(ax1, "Chart runs peaked in the 2000s and then collapsed",
@@ -292,6 +294,12 @@ def main():
                  fontsize=9.3, fontweight="bold", color=INK_SOFT)
     ax2.set_ylim(0, max(one) * 1.30)
     ax2.set_xticks(xs, [f"{int(d)}s" for d in decades])
+    # The panels share an x axis, which would normally hide the upper one's
+    # tick labels. They are turned back on so that either panel can be read,
+    # or lifted into a slide, on its own.
+    ax1.set_xticks(xs, [f"{int(d)}s" for d in decades])
+    ax1.tick_params(axis="x", labelbottom=True)
+    ax1.set_xlabel("Decade the song debuted on the chart")
     finish(ax2, "Because four in ten entries now last a single week",
            "Share of charting songs that appeared for exactly one week and then vanished",
            None, "Share of songs (%)")

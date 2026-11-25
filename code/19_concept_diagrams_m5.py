@@ -177,7 +177,7 @@ def diagram_gb_learning_rate():
     n = np.arange(1, 141)
     k = int(np.argmin(va_err)) + 1
     a2.plot(n, tr_err, color=C[0], linewidth=2.2, label="Training error")
-    a2.plot(n, va_err, color=C[1], linewidth=2.2, label="Held-out error")
+    a2.plot(n, va_err, color=C[1], linewidth=2.2, label="Validation error")
     a2.axvline(k, color=theme.INK_SOFT, linestyle="--", linewidth=1.5)
     a2.annotate(f"best at {k} trees", xy=(k, max(va_err) * 0.92), xytext=(7, 0),
                 textcoords="offset points", fontsize=8.8, color=theme.INK_SOFT)
@@ -188,7 +188,7 @@ def diagram_gb_learning_rate():
     a2.legend(fontsize=8.6, loc="center right")
     a2.set_xlabel("Trees added", fontsize=8.6); a2.set_ylabel("Squared error", fontsize=8.6)
     a2.set_yticks([])
-    panel(a2, "Too many trees: training keeps improving, held-out does not", C[1])
+    panel(a2, "Too many trees: training keeps improving, validation does not", C[1])
 
     head(fig, "Two settings that decide whether boosting helps or hurts")
     save(fig, "diag_gb_learning_rate.png")

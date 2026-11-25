@@ -270,8 +270,8 @@ methods, four modules and a few hundred fitted models agree on the same answer.<
 <p>XGBoost did what it was brought in to do, which was to establish a ceiling rather than to break
 one. It is the strongest result in the project by the measure that distinguishes these models
 &mdash; an ROC AUC of 0.766 on the held-out songs, ahead of everything else tried &mdash; reached
-with a regularised objective, a 24-configuration search and a stopping rule that watched held-out
-data round by round. The reward over ordinary gradient boosting, which searched a
+with a regularised objective, a 24-configuration search and a stopping rule that watched the
+validation set round by round. The reward over ordinary gradient boosting, which searched a
 smaller grid, carried no explicit penalty on complexity and had to recover its tree count after
 the fact, was 0.0021 AUC. When the best available tool, tuned
 properly, beats a simpler version of itself by two parts in a thousand, the tool is no longer the
