@@ -237,6 +237,140 @@ effort in the same direction.</p>
       how it measurably sounds, or for terms about mood, identity and belonging?</li>
 </ol>
 
+<p>The work is now finished, and the short version of what it found can be given
+before the questions are taken one at a time. The measurable qualities of a recording carry a real
+but very faint relationship to whether it succeeds. Shown tens of thousands of labelled examples,
+the strongest tools available could not name which songs would reach the chart &mdash; out of 684
+genuine hits held back for testing, the best attempt identified twenty-nine &mdash; yet the same
+tools could put songs in an order from most to least likely that was consistently better than
+chance, and the more capable the tool, the better that order became. Both halves of that sentence
+are true at once, and holding them together is the main thing this project has to offer. Something
+about a record is connected to its fate. It is nowhere near strong enough to decide anything about
+an individual song. Meanwhile the one comparison that did come out strongly had nothing to do with
+sound at all: how large an audience an artist had already gathered tracks their songs' performance
+several times more closely than any quality of the music does. The answers below follow from
+that.</p>
+
+<h2>Questions and answers</h2>
+
+<p>Each of the ten questions above is taken in turn. Three of them changed shape once the evidence
+was in, and one of them cannot be answered with this data at all; those are flagged rather than
+smoothed over.</p>
+
+<h3>1. Can a song's measurable qualities predict whether it becomes popular?</h3>
+
+<p>Barely, and not in a way anyone could use. Every approach tried, from the simplest to the most
+capable, settled on the same strategy when asked to name hits outright: since the great majority of
+songs do not chart, say no to everything. That answer is right about 87% of the time, which is
+exactly how a useless answer can look like a good one. Asked the gentler question of which songs
+are <em>more likely</em> than others, the same approaches did clearly better than chance and
+improved steadily as they got more sophisticated &mdash; so the signal is real. It is simply far
+too faint to support a verdict on any individual recording. The practical reading is that no
+formula picks hits, while a tool that reorders a long shortlist slightly for the better is
+achievable. Full detail on the
+<a href="xgboost.html">XGBoost</a> tab, where all six approaches are compared on the same songs.</p>
+
+<h3>2. Has popular music genuinely become more uniform?</h3>
+
+<p><em>This question changed shape.</em> It turns out to contain two different claims that the
+evidence answers differently. On specific production choices, convergence is real and measurable:
+records got steadily louder for fifty years, settled into a narrower range of lengths, and moved
+away from major keys decade after decade. But the catalogue as a whole did not collapse into a few
+recognisable types. Grouping recordings purely by how they sound produces broad, overlapping
+regions rather than tidy categories, and no small set of underlying qualities turns out to describe
+a song &mdash; nine of the ten measurements are needed to pin one down. The variety of songs
+reaching the chart also fell for forty years and then recovered to 1960s levels. So: converging on
+how records are made, not collapsing into sameness. See <a href="clustering.html">Clustering</a>
+and <a href="pca.html">PCA</a>.</p>
+
+<h3>3. Do genre labels correspond to real, audible differences?</h3>
+
+<p>Yes, but far more faintly than the confidence of the labels suggests. Left to find its own
+structure in the sound, nothing in these recordings corresponds to the industry's genre categories
+&mdash; the agreement between the groupings that emerge and the labels people use is almost exactly
+zero. Given labelled examples to study, though, roughly 47% of songs can be assigned to the right
+genre, against about 19% from guessing. Both results are true together, and they say something
+precise: an audible signature of genre exists, but it is buried beneath louder patterns about how
+densely a record is produced. Some genres also hide far better than others &mdash; rap and
+electronic music carry obvious markers, while pop, rock and Latin music are nearly invisible in
+these measurements. The categories survive because people agree on them, not because the sound
+enforces them.</p>
+
+<h3>4. Why did recordings grow louder for fifty years, and what caused that to stall?</h3>
+
+<p><em>This one is only half answerable here.</em> The pattern itself is unambiguous: typical
+loudness climbs in every decade from the 1960s to the 2010s, and then steps back slightly in the
+2020s. The cause is not something these recordings can be made to reveal, because a cause is not a
+measurement. What can be said is that the timing of the reversal lines up with streaming services
+beginning to even out playback volume, which removed the advantage a louder master used to carry.
+That is a plausible explanation supported by coincidence of timing, not a finding. The honest
+position is that the <em>what</em> is measured here and the <em>why</em> is borrowed from the
+industry's own account of itself.</p>
+
+<h3>5. What changed about songwriting when streaming replaced radio and album sales?</h3>
+
+<p>Songs got shorter, and they got shorter quickly. Typical length rose through the album era to
+about four and a half minutes around 1990 and has since fallen back to roughly three minutes,
+landing almost exactly where it sat in the 1960s. The chart behaviour changed with it: nearly four
+in ten recent chart entries now appear for a single week and vanish, a pattern that barely existed
+before, because entire albums arrive on the chart the day they are released. Both changes point the
+same way. When a listener can skip at no cost, the opening seconds decide everything, and a song
+that has to earn attention immediately is written differently from one a listener has already paid
+for.</p>
+
+<h3>6. Has popular music become less cheerful, and was the shift gradual or sudden?</h3>
+
+<p>Less cheerful, and the shift was sudden rather than gradual &mdash; which is the more
+interesting half of the answer. Typical musical positivity held almost flat from the 1960s through
+the 2000s, four decades with no real movement, and then dropped sharply in the 2010s and stayed
+down. A slow drift would have suggested changing taste. A step change suggests something happened:
+the 2010s are when streaming became the dominant way music was heard, when playlists built around
+mood arrived, and when the genres that now dominate the chart took over. This data can show the
+step clearly and date it to the decade. It cannot pick between those explanations.</p>
+
+<h3>7. Are charting songs musically different from songs that never chart?</h3>
+
+<p>Only slightly, and this is the finding the rest of the project is built on. Set the two groups
+side by side across every measurable quality and they are nearly identical. Charting songs are
+somewhat more likely to have vocals and read as slightly brighter in mood; on how danceable they
+are &mdash; the quality most people would guess matters most &mdash; the difference is so small it
+would be inaudible. The gaps are real in the sense that they hold up across thousands of songs, but
+they are nothing like large enough to tell one record from another. A person handed two unlabelled
+songs, one a hit and one unheard, would have essentially nothing measurable to go on.</p>
+
+<h3>8. Which matters more: the song, or the audience the artist already had?</h3>
+
+<p>The audience, and not by a narrow margin. How many followers an artist had already gathered
+tracks their songs' performance several times more closely than the strongest relationship found
+anywhere in the audio. That single comparison reframes everything else on this site. It suggests
+that much of what gets called talent or instinct is, measured honestly, a matter of reach: who was
+already listening, which playlists a record landed on, and how much was spent making sure people
+encountered it. This does not make the music irrelevant &mdash; a record nobody wants to hear twice
+will not travel however it is pushed. It does suggest the music is closer to a requirement than an
+explanation: necessary, and nowhere near sufficient.</p>
+
+<h3>9. Has reaching the charts become easier or harder, and does it still mean the same thing?</h3>
+
+<p>Neither easier nor harder so much as <em>different</em>, to the point where the comparison across
+eras barely holds. A song entering the chart in the 2000s typically stayed seventeen weeks; one
+entering today typically stays two. Almost four in ten recent entries appear once and disappear.
+At the same time the number of distinct songs reaching the chart in a year, having shrunk for four
+decades to a low around 2001, has climbed back to roughly where it was in the mid-1960s. So more
+songs touch the chart now, and they touch it far more briefly. Reaching the Hot 100 in 1985 and
+reaching it in 2025 are different achievements that happen to share a name, which is worth
+remembering whenever this project treats charting as a single thing.</p>
+
+<h3>10. When listeners describe music in their own words, do they reach for sound or for identity?</h3>
+
+<p><em>This answer was a surprise.</em> The expectation was mood &mdash; that people would describe
+music by how it makes them feel. They do not. The words listeners attach to artists are
+overwhelmingly categories: genre names first, then nationality and language, then the decade. Words
+about feeling are conspicuously rare. People file music by what kind of thing it is and where it
+came from, rather than by what it does to them. That finding sits unexpectedly well beside the rest
+of the project, where a record's category turned out to predict its commercial outcome better than
+most of what can be measured in its audio. Both point at the same thing: the label carries
+information the sound does not.</p>
+
 <h2>Sources referenced above</h2>
 
 <ul>

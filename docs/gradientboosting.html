@@ -52,18 +52,250 @@
 <main>
 <h2>GradientBoosting</h2>
 
-<h3>Overview</h3>
-<p>Gradient boosting also builds its models in sequence, but instead of re-weighting awkward cases it fits each new model to the error left over by the ones before it. Every round is an attempt to correct the current running total by a small, controlled amount.</p>
-<p>That controlled correction is what makes it worth comparing against a single decision tree on the same data. If a long sequence of small corrections finds structure that one tree misses, the signal in song success is subtle and additive rather than carved along a few obvious thresholds.</p>
+<p class="lede">AdaBoost improved the ranking of songs without improving the ability to call one.
+Gradient boosting is the same idea built on a different engine: instead of arguing with the data
+about which rows deserve attention, it simply measures how wrong it currently is and fits the next
+tree to that.</p>
 
-<h3>Data</h3>
-<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for gradient boosting, shown as a sample image, with links to both the raw and the cleaned data.</div>
+<h3>Overview</h3>
+
+<p>Gradient boosting builds a <b>running sum of small trees</b>. It begins with a single flat guess
+&mdash; for a two-class problem, the overall rate at which songs chart &mdash; and then improves it
+one tree at a time. At every round it looks at how far the running total currently sits from the
+truth on each training row, fits a small tree to <em>that</em>, and adds the tree's output onto the
+total. The prediction after 200 rounds is not a vote among 200 models; it is one number that 200
+models each pushed a little.</p>
+
+<p>What each new tree is fitted to is the part worth being precise about. The quantity is the
+<b>negative gradient of the loss</b> with respect to the current prediction. That sounds abstract
+until the loss is named. If the loss is squared error, the negative gradient works out to be
+exactly <code>y &minus; prediction</code> &mdash; the ordinary residual, the plain leftover. Each
+tree is literally fitted to the mistakes. For the two-class problem on this page the loss is log
+loss rather than squared error, so the leftover is <code>y &minus; p</code>, the gap between what
+actually happened (1 or 0) and the probability the running total currently assigns. The principle
+does not change: every tree is trained on what is still wrong, which is why the target moves every
+round even though the data never does.</p>
+
+<figure>
+  <img src="images/diag_gb_residuals_dark.png" data-light="images/diag_gb_residuals.png" data-dark="images/diag_gb_residuals_dark.png" loading="lazy" decoding="async" alt="Four panels: a flat average prediction, the residuals left over with a small step-function tree fitted to them, the running total after two trees, and a close fit after thirty trees.">
+  <figcaption><b>Gradient boosting chases what is left over.</b> These four panels are a real
+  boosting run on a one-dimensional example, not a sketch. The first guess is a flat average; the
+  second panel shows what that leaves behind and the small tree fitted to it; the third adds that
+  tree to the running total; the fourth repeats thirty times. Nothing is re-weighted at any point,
+  which is the clean difference from AdaBoost.</figcaption>
+</figure>
+
+<p>This is a genuinely different mechanism from the previous tab. <b>AdaBoost</b> keeps the target
+fixed and changes the <em>data</em>, raising the weight of rows it got wrong so the next stump is
+pulled toward them. <b>Gradient boosting</b> keeps the data fixed and changes the <em>target</em>,
+handing each new tree the current error as the thing to predict. AdaBoost then combines its members
+by a weighted vote; gradient boosting just adds its members up. The two are close cousins &mdash;
+AdaBoost turns out to be gradient boosting under one particular loss function &mdash; but in
+practice the additive form is more flexible, because any loss that can be differentiated can be
+boosted.</p>
+
+<p>Two settings decide whether that flexibility helps or hurts. The <b>learning rate</b> scales
+every tree down before it is added, so a rate of 0.1 means each tree contributes a tenth of what it
+proposed. Shrinking the steps is not a slowdown for its own sake: a model that moves in small
+careful increments has many chances to correct its own direction, and reliably ends up in a better
+place than one that lunges. The price is that small steps need more of them. The <b>number of
+trees</b> is the other side of that trade, and it is the setting that can quietly ruin a boosted
+model. Because the running total is always being fitted to its own remaining error, and because
+some of that error is noise rather than signal, a long enough sequence will start modelling the
+accidents of the training set. Training error keeps falling the whole time &mdash; that is what
+makes it dangerous. The only way to see the problem is to score held-out data after every tree and
+watch for the point where it stops improving.</p>
+
+<figure>
+  <img src="images/diag_gb_learning_rate_dark.png" data-light="images/diag_gb_learning_rate.png" data-dark="images/diag_gb_learning_rate_dark.png" loading="lazy" decoding="async" alt="Two panels: three fitted curves at different learning rates and tree counts on the left, and training error falling while held-out error turns upward on the right.">
+  <figcaption><b>Two settings that decide whether boosting helps or hurts.</b> On the left, the same
+  problem approached three ways: big steps arrive quickly but jaggedly, small steps with too few
+  trees barely leave the starting point, and small steps with enough trees land closest to the real
+  pattern. On the right, the overfitting picture, measured on a real run &mdash; training error
+  falls forever while held-out error bottoms out and climbs. Everything in the shaded region is a
+  tree fitted to noise.</figcaption>
+</figure>
+
+<h3>Data Prep</h3>
+
+<p>Gradient boosting is supervised, and it is fitted on exactly the partitions prepared for
+AdaBoost in Module 4, so that comparing the two at the end compares the methods rather than the
+data: <b>15,489 training songs</b>, <b>5,164 validation</b> and <b>5,164 test</b>, verified
+disjoint, with the test set matching Module 3's row for row. The target is <code>charted</code>.
+The features are the ten numeric audio measurements plus the one-hot encoded genre, musical key
+and mode, <b>30 columns in total</b>. The one-hot step is explained in full on the
+<a href="adaboost.html">AdaBoost</a> tab; the short version is that the three text columns are
+expanded into one indicator column per level so that no false ordering is invented between pop,
+rap and rock.</p>
+
+<p>The three-way split is doing real work on this tab rather than ceremony. Everything below
+&mdash; learning rate, depth, and above all the number of trees &mdash; is chosen by scoring the
+validation rows. The test set was read once, after those choices were fixed.</p>
+
+<figure>
+  <img src="images/m4_adaboost_train_dark.png" data-light="images/m4_adaboost_train.png" data-dark="images/m4_adaboost_train_dark.png" loading="lazy" decoding="async" alt="Table showing the first rows of the boosted-model training set, with the charted label, numeric audio features and one-hot indicator columns.">
+  <figcaption><b>The training set as the boosted models receive it.</b> The charted label, then the
+  ten numeric measurements, then the indicator columns. 15,489 rows, of which 2,051
+  charted.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/m4_adaboost_val_dark.png" data-light="images/m4_adaboost_val.png" data-dark="images/m4_adaboost_val_dark.png" loading="lazy" decoding="async" alt="Table showing the first rows of the validation set with the same thirty columns.">
+  <figcaption><b>The validation set.</b> 5,164 rows that are never fitted on. The number of trees
+  in the final model was read off a curve scored on these rows, which is what makes it a tuned
+  setting rather than a guess.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/m4_adaboost_test_dark.png" data-light="images/m4_adaboost_test.png" data-dark="images/m4_adaboost_test_dark.png" loading="lazy" decoding="async" alt="Table showing the first rows of the held-out test set with the same thirty columns.">
+  <figcaption><b>The held-out test set.</b> Same 30 columns, 5,164 rows, 684 of which charted, and
+  no overlap with either the training or the validation rows.</figcaption>
+</figure>
+
+<div class="cards">
+  <div class="card">
+    <h4>Encoded data</h4>
+    <p>The three partitions, with the 30-column encoded feature set.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/m4_adaboost_train.csv">m4_adaboost_train.csv &rarr;</a>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/m4_adaboost_val.csv">m4_adaboost_val.csv &rarr;</a>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/m4_adaboost_test.csv">m4_adaboost_test.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Split summary</h4>
+    <p>Partition sizes, class balance, and the one-hot column list.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/m4_split_summary.json">m4_split_summary.json &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Measured results</h4>
+    <p>The full tuning grid, every staged curve, and each number quoted below.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/data/clean/gb_metrics.json">gb_metrics.json &rarr;</a>
+  </div>
+</div>
 
 <h3>Code</h3>
-<div class="pending"><strong>Coming in a later module.</strong>A link to the code for this section, with the language and core packages noted.</div>
+
+<p>Python 3 with <code>scikit-learn</code>'s <code>GradientBoostingClassifier</code>. The staged
+curves come from <code>staged_predict_proba</code>, which replays the model one tree at a time, so
+the validation score after every single tree can be recorded rather than only the score at the
+end. One detail is worth flagging because it would otherwise produce a wrong chart:
+<code>train_score_</code> stores the binomial <em>deviance</em>, which is twice the log loss, so it
+is halved in the code before being plotted against a validation curve computed with
+<code>log_loss</code>.</p>
+
+<div class="cards">
+  <div class="card">
+    <h4>Gradient boosting</h4>
+    <p>The twelve-configuration grid, the staged curves, the final model, and all four figures.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/17_gradient_boosting.py">17_gradient_boosting.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Data preparation</h4>
+    <p>The three-way split and the one-hot encoding step, shared with Module 4.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/13_supervised_prep_m4.py">13_supervised_prep_m4.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Diagrams</h4>
+    <p>The two explanatory figures in the Overview, both from real boosting runs.</p>
+    <a href="https://github.com/aazodpe/sound-of-success/blob/main/code/19_concept_diagrams_m5.py">19_concept_diagrams_m5.py &rarr;</a>
+  </div>
+</div>
 
 <h3>Results</h3>
-<div class="pending"><strong>Coming in a later module.</strong>Results, parameter choices, visualizations, and what they mean for the question of what makes a song succeed.</div>
+
+<p>Three learning rates (0.03, 0.1, 0.3) were crossed with four tree depths (1, 2, 3, 5), giving
+twelve configurations, each fitted to 300 trees. For every one of them the validation score was
+recorded after each individual tree, so the number of trees is a third tuned setting rather than a
+constant: each configuration is credited with the best it ever reached, and with the round at which
+it reached it.</p>
+
+<figure>
+  <img src="images/fig49_gb_tuning_dark.png" data-light="images/fig49_gb_tuning.png" data-dark="images/fig49_gb_tuning_dark.png" loading="lazy" decoding="async" alt="Line chart of best validation ROC AUC against tree depth for three learning rates, peaking at depth three.">
+  <figcaption><b>Depth buys more than the learning rate, and stops paying around three.</b> Moving
+  from depth 1 to depth 3 is worth 0.017 AUC at the slowest learning rate, 0.009 at 0.1 and 0.004
+  at 0.3, which makes sense: a depth-one stump can only ask one question, so it can never notice
+  that loud <em>and</em> short is different from loud alone. Depth 5 then gives a little back at
+  the two faster rates and adds a negligible 0.001 at the slowest. The whole grid spans 0.019 AUC,
+  so the axis is exaggerating differences that are modest in absolute terms.</figcaption>
+</figure>
+
+<p>The chosen configuration was a <b>learning rate of 0.1 at depth 3, stopped at 215 trees</b>,
+with a validation AUC of <b>0.7620</b>. The staged curve behind that choice is the clearest
+illustration of overfitting anywhere in this project.</p>
+
+<figure>
+  <img src="images/fig50_gb_validation_curve_dark.png" data-light="images/fig50_gb_validation_curve.png" data-dark="images/fig50_gb_validation_curve_dark.png" loading="lazy" decoding="async" alt="Two stacked panels: training log loss falling continuously while validation log loss flattens and rises, and validation AUC peaking then decaying for two configurations.">
+  <figcaption><b>Validation error as the trees are added.</b> In the upper panel the two lines start
+  on top of each other at 0.386. Training loss then falls without interruption to 0.281 by the
+  300th tree, while validation loss bottoms out at 0.3384 after 157 trees and begins to drift back
+  up. The lower panel shows the same sequence judged on ranking, with a second configuration added
+  for contrast: the chosen settings give back only 0.0028 AUC by tree 300, but the most aggressive
+  setting in the grid &mdash; rate 0.3 at depth 5 &mdash; peaks at just 35 trees and has given back
+  <b>0.0330</b> by the end. Aggressive settings do not merely overfit sooner; they overfit
+  harder.</figcaption>
+</figure>
+
+<p>The encoded categories earned their place here as well, for the second time in two modules.
+Fitting the chosen configuration on the ten numeric columns alone gives a validation AUC of
+<b>0.713</b>; adding the twenty indicator columns raises it to <b>0.762</b>. Knowing what kind of
+record something is keeps helping, no matter which method is asked.</p>
+
+<figure>
+  <img src="images/fig51_gb_confusion_dark.png" data-light="images/fig51_gb_confusion.png" data-dark="images/fig51_gb_confusion_dark.png" loading="lazy" decoding="async" alt="Two-by-two confusion matrix showing 4,449 correct non-charting predictions, 29 correct charting predictions, 31 false alarms and 655 charting songs missed.">
+  <figcaption><b>Better at ranking, no better at committing.</b> Accuracy is 86.72% against an
+  86.75% baseline &mdash; fractionally <em>below</em> the strategy of refusing to predict any hit at
+  all. The model did commit more often than AdaBoost did, flagging 60 songs rather than 25 and
+  getting 29 of them right, but 655 of the 684 real hits still went unnoticed.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig52_gb_vs_adaboost_dark.png" data-light="images/fig52_gb_vs_adaboost.png" data-dark="images/fig52_gb_vs_adaboost_dark.png" loading="lazy" decoding="async" alt="Two panels comparing AdaBoost and gradient boosting on test accuracy, both at the baseline, and on test ROC AUC, 0.757 against 0.764.">
+  <figcaption><b>The comparison with Module 4's AdaBoost, on the identical held-out songs.</b> On
+  accuracy, gradient boosting is 0.10 percentage points <em>behind</em> AdaBoost and a hair below
+  the baseline, which is to say the two are indistinguishable and both are useless as classifiers.
+  On ranking, gradient boosting is ahead by <b>+0.0074 AUC</b>, 0.764 against 0.757. The
+  disagreement between the two panels is the whole point of looking at both.</figcaption>
+</figure>
+
+<p><b>Which did better?</b> Gradient boosting, but only in the sense that matters least to anyone
+reading a prediction. It ranks songs better than AdaBoost by 0.0074 AUC and catches more than twice
+as many real hits, 29 against 14. It is also the first boosted model in the project to land below the
+do-nothing baseline on accuracy, by four hundredths of a percentage point. Both statements describe
+the same model, and the project's position after four modules is that the second one is the less
+informative of the two.</p>
+
+<h3>Conclusions</h3>
+
+<p>Gradient boosting is a better-built machine than AdaBoost and it produced a slightly better
+result, which is roughly what should have been expected. Fitting each tree to the current error,
+rather than arguing about which rows deserve more weight, is a more direct way of attacking the
+same problem, and it allows trees of depth three instead of depth one &mdash; enough to notice that
+two measurements together mean something that neither means alone. The reward for all of that was
+0.0074 of ranking quality. The method worked, and the gain was small, and both of those facts
+belong in the same sentence.</p>
+
+<p>The overfitting curve is the most instructive thing on this tab, and it is worth separating from
+the headline result. Training loss fell continuously for 300 trees while validation loss turned
+around after 157. Had the number of trees been fixed in advance at some plausible-sounding value,
+the model would have been quietly worse and nothing in the training output would have said so. The
+contrast between the chosen settings and the aggressive ones sharpens the point: an aggressive
+configuration peaked at 35 trees and lost 0.033 AUC by round 300, more than ten times what the
+careful configuration lost. The lesson is not that boosting overfits &mdash; everything overfits
+&mdash; but that the only reliable way to know when to stop is to hold data back and watch.</p>
+
+<p>The deeper finding is one this tab shares with the three before it, and it has stopped being
+surprising. Another method, better machinery, more careful tuning, and the model still sits on the
+baseline and still cannot name a hit. It flagged 60 songs out of 5,164 and was right about 29 of
+them. That is not a failure of gradient boosting; it is a measurement of how much the audible
+properties of a recording have to say about its commercial fate, taken with a sharper instrument
+than before. The instrument keeps getting sharper and the answer keeps coming back the
+same.</p>
+
+<p>One tab remains, and the honest expectation for it can be stated before the results arrive.
+XGBoost is a more refined implementation of exactly the mechanism described here, with an explicit
+penalty on complexity and a stopping rule that uses held-out data directly. It should edge ahead of
+gradient boosting on ranking by a small amount, and it should land in precisely the same place on
+accuracy. If that is what happens, the ceiling is not an artefact of any one method, and the
+project's central claim can be made with some confidence.</p>
 
 </main>
 

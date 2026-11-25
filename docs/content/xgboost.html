@@ -1,14 +1,314 @@
 <h2>XGBoost</h2>
 
-<h3>Overview</h3>
-<p>XGBoost is a particular implementation of gradient boosting that adds explicit penalties for complexity, handles missing values natively, and is built to run fast on large datasets. It has become the standard reference point for structured, tabular problems like this one.</p>
-<p>It serves as the ceiling test for this project. If a heavily tuned XGBoost model cannot predict song success much better than logistic regression, that is strong evidence the limit lies in the data rather than the method, which is the central claim this whole project is set up to examine.</p>
+<p class="lede">This is the last method the project will try, and it is the one the rest of the
+field would reach for first. If a heavily tuned XGBoost model cannot predict which songs chart,
+the limit is not in the machinery.</p>
 
-<h3>Data</h3>
-<div class="pending"><strong>Coming in a later module.</strong>The prepared dataset used for XGBoost, shown as a sample image, with links to both the raw and the cleaned data.</div>
+<h3>Overview</h3>
+
+<p>XGBoost is gradient boosting &mdash; the running sum of small trees described on the
+<a href="gradientboosting.html">previous tab</a> &mdash; with the engineering taken seriously. Two
+of its additions change the results rather than merely the speed, and both are answers to the
+problem that tab ended on: a boosted model will happily keep fitting until it has memorised the
+training set, and nothing in the training output will warn anyone.</p>
+
+<p>The first addition is a <b>regularised objective</b>. Ordinary gradient boosting grows each
+tree to minimise the training loss and nothing else, so a tree that splits into many leaves with
+large, confident values always looks better than a cautious one. XGBoost changes the quantity
+being minimised, adding a price for complexity directly into it:
+<code>objective = loss + &gamma;T + &frac12;&lambda;&sum;w&sup2;</code>. Here <code>T</code> is the
+number of leaves the tree has grown and <code>w</code> is the value sitting in each leaf. The
+<code>&gamma;T</code> term charges a flat fee per leaf, so a split has to buy more loss reduction
+than it costs or it is not made at all. The <code>&lambda;&sum;w&sup2;</code> term charges by the
+<em>square</em> of each leaf's value, so one very confident leaf costs far more than several
+hesitant ones, and the whole tree is pulled toward modest corrections. Neither term is a filter
+applied afterwards; both are inside the thing the algorithm is minimising, which means the tree
+that gets built is already the one that balances fit against complexity.</p>
+
+<figure>
+  <img src="images/diag_xgb_objective.png" alt="On the left, a two-leaf tree with small weights beside a four-leaf tree with large weights, and the regularised objective written out; on the right, a bar chart showing the per-leaf penalty rising linearly and the per-weight penalty rising as a square.">
+  <figcaption><b>What XGBoost adds: a price on complexity, inside the objective.</b> Ordinary
+  boosting judges the two candidate trees on training error alone, so the eager one wins. XGBoost
+  charges for the leaves and charges harder for the size of the values in them, and the comparison
+  can come out the other way. The right-hand panel shows why the two terms behave differently:
+  leaves are charged in a straight line, weights by their square.</figcaption>
+</figure>
+
+<p>The second addition is <b>early stopping</b>. On the previous tab the number of trees had to be
+recovered after the fact, by fitting 300 of them and replaying the sequence to find where the
+validation score peaked. XGBoost does that during training. A validation set is handed to the
+fitting routine, which scores it after every round and keeps count of how long it has been since
+the score improved. Once that count reaches a set patience &mdash; forty rounds here &mdash;
+training halts and the model from the best round is the one kept. The number of trees stops being
+a setting anyone has to guess and becomes something the data decides, differently for every
+configuration.</p>
+
+<figure>
+  <img src="images/diag_xgb_early_stopping.png" alt="A schematic validation curve rising, peaking and decaying, with the best round circled, a shaded patience window after it, and a region marked never fitted.">
+  <figcaption><b>Early stopping: the validation set decides when to quit.</b> Training continues
+  past the peak, because a run of poor rounds can still be followed by a good one and the only way
+  to know is to try. After enough rounds with no improvement, training halts and the model rewinds
+  to the best one it saw. Everything beyond the halt is never fitted, which is the saving in time;
+  everything between the peak and the halt is tried and discarded, which is the saving in
+  accuracy.</figcaption>
+</figure>
+
+<p>XGBoost also handles missing values natively, grows trees level by level with a histogram
+approximation that makes it fast on large data, and samples columns as well as rows. None of those
+matter much on a table of 25,817 complete rows and 30 columns, and they are mentioned here only so
+the reasons it is <em>not</em> faster or better on this particular problem are clear.</p>
+
+<h3>Data Prep</h3>
+
+<p>Identical partitions to AdaBoost and gradient boosting, deliberately, so that the comparison
+table at the end of this tab compares six methods on one dataset rather than six methods on six:
+<b>15,489 training songs</b>, <b>5,164 validation</b> and <b>5,164 test</b>, verified disjoint,
+with the test set the same rows Module 3 used. The target is <code>charted</code>, which 684 of
+the test songs are.</p>
+
+<p><b>The one-hot step, and why it is still needed.</b> Three of the most useful columns in the
+cleaned data are text: a song's genre, its musical key and its mode. XGBoost works on numbers, so
+these have to be converted, and the obvious conversion is the wrong one. Numbering the genres
+pop&nbsp;=&nbsp;1, rap&nbsp;=&nbsp;2, rock&nbsp;=&nbsp;3 would invent an ordering that does not
+exist, and a tree would then be free to split on <code>genre &le; 2</code> &mdash; a question that
+groups pop with rap for no reason other than alphabetical accident. <b>One-hot encoding</b> avoids
+this by giving every level a column of its own holding 1 or 0, so the only question a tree can ask
+is "is this song rap?", which is a real question. The cost is width: three columns become twenty,
+and the feature count goes from 10 to <b>30</b>. For a tree-based method that cost is cheap, since
+a binary indicator is the easiest possible thing to split on. It is worth noting that modern
+XGBoost can accept categorical columns directly with <code>enable_categorical</code>; the explicit
+encoding is kept here because it is the same matrix the previous two tabs were given, and swapping
+it would make the comparison dishonest.</p>
+
+<figure>
+  <img src="images/m4_encoding.png" alt="Side-by-side tables showing three categorical columns of text values on the left and the same rows expanded into twenty columns of ones and zeros on the right.">
+  <figcaption><b>The encoding step, before and after.</b> Three text columns on the left become
+  twenty indicator columns on the right. Exactly one column within each group is 1 for any given
+  song, which keeps the information and introduces no false ordering.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/m4_adaboost_val.png" alt="Table showing the first rows of the validation set with the charted label, numeric features and indicator columns.">
+  <figcaption><b>The validation set, which does more work on this tab than anywhere else in the
+  project.</b> Every setting was scored on these 5,164 rows, and early stopping watched them round
+  by round while each model trained. They are never fitted on.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/m4_adaboost_test.png" alt="Table showing the first rows of the held-out test set with the same thirty columns.">
+  <figcaption><b>The held-out test set.</b> 5,164 rows, 684 of which charted, read once after every
+  setting had been fixed &mdash; and the same rows every other model on this site was scored
+  on.</figcaption>
+</figure>
+
+<div class="cards">
+  <div class="card">
+    <h4>Encoded data</h4>
+    <p>The three partitions, with the 30-column encoded feature set.</p>
+    <a href="__REPO__/blob/main/data/clean/m4_adaboost_train.csv">m4_adaboost_train.csv &rarr;</a>
+    <a href="__REPO__/blob/main/data/clean/m4_adaboost_val.csv">m4_adaboost_val.csv &rarr;</a>
+    <a href="__REPO__/blob/main/data/clean/m4_adaboost_test.csv">m4_adaboost_test.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>The encoding step</h4>
+    <p>The same rows before and after, as shown in the figure above.</p>
+    <a href="__REPO__/blob/main/data/clean/m4_encoding_before.csv">m4_encoding_before.csv &rarr;</a>
+    <a href="__REPO__/blob/main/data/clean/m4_encoding_after.csv">m4_encoding_after.csv &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Measured results</h4>
+    <p>The 24-configuration grid, the early stopping history, and the comparison table.</p>
+    <a href="__REPO__/blob/main/data/clean/xgb_metrics.json">xgb_metrics.json &rarr;</a>
+    <a href="__REPO__/blob/main/data/clean/model_comparison.csv">model_comparison.csv &rarr;</a>
+  </div>
+</div>
 
 <h3>Code</h3>
-<div class="pending"><strong>Coming in a later module.</strong>A link to the code for this section, with the language and core packages noted.</div>
+
+<p>Python 3 with the <code>xgboost</code> package, version 3.2.0, through its scikit-learn
+interface (<code>XGBClassifier</code>). Early stopping is configured on the estimator with
+<code>early_stopping_rounds=40</code> and the validation partition passed as
+<code>eval_set</code>; the objective is <code>binary:logistic</code> and the metric watched is
+<code>auc</code>, for the reason every tab since Module 3 has given &mdash; accuracy cannot tell
+these models apart. The same script also assembles the comparison table below, and it does so
+carefully: accuracy and recall for the earlier models are read from the metrics files those tabs
+published, so the table cannot contradict the page it came from, while the two ranking scores that
+were never recorded are recomputed by refitting those exact models, with an assertion that each
+refit reproduces its published accuracy to twelve decimal places before its score is used.</p>
+
+<div class="cards">
+  <div class="card">
+    <h4>XGBoost</h4>
+    <p>The tuning grid, early stopping, the final model, the comparison table and five figures.</p>
+    <a href="__REPO__/blob/main/code/18_xgboost.py">18_xgboost.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Data preparation</h4>
+    <p>The three-way split and the one-hot encoding step.</p>
+    <a href="__REPO__/blob/main/code/13_supervised_prep_m4.py">13_supervised_prep_m4.py &rarr;</a>
+  </div>
+  <div class="card">
+    <h4>Diagrams</h4>
+    <p>The two explanatory figures in the Overview.</p>
+    <a href="__REPO__/blob/main/code/19_concept_diagrams_m5.py">19_concept_diagrams_m5.py &rarr;</a>
+  </div>
+</div>
 
 <h3>Results</h3>
-<div class="pending"><strong>Coming in a later module.</strong>Results, parameter choices, visualizations, and what they mean for the question of what makes a song succeed.</div>
+
+<p>Four tree depths (2, 3, 5, 7) were crossed with three learning rates (0.03, 0.1, 0.3) and two
+values of the regularisation strength <code>&lambda;</code> (1 and 10), giving <b>24
+configurations</b>. Each was capped at 800 rounds and allowed to stop early, so the number of
+trees varied by configuration from <b>10 rounds to 799</b> &mdash; a spread that no single fixed
+setting could have covered.</p>
+
+<figure>
+  <img src="images/fig53_xgb_tuning.png" alt="Line chart of validation ROC AUC against tree depth for three learning rates at two regularisation strengths, all within a narrow band.">
+  <figcaption><b>Twenty-four configurations, and a ceiling none of them pass.</b> The axis needs
+  reading carefully: the entire grid lies between 0.757 and 0.767, a span of 0.010 AUC, so these
+  dramatic-looking crossings separate models that are practically the same. The chosen
+  configuration was depth 7 at a learning rate of 0.1 with <code>&lambda;</code> = 10, reaching a
+  validation AUC of <b>0.7673</b>.</figcaption>
+</figure>
+
+<p>The regularisation term did something worth noticing, though not something large. At the chosen
+depth and rate, <code>&lambda;</code> = 1 reached a validation AUC of 0.7666 and stopped after 35
+rounds; <code>&lambda;</code> = 10 reached 0.7673 and ran to 73. The heavier penalty did not make
+each tree better so much as it made each tree smaller, which left more worth doing and let the
+sequence run twice as long before it stopped improving. That is the regularisation working exactly
+as described in the Overview, and it bought 0.0006 AUC.</p>
+
+<figure>
+  <img src="images/fig54_xgb_early_stopping.png" alt="Training AUC climbing steadily to 0.93 while validation AUC flattens at 0.767, with the best round at 73 circled and a shaded patience window.">
+  <figcaption><b>Early stopping kept 73 rounds out of a possible 800.</b> Training AUC climbs
+  without pause and reaches 0.93; validation AUC flattens at 0.767 after about thirty rounds and
+  never moves again. The gap between the two curves is the model learning things that are true of
+  these 15,489 songs and of nothing else. Forty rounds after the peak, training halted at round
+  113 and the model from round 73 was kept.</figcaption>
+</figure>
+
+<p>The one-hot columns helped for the third consecutive time. The chosen configuration on the ten
+numeric columns alone reaches a validation AUC of <b>0.723</b>; with the twenty indicator columns
+added it reaches <b>0.767</b>.</p>
+
+<figure>
+  <img src="images/fig56_xgb_importance.png" alt="Horizontal bar chart of feature importance by gain, with genre EDM at 43.1 percent far ahead of everything else.">
+  <figcaption><b>The encoded categories take 83% of the finished model.</b> Measured by gain,
+  <em>genre: EDM</em> alone accounts for 43.1% and the six genre indicators together for 69.4%,
+  leaving the ten acoustic measurements with small single-digit shares. One caution
+  belongs with this chart: gradient boosting on the previous tab attributed only 25.7% to the same
+  columns on the same data. The two numbers are computed differently &mdash; scikit-learn averages
+  impurity reduction across trees, XGBoost sums gain &mdash; so the honest reading is that both
+  methods lean on genre heavily, and that importance percentages are not comparable across
+  implementations.</figcaption>
+</figure>
+
+<figure>
+  <img src="images/fig55_xgb_confusion.png" alt="Two-by-two confusion matrix showing 4,450 correct non-charting predictions, 29 correct charting predictions, 30 false alarms and 655 charting songs missed.">
+  <figcaption><b>The best method in the project, in the same corner as all the others.</b> Accuracy
+  86.74% against an 86.75% baseline. XGBoost flagged 59 songs as likely hits and was right about 29
+  of them, a precision of 49.2% &mdash; and missed 655 of the 684 real hits. It is, within a single
+  song, the same confusion matrix gradient boosting produced.</figcaption>
+</figure>
+
+<h4>Every supervised model on this site, one held-out set</h4>
+
+<p>All six methods below were scored on the same 5,164 songs, of which 684 charted. The baseline
+&mdash; predicting that nothing charts, ever &mdash; is 86.75% accurate.</p>
+
+<table>
+  <thead>
+    <tr><th>Model</th><th>Settings</th><th>Accuracy</th><th>vs baseline</th><th>ROC AUC</th>
+        <th>Hits found</th><th>Songs flagged</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><a href="naivebayes.html">Naive Bayes</a></td><td>Multinomial</td>
+        <td>86.75%</td><td>0.00 pp</td><td>0.655</td><td>0 of 684</td><td>0</td></tr>
+    <tr><td><a href="dectrees.html">Decision tree</a></td><td>entropy, depth 6</td>
+        <td>86.77%</td><td>+0.02 pp</td><td>0.677</td><td>2 of 684</td><td>3</td></tr>
+    <tr><td><a href="regression.html">Logistic regression</a></td><td>default threshold</td>
+        <td>86.75%</td><td>0.00 pp</td><td>0.681</td><td>3 of 684</td><td>6</td></tr>
+    <tr><td><a href="adaboost.html">AdaBoost</a></td><td>400 stumps, rate 1.0</td>
+        <td><b>86.81%</b></td><td>+0.06 pp</td><td>0.757</td><td>14 of 684</td><td>25</td></tr>
+    <tr><td><a href="gradientboosting.html">Gradient boosting</a></td><td>215 trees, depth 3</td>
+        <td>86.72%</td><td>&minus;0.04 pp</td><td>0.764</td><td>29 of 684</td><td>60</td></tr>
+    <tr><td><b>XGBoost</b></td><td>depth 7, rate 0.1, &lambda; = 10</td>
+        <td>86.74%</td><td>&minus;0.01 pp</td><td><b>0.766</b></td><td>29 of 684</td><td>59</td></tr>
+  </tbody>
+</table>
+
+<figure>
+  <img src="images/fig57_model_comparison.png" alt="Two panels of horizontal bars: test accuracy for six models all sitting on the baseline, and test ROC AUC rising in a clear ladder from 0.655 to 0.766.">
+  <figcaption><b>Six supervised models, one held-out set of 5,164 songs.</b> The two panels tell
+  opposite stories about the same six models, which is the single most useful thing this project
+  has to show. On accuracy they are indistinguishable: the whole field spans 0.09 percentage
+  points and sits on the baseline. On ranking they form a clean ladder with no ties and no
+  surprises, from Naive Bayes at 0.655 to XGBoost at 0.766.</figcaption>
+</figure>
+
+<p><b>Which did best, and by how much?</b> It depends entirely on which column is read, and that
+is the finding rather than a dodge.</p>
+
+<p>On <b>accuracy</b>, AdaBoost wins at 86.81%, beating the do-nothing baseline by 0.06 percentage
+points &mdash; three songs out of 5,164. The gap between the best and worst of the six is 0.09
+percentage points, or five songs. No sensible person would choose between these methods on that
+basis, and two of them actually score below the baseline.</p>
+
+<p>On <b>ranking</b>, XGBoost wins at an ROC AUC of 0.766, ahead of gradient boosting by 0.0021 and
+ahead of Naive Bayes, the weakest of the six, by <b>0.112</b>. That ordering is not noise: the six
+models line up by sophistication, and the three boosted ensembles separate cleanly from the three
+single models by about 0.08. Set the two columns beside each other and the contrast is stark
+&mdash; the ranking column spreads across 0.112 while the accuracy column spreads across 0.0010.
+The methods really do differ, and the difference lives somewhere accuracy cannot see.</p>
+
+<p>And on the thing that would actually matter to someone trying to use any of this, all six fail
+together. The best model in the project found <b>29 of 684 hits</b>. The worst found none. Six
+methods, four modules and a few hundred fitted models agree on the same answer.</p>
+
+<h3>Conclusions</h3>
+
+<p>XGBoost did what it was brought in to do, which was to establish a ceiling rather than to break
+one. It is the strongest result in the project by the measure that distinguishes these models
+&mdash; an ROC AUC of 0.766 on the held-out songs, ahead of everything else tried &mdash; reached
+with a regularised objective, a 24-configuration search and a stopping rule that watched held-out
+data round by round. The reward over ordinary gradient boosting, which searched a
+smaller grid, carried no explicit penalty on complexity and had to recover its tree count after
+the fact, was 0.0021 AUC. When the best available tool, tuned
+properly, beats a simpler version of itself by two parts in a thousand, the tool is no longer the
+constraint.</p>
+
+<p>The comparison table is the most valuable thing this tab produces, and it is worth being precise
+about what it shows. Read down the accuracy column and the six methods are identical, all of them
+within a tenth of a percentage point of a strategy that involves no learning at all. Read down the
+ranking column and they are plainly not identical: they rise in a clean order from 0.655 to 0.766,
+the boosted ensembles pull away from the single models by a wide margin, and the ordering matches
+what anyone familiar with these methods would predict in advance. Both columns are honest
+measurements of the same six models on the same 5,164 songs. A reader given only the first would
+conclude that machine learning has nothing to offer this problem; a reader given only the second
+would conclude that it offers a great deal. The useful conclusion needs both: there is real,
+measurable signal connecting a recording to its commercial fate, the better methods extract more
+of it, and none of it is strong enough to support a confident statement about any individual
+song.</p>
+
+<p>The one-hot experiment, run three times now with three different methods, has become the most
+consistent secondary finding in the project. Adding genre, key and mode lifted validation AUC from
+0.701 to 0.745 for AdaBoost, from 0.713 to 0.762 for gradient boosting, and from 0.723 to 0.767
+here. In XGBoost's accounting the genre indicators then took the overwhelming share of the
+finished model. The caution about comparing importance figures across implementations stands, but
+the direction does not depend on the measure: a record's category predicts its commercial outcome
+better than most of what can be measured in its audio. Module 2 found that those same categories
+are barely audible in the acoustic measurements &mdash; clustering by sound recovered genre at an
+adjusted Rand index of 0.020. Put the two findings together and the label is carrying information
+the sound does not, which is to say it is carrying information about how a record is marketed,
+promoted and placed rather than about how it was made.</p>
+
+<p>What this tab cannot settle is whether the ceiling belongs to the data or to the world. The
+honest possibilities are two. It may be that these particular measurements &mdash; a dozen
+acoustic summaries and a genre tag &mdash; are too coarse, and that richer evidence would do
+better: the audio itself rather than summaries of it, the artist's existing audience, the release
+date, the promotional spend, the playlist placements. Or it may be that most of what decides a
+song's fate was never in the recording to begin with. The evidence here cannot separate those two,
+but it does lean. Six methods of increasing power, all given the same evidence, converged on the
+same ceiling rather than climbing steadily toward one; that pattern is more typical of evidence
+that has been exhausted than of methods that are not yet good enough. A sensible next step would
+not be a seventh model. It would be different evidence.</p>

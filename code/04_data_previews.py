@@ -252,17 +252,28 @@ def main():
 
     # ---- Module 4: the encoded AdaBoost inputs ---------------------------
     encoding_png()
-    for part in ["train", "test"]:
+    # The same three partitions feed AdaBoost in Module 4 and both boosting
+    # methods in Module 5, so these previews are shared across those tabs.
+    NOTE = {
+        "train": "The rows every boosted model is fitted on.",
+        "val": "Never fitted on. Every setting - rounds, depth, learning rate, "
+               "regularisation - is chosen by scoring on these rows, and "
+               "XGBoost's early stopping watches them round by round.",
+        "test": "Held back entirely and read once, after the settings were fixed.",
+    }
+    for part in ["train", "val", "test"]:
         p = os.path.join(CLEAN, f"m4_adaboost_{part}.csv")
         if not os.path.exists(p):
             continue
         d = pd.read_csv(p)
         cols = (["charted"] + [c for c in d.columns if c != "charted"][:5]
                 + [c for c in d.columns if c.startswith("playlist_genre_")][:2])
+        label = {"train": "TRAINING", "val": "VALIDATION", "test": "TEST"}[part]
         table_png(d, cols,
-                  f"ADABOOST {part.upper()} SET",
+                  f"BOOSTED-MODEL {label} SET",
                   f"{len(d):,} rows x {d.shape[1]} columns ({len(d.columns)-11} of them "
-                  f"one-hot indicators). {int(d.charted.sum()):,} of these songs charted.",
+                  f"one-hot indicators). {int(d.charted.sum()):,} of these songs "
+                  f"charted. {NOTE[part]}",
                   f"m4_adaboost_{part}.png", 1 if part == "train" else 0, n=6)
 
     print("\nPreviews written to", os.path.abspath(IMG))
